@@ -3,728 +3,929 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nike Vietnam Supply Chain Impact</title>
+<title>MERIDIAN — Athletic Supply Co.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Archivo:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Spectral:ital,wght@0,400;0,500;1,400&family=Space+Grotesk:wght@400;500;600&family=Space+Mono:wght@400;700&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --red: #E24B4A;
-  --red-dim: rgba(226,75,74,0.15);
-  --red-glow: rgba(226,75,74,0.25);
-  --bg: #0A0A0A;
-  --card: #141414;
-  --card2: #1C1C1C;
-  --border: rgba(255,255,255,0.07);
-  --border-red: rgba(226,75,74,0.35);
-  --t1: #FFFFFF;
-  --t2: rgba(255,255,255,0.55);
-  --t3: rgba(255,255,255,0.3);
-  --green: #22C55E;
-  --yellow: #F59E0B;
-  --danger: #EF4444;
-  --blue: #3B82F6;
-  --r-sm: 8px;
-  --r-md: 12px;
-  --r-lg: 16px;
-  --mono: 'JetBrains Mono', monospace;
-  --sans: 'Inter', -apple-system, sans-serif;
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:#f5f1ea}
+#root{height:100%}
+:root{
+  --paper:#f5f1ea;--paper-2:#ede8df;--paper-3:#e3ddd0;
+  --ink:#14110e;--ink-2:rgba(20,17,14,.62);--ink-3:rgba(20,17,14,.38);
+  --rule:rgba(20,17,14,.14);--rule-soft:rgba(20,17,14,.08);
+  --accent:#ff4500;--good:#1f7a4d;--bad:#b3261e;--warn:#a86a00;
+  --serif:"DM Serif Display","Times New Roman",serif;
+  --sans:"Archivo","Helvetica Neue",sans-serif;
+  --mono:"JetBrains Mono","SF Mono","Menlo",monospace;
 }
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior:smooth; }
-body {
-  font-family: var(--sans);
-  background: var(--bg);
-  color: var(--t1);
-  line-height: 1.6;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* ── SCROLL BAR ── */
-.scroll-bar {
-  position:fixed; top:0; left:0; height:3px; width:0%;
-  background: linear-gradient(90deg,var(--red),#FF8C8B);
-  z-index:9999;
-  box-shadow: 0 0 12px var(--red);
-  transition: width .08s linear;
-}
-
-/* ── AMBIENT ── */
-body::before {
-  content:'';
-  position:fixed; top:-20%; right:-10%;
-  width:700px; height:700px; border-radius:50%;
-  background: radial-gradient(circle, rgba(226,75,74,0.055) 0%, transparent 70%);
-  pointer-events:none; z-index:0;
-  animation: floatA 10s ease-in-out infinite;
-}
-body::after {
-  content:'';
-  position:fixed; bottom:-20%; left:-10%;
-  width:600px; height:600px; border-radius:50%;
-  background: radial-gradient(circle, rgba(59,130,246,0.04) 0%, transparent 70%);
-  pointer-events:none; z-index:0;
-  animation: floatA 13s ease-in-out infinite reverse;
-}
-@keyframes floatA {
-  0%,100% { transform:translate(0,0) scale(1); }
-  50% { transform:translate(25px,-25px) scale(1.08); }
-}
-
-/* ── WRAPPER ── */
-.wrap { position:relative; z-index:1; max-width:1100px; margin:0 auto; }
-
-/* ── HEADER ── */
-.header {
-  padding: 3rem 2.5rem 2.5rem;
-  background: linear-gradient(180deg,rgba(226,75,74,0.07) 0%,transparent 100%);
-  border-bottom: 1px solid var(--border);
-  position:relative; overflow:hidden;
-}
-.header::before {
-  content:'';
-  position:absolute; top:0; left:0; right:0; height:1px;
-  background: linear-gradient(90deg,transparent,var(--red),transparent);
-}
-
-.badge {
-  display:inline-flex; align-items:center; gap:6px;
-  background:rgba(226,75,74,0.1); border:1px solid rgba(226,75,74,0.3);
-  border-radius:100px; padding:4px 12px;
-  font-size:10px; font-weight:700; color:var(--red);
-  text-transform:uppercase; letter-spacing:1.2px;
-  margin-bottom:1rem;
-  animation: fadeUp .5s ease both;
-}
-.badge-dot {
-  width:6px; height:6px; background:var(--red); border-radius:50%;
-  animation: blink 2s infinite;
-}
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.25} }
-
-.header h1 {
-  font-size: clamp(26px,4vw,40px);
-  font-weight:900; letter-spacing:-1.2px; line-height:1.1;
-  margin-bottom:.5rem;
-  animation: fadeUp .6s .05s ease both;
-}
-.header h1 .accent { color:var(--red); }
-.subtitle {
-  font-size:14px; color:var(--t2); font-weight:400;
-  max-width:580px; margin-bottom:.75rem;
-  animation: fadeUp .6s .1s ease both;
-}
-.header-meta {
-  display:flex; gap:1.5rem; flex-wrap:wrap;
-  animation: fadeUp .6s .15s ease both;
-}
-.header-meta span { font-size:11px; color:var(--t3); }
-
-/* ── METRICS GRID ── */
-.metrics-grid {
-  display:grid;
-  grid-template-columns:repeat(6,1fr);
-  gap:1px; background:var(--border);
-  margin-top:2.5rem; border-radius:var(--r-lg); overflow:hidden;
-  animation: fadeUp .6s .25s ease both;
-}
-.m-card {
-  background:var(--card); padding:1.25rem 1rem; text-align:center;
-  transition: background .2s;
-}
-.m-card:hover { background:#1E1E1E; }
-.m-label {
-  font-size:9px; font-weight:700; color:var(--t3);
-  text-transform:uppercase; letter-spacing:.9px; margin-bottom:6px;
-}
-.m-val {
-  font-size:21px; font-weight:800; font-family:var(--mono);
-  letter-spacing:-.5px;
-}
-.m-val.red { color:var(--danger); }
-.m-val.yellow { color:var(--yellow); }
-.m-val.blue { color:var(--blue); }
-.m-unit { font-size:12px; font-weight:400; color:var(--t2); }
-
-/* ── CONTENT ── */
-.content { padding:2.5rem; }
-
-/* ── SECTION ── */
-.section {
-  margin-bottom:3.5rem;
-  opacity:0; transform:translateY(22px);
-  transition: opacity .65s cubic-bezier(.16,1,.3,1), transform .65s cubic-bezier(.16,1,.3,1);
-}
-.section.vis { opacity:1; transform:translateY(0); }
-
-.sec-head { display:flex; align-items:flex-start; gap:12px; margin-bottom:1.5rem; }
-.sec-num {
-  width:26px; height:26px; flex-shrink:0;
-  background:linear-gradient(135deg,var(--red),#FF6B6B);
-  border-radius:50%;
-  display:flex; align-items:center; justify-content:center;
-  font-size:11px; font-weight:800;
-}
-.sec-title-wrap { flex:1; }
-.sec-title { font-size:19px; font-weight:700; letter-spacing:-.4px; }
-.sec-line {
-  height:1px; margin-top:7px;
-  background:linear-gradient(90deg,var(--red),transparent);
-  width:0; transition:width 1s cubic-bezier(.16,1,.3,1) .2s;
-}
-.section.vis .sec-line { width:100%; }
-
-/* ── TABS ── */
-.tabs {
-  display:flex; gap:3px;
-  background:var(--card); border:1px solid var(--border);
-  border-radius:var(--r-md); padding:4px;
-  width:fit-content; margin-bottom:1.5rem;
-}
-.tab-btn {
-  background:transparent; border:none;
-  padding:7px 15px; font-size:12px; font-weight:500;
-  color:var(--t2); cursor:pointer;
-  border-radius:var(--r-sm); transition:all .2s;
-  font-family:var(--sans);
-}
-.tab-btn:hover { color:var(--t1); background:rgba(255,255,255,0.04); }
-.tab-btn.active {
-  background:var(--red); color:#fff;
-  box-shadow:0 2px 12px rgba(226,75,74,.35);
-}
-.tab-pane { display:none; animation:fadeIn .3s ease; }
-.tab-pane.active { display:block; }
-
-/* ── FLOW DIAGRAM ── */
-.flow {
-  display:flex; align-items:center; gap:8px;
-  overflow-x:auto; padding:1.25rem 0;
-  scrollbar-width:thin; scrollbar-color:var(--border) transparent;
-}
-.f-box {
-  background:var(--card); border:1px solid var(--border);
-  border-radius:var(--r-md); padding:13px 16px;
-  min-width:120px; text-align:center;
-  font-size:12px; font-weight:600; flex-shrink:0;
-  transition:all .3s cubic-bezier(.34,1.56,.64,1);
-}
-.f-box small { display:block; font-size:10px; color:var(--t2); font-weight:400; margin-top:3px; }
-.f-box:hover {
-  transform:translateY(-6px); border-color:var(--border-red);
-  box-shadow:0 8px 24px var(--red-glow);
-  background:var(--red-dim);
-}
-.f-box.hl { background:var(--red-dim); border-color:var(--border-red); color:var(--red); }
-.f-arr {
-  color:var(--t3); font-size:16px; flex-shrink:0;
-  animation:arrPulse 2s ease-in-out infinite;
-}
-@keyframes arrPulse { 0%,100%{opacity:.4;transform:translateX(0)} 50%{opacity:1;transform:translateX(3px)} }
-
-/* ── DATA GRID ── */
-.d-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(195px,1fr)); gap:1rem; }
-.d-card {
-  background:var(--card); border:1px solid var(--border);
-  border-radius:var(--r-lg); padding:1.25rem;
-  transition:all .3s ease; position:relative; overflow:hidden;
-}
-.d-card::before {
-  content:''; position:absolute; top:0; left:0; right:0; height:2px;
-  background:linear-gradient(90deg,var(--red),transparent);
-  transform:scaleX(0); transform-origin:left; transition:transform .3s ease;
-}
-.d-card:hover { border-color:var(--border-red); box-shadow:0 8px 28px var(--red-glow); transform:translateY(-4px); }
-.d-card:hover::before { transform:scaleX(1); }
-.d-title { font-size:10px; font-weight:700; color:var(--t3); text-transform:uppercase; letter-spacing:.7px; margin-bottom:8px; }
-.d-val { font-size:23px; font-weight:800; color:var(--red); font-family:var(--mono); letter-spacing:-.5px; margin-bottom:5px; }
-.d-desc { font-size:12px; color:var(--t2); line-height:1.55; }
-
-/* ── BANNERS ── */
-.warn {
-  background:rgba(239,68,68,.07); border:1px solid rgba(239,68,68,.22);
-  border-left:3px solid var(--danger);
-  padding:13px 16px; border-radius:var(--r-md);
-  font-size:13px; color:#FCA5A5; margin:1rem 0; line-height:1.6;
-}
-.warn strong { color:#FEE2E2; }
-.info {
-  background:rgba(59,130,246,.06); border:1px solid rgba(59,130,246,.18);
-  padding:13px 16px; border-radius:var(--r-md);
-  font-size:13px; color:var(--t2); margin:1rem 0; line-height:1.6;
-}
-.info strong { color:#93C5FD; }
-
-/* ── TABLE ── */
-.tbl { width:100%; border-collapse:collapse; font-size:13px; }
-.tbl th {
-  text-align:left; padding:11px 15px;
-  font-size:10px; font-weight:700; color:var(--t3);
-  text-transform:uppercase; letter-spacing:.7px;
-  border-bottom:1px solid var(--border); background:var(--card);
-}
-.tbl td { padding:13px 15px; border-bottom:1px solid rgba(255,255,255,.04); color:var(--t2); transition:color .2s; }
-.tbl td strong { color:var(--t1); }
-.tbl tbody tr:hover { background:rgba(255,255,255,.02); }
-.tbl tbody tr:hover td { color:var(--t1); }
-.th { color:var(--danger); font-weight:700; background:rgba(239,68,68,.1); padding:3px 8px; border-radius:4px; font-family:var(--mono); }
-.tm { color:var(--yellow); font-weight:700; background:rgba(245,158,11,.1); padding:3px 8px; border-radius:4px; font-family:var(--mono); }
-.tl { color:var(--green); font-weight:700; background:rgba(34,197,94,.1); padding:3px 8px; border-radius:4px; font-family:var(--mono); }
-
-/* ── CHART ── */
-.chart-wrap {
-  background:var(--card); border:1px solid var(--border);
-  border-radius:var(--r-lg); padding:1.5rem;
-  margin:1rem 0; height:300px; position:relative;
-}
-.chart-cap { font-size:10px; color:var(--t3); text-align:center; margin-top:.5rem; text-transform:uppercase; letter-spacing:.5px; }
-
-/* ── REFERENCES ── */
-.refs {
-  margin-top:1.25rem; padding:13px 15px;
-  background:rgba(255,255,255,.02); border:1px solid var(--border);
-  border-radius:var(--r-md);
-}
-.refs-lbl {
-  font-size:9px; font-weight:800; color:var(--t3);
-  text-transform:uppercase; letter-spacing:1.2px;
-  margin-bottom:9px; display:flex; align-items:center; gap:6px;
-}
-.refs-lbl::before { content:''; width:14px; height:1px; background:var(--t3); }
-.ref-row { display:flex; flex-wrap:wrap; gap:7px; }
-.ref-a {
-  display:inline-flex; align-items:center; gap:4px;
-  font-size:11px; font-weight:500; color:#60A5FA;
-  text-decoration:none;
-  background:rgba(59,130,246,.07); border:1px solid rgba(59,130,246,.18);
-  padding:4px 10px; border-radius:100px;
-  transition:all .2s ease;
-}
-.ref-a::before { content:'↗'; font-size:9px; }
-.ref-a:hover {
-  background:rgba(59,130,246,.14); border-color:rgba(59,130,246,.38);
-  color:#93C5FD; transform:translateY(-1px);
-}
-
-/* ── FILTER BTNS ── */
-.filters { display:flex; gap:7px; margin-bottom:1.25rem; flex-wrap:wrap; }
-.f-btn {
-  background:transparent; border:1px solid var(--border);
-  padding:5px 13px; border-radius:100px;
-  cursor:pointer; font-size:12px; font-weight:500; color:var(--t2);
-  transition:all .22s; font-family:var(--sans);
-}
-.f-btn:hover { border-color:var(--border-red); color:var(--t1); }
-.f-btn.active { background:var(--red); border-color:var(--red); color:#fff; }
-
-/* ── KEYFRAMES ── */
-@keyframes fadeIn  { from{opacity:0} to{opacity:1} }
-@keyframes fadeUp  { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
-
-/* ── RESPONSIVE ── */
-@media(max-width:900px) { .metrics-grid { grid-template-columns:repeat(3,1fr); } }
-@media(max-width:640px) {
-  .header { padding:2rem 1.5rem; }
-  .content { padding:1.5rem; }
-  .metrics-grid { grid-template-columns:repeat(2,1fr); }
-  .d-grid { grid-template-columns:1fr; }
-  .header-meta { gap:.75rem; }
-}
+.m-root{background:var(--paper);color:var(--ink);font-family:var(--sans);font-feature-settings:"ss01","tnum";-webkit-font-smoothing:antialiased}
+.m-mono{font-family:var(--mono);font-feature-settings:"tnum"}
+.m-serif{font-family:var(--serif)}
+.m-num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+.m-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2)}
+.m-card{background:var(--paper);border:1px solid var(--rule);position:relative}
+.m-tag{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border:1px solid var(--rule);border-radius:2px;line-height:1.1}
+.m-tag.live{background:var(--accent);color:#fff;border-color:var(--accent)}
+.m-tag.good{background:var(--good);color:#fff;border-color:var(--good)}
+.m-tag.bad{background:var(--bad);color:#fff;border-color:var(--bad)}
+.m-tag.warn{background:var(--warn);color:#fff;border-color:var(--warn)}
+.m-btn{appearance:none;border:1px solid var(--ink);background:var(--paper);color:var(--ink);font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:7px 12px;cursor:pointer;transition:background .15s,color .15s}
+.m-btn:hover{background:var(--ink);color:var(--paper)}
+.m-btn.primary{background:var(--ink);color:var(--paper)}
+.m-btn.primary:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.m-btn.ghost{border-color:var(--rule);color:var(--ink-2)}
+.m-btn.ghost:hover{background:transparent;color:var(--ink);border-color:var(--ink)}
+.m-input{appearance:none;border:0;border-bottom:1px solid var(--rule);background:transparent;padding:6px 0;font-family:var(--mono);font-size:11px;color:var(--ink);width:100%;outline:none}
+.m-input:focus{border-bottom-color:var(--ink)}
+.m-input::placeholder{color:var(--ink-3)}
+.m-table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:11px}
+.m-table th{text-align:left;font-weight:500;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);padding:8px 10px;border-bottom:1px solid var(--ink);white-space:nowrap}
+.m-table td{padding:9px 10px;border-bottom:1px solid var(--rule-soft);vertical-align:middle}
+.m-table tbody tr{cursor:pointer;transition:background .12s}
+.m-table tbody tr:hover{background:var(--paper-2)}
+.m-table tbody tr:hover td{color:var(--ink)}
+image-slot{display:block;--image-slot-bg:var(--paper-3);--image-slot-fg:var(--ink-2)}
+.m-scroll{overflow:auto;scrollbar-width:none}
+.m-scroll::-webkit-scrollbar{display:none}
+@keyframes m-pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.m-pulse{animation:m-pulse 1.6s ease-in-out infinite}
+@keyframes m-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.m-marquee{display:flex;gap:48px;white-space:nowrap;animation:m-marquee 90s linear infinite}
+.m-hero-h{font-family:var(--serif);font-weight:400;line-height:.92;letter-spacing:-.02em}
+.m-stripe{background-image:repeating-linear-gradient(135deg,var(--paper-3) 0,var(--paper-3) 8px,var(--paper-2) 8px,var(--paper-2) 16px)}
+.m-big-num{font-family:var(--serif);font-size:64px;line-height:.95;letter-spacing:-.02em}
+.m-big-num .unit{font-family:var(--mono);font-size:14px;letter-spacing:.08em;color:var(--ink-2);margin-left:4px;vertical-align:super;text-transform:uppercase}
+.m-tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:10px;padding:6px 8px;white-space:nowrap;transform:translate(-50%,-130%);z-index:10}
+.m-tip::after{content:"";position:absolute;left:50%;bottom:-4px;width:0;height:0;transform:translateX(-50%);border:4px solid transparent;border-top-color:var(--ink);border-bottom:0}
 </style>
 </head>
 <body>
+<div id="root"></div>
 
-<div class="scroll-bar" id="sb"></div>
-
-<div class="wrap">
-
-  <!-- HEADER -->
-  <div class="header">
-    <div class="badge"><span class="badge-dot"></span> Trade Analysis · 2025</div>
-    <h1>Nike Vietnam<br><span class="accent">Supply Chain Crisis</span></h1>
-    <p class="subtitle">Trump's 46% Vietnam Tariff &amp; Its Global Impact on Athletic Manufacturing</p>
-    <div class="header-meta">
-      <span>📅 Data as of May 2025</span>
-      <span>🏭 Nike Inc. Deep Dive</span>
-      <span>⚡ 7 Key Sections</span>
-    </div>
-    <div class="metrics-grid">
-      <div class="m-card">
-        <div class="m-label">Vietnam Footwear</div>
-        <div class="m-val red">50<span class="m-unit">%</span></div>
-      </div>
-      <div class="m-card">
-        <div class="m-label">Vietnam Apparel</div>
-        <div class="m-val yellow">28<span class="m-unit">%</span></div>
-      </div>
-      <div class="m-card">
-        <div class="m-label">Vietnam Tariff</div>
-        <div class="m-val red">46<span class="m-unit">%</span></div>
-      </div>
-      <div class="m-card">
-        <div class="m-label">Nike Stock Drop</div>
-        <div class="m-val red">-14.4<span class="m-unit">%</span></div>
-      </div>
-      <div class="m-card">
-        <div class="m-label">Workers Affected</div>
-        <div class="m-val blue">450<span class="m-unit">K</span></div>
-      </div>
-      <div class="m-card">
-        <div class="m-label">Factories in VN</div>
-        <div class="m-val">180<span class="m-unit"> ops</span></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- CONTENT -->
-  <div class="content">
-
-    <!-- §1 SUPPLY CHAIN FLOW -->
-    <div class="section">
-      <div class="sec-head">
-        <div class="sec-num">1</div>
-        <div class="sec-title-wrap">
-          <div class="sec-title">Supply Chain Flow — Start to End</div>
-          <div class="sec-line"></div>
-        </div>
-      </div>
-
-      <div class="tabs">
-        <button class="tab-btn active" onclick="tab(this,'p1a')">Complete Flow</button>
-        <button class="tab-btn" onclick="tab(this,'p1b')">Detailed Breakdown</button>
-      </div>
-
-      <div id="p1a" class="tab-pane active">
-        <div class="flow">
-          <div class="f-box">Raw Materials<small>38 supplier factories</small></div>
-          <div class="f-arr">→</div>
-          <div class="f-box">Components<small>Fabric, soles, foam</small></div>
-          <div class="f-arr">→</div>
-          <div class="f-box">Assembly<small>142 finished goods factories</small></div>
-          <div class="f-arr">→</div>
-          <div class="f-box">Finishing<small>QA &amp; Packaging</small></div>
-          <div class="f-arr">→</div>
-          <div class="f-box hl">Logistics<small>Deep-water ports</small></div>
-          <div class="f-arr">→</div>
-          <div class="f-box">Distribution<small>US retail &amp; online</small></div>
-        </div>
-        <div class="info">
-          <strong>Key Cost Insight:</strong> An Air Force 1 costs $18 to manufacture but retails for $115 (637% markup). The 46% tariff adds ~$8.28 per unit — raising production cost from $18 to $26.28, a 46% jump in COGS.
-        </div>
-      </div>
-
-      <div id="p1b" class="tab-pane">
-        <div class="d-grid">
-          <div class="d-card"><div class="d-title">Step 1 · Raw Materials</div><div class="d-desc">38 supplier factories in Vietnam provide textiles, rubber, foam, adhesives, and components sourced from regional and international suppliers.</div></div>
-          <div class="d-card"><div class="d-title">Step 2 · Components</div><div class="d-desc">Fabric cutting, sole production (rubber, EVA foam), and component assembly (eyelets, laces, padding) with quality testing at each phase.</div></div>
-          <div class="d-card"><div class="d-title">Step 3 · Assembly</div><div class="d-desc">142 finished goods factories handle stitching, gluing, assembly, and finishing. Skilled workforce performs intricate detail work.</div></div>
-          <div class="d-card"><div class="d-title">Step 4 · Finishing</div><div class="d-desc">Final QA inspection, packaging (boxes, labels, hang tags), and inventory management in Vietnam warehouses.</div></div>
-          <div class="d-card"><div class="d-title">Step 5 · Logistics</div><div class="d-desc">Deep-water port infrastructure in southern Vietnam (Ho Chi Minh City). Containerization and shipping to global distribution centers.</div></div>
-          <div class="d-card"><div class="d-title">Step 6 · Distribution</div><div class="d-desc">US port entry (LA, Long Beach, NY). Customs clearance, duty assessment, US distribution centers, retail stores, and online fulfillment.</div></div>
-        </div>
-      </div>
-
-      <div class="refs">
-        <div class="refs-lbl">Sources</div>
-        <div class="ref-row">
-          <a class="ref-a" href="https://investors.nike.com/investors/financial-information/annual-reports/default.aspx" target="_blank">Nike Annual Report 2024</a>
-          <a class="ref-a" href="https://www.reuters.com/business/retail-consumer/nike-vietnam-factories/" target="_blank">Reuters — Nike Vietnam Factories</a>
-          <a class="ref-a" href="https://www.supplychainbrain.com/articles/nike-vietnam-supply-chain" target="_blank">Supply Chain Brain</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- §2 TARIFF IMPACT -->
-    <div class="section">
-      <div class="sec-head">
-        <div class="sec-num">2</div>
-        <div class="sec-title-wrap">
-          <div class="sec-title">Tariff Announcement &amp; Impact</div>
-          <div class="sec-line"></div>
-        </div>
-      </div>
-
-      <div class="warn">⚠️ <strong>46% tariff on Vietnam goods effective April 9, 2025</strong> — Layered on existing 20% duties = 66% total tariff exposure on Nike footwear.</div>
-
-      <div class="d-grid">
-        <div class="d-card"><div class="d-title">Announced</div><div class="d-val">Apr 3</div><div class="d-desc">President Trump announced 46% tariff on all Vietnam imports as part of "Liberation Day" trade actions.</div></div>
-        <div class="d-card"><div class="d-title">Effective Date</div><div class="d-val">Apr 9</div><div class="d-desc">Tariff went live just 6 days after announcement — minimal time for supply-chain adjustment.</div></div>
-        <div class="d-card"><div class="d-title">Existing Duties</div><div class="d-val">20%</div><div class="d-desc">Pre-existing US tariff on athletic shoes with textile uppers, already applied before April 2025.</div></div>
-        <div class="d-card"><div class="d-title">Total Exposure</div><div class="d-val">66%</div><div class="d-desc">46% new + 20% existing = combined tariff burden on every unit shipped from Vietnam to the US.</div></div>
-      </div>
-
-      <div class="info"><strong>Why Vietnam?</strong> Vietnam's trade surplus with the US reached $136.6B in 2024 (+19% YoY). Washington suspected Vietnam acts as a transhipment hub for Chinese goods to circumvent existing US–China tariffs.</div>
-
-      <div class="refs">
-        <div class="refs-lbl">Sources</div>
-        <div class="ref-row">
-          <a class="ref-a" href="https://ustr.gov/about-us/policy-offices/press-office/press-releases/2025/april/president-trump-announces-reciprocal-tariffs" target="_blank">USTR — Reciprocal Tariffs</a>
-          <a class="ref-a" href="https://www.wsj.com/economy/trade/trump-liberation-day-tariffs-vietnam" target="_blank">WSJ — Liberation Day</a>
-          <a class="ref-a" href="https://www.ft.com/content/vietnam-us-trade-surplus-2024" target="_blank">Financial Times — Vietnam Trade</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- §3 STOCK REACTION -->
-    <div class="section">
-      <div class="sec-head">
-        <div class="sec-num">3</div>
-        <div class="sec-title-wrap">
-          <div class="sec-title">Stock Market Reaction — April 3, 2025</div>
-          <div class="sec-line"></div>
-        </div>
-      </div>
-      <div class="chart-wrap"><canvas id="stockChart"></canvas></div>
-      <p class="chart-cap">Single-day stock decline · athletic manufacturers · April 3, 2025</p>
-
-      <div class="refs">
-        <div class="refs-lbl">Sources</div>
-        <div class="ref-row">
-          <a class="ref-a" href="https://finance.yahoo.com/quote/NKE/history/" target="_blank">Yahoo Finance — NKE</a>
-          <a class="ref-a" href="https://www.bloomberg.com/news/articles/2025-04-03/athletic-stocks-tariff-selloff" target="_blank">Bloomberg — Tariff Selloff</a>
-          <a class="ref-a" href="https://www.marketwatch.com/story/nike-stock-april-2025" target="_blank">MarketWatch — NKE Drop</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- §4 MANUFACTURERS -->
-    <div class="section">
-      <div class="sec-head">
-        <div class="sec-num">4</div>
-        <div class="sec-title-wrap">
-          <div class="sec-title">Manufacturers &amp; Countries Affected</div>
-          <div class="sec-line"></div>
-        </div>
-      </div>
-
-      <div class="tabs">
-        <button class="tab-btn active" onclick="tab(this,'p4a')">By Country</button>
-        <button class="tab-btn" onclick="tab(this,'p4b')">By Brand</button>
-      </div>
-
-      <div id="p4a" class="tab-pane active">
-        <table class="tbl">
-          <thead><tr><th>Country</th><th>Tariff Rate</th><th>Effective</th><th>Key Manufacturers</th></tr></thead>
-          <tbody>
-            <tr><td><strong>Vietnam</strong></td><td><span class="th">46%</span></td><td>Apr 9, 2025</td><td>Nike, Adidas, Puma, Lululemon, Hoka</td></tr>
-            <tr><td><strong>Cambodia</strong></td><td><span class="th">49%</span></td><td>Apr 9, 2025</td><td>Adidas, Lululemon</td></tr>
-            <tr><td><strong>Bangladesh</strong></td><td><span class="th">37%</span></td><td>Apr 9, 2025</td><td>H&amp;M, Zara (Inditex)</td></tr>
-            <tr><td><strong>Indonesia</strong></td><td><span class="tm">32%</span></td><td>Apr 9, 2025</td><td>Nike, Adidas, Puma</td></tr>
-            <tr><td><strong>Thailand</strong></td><td><span class="tm">36%</span></td><td>Apr 9, 2025</td><td>Multiple apparel brands</td></tr>
-            <tr><td><strong>China</strong></td><td><span class="th">54%</span> <span style="color:var(--t3);font-size:11px">(34%+20%)</span></td><td>Existing</td><td>All major brands — components &amp; materials</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div id="p4b" class="tab-pane">
-        <div class="d-grid">
-          <div class="d-card"><div class="d-title">Nike</div><div class="d-val">-14.4%</div><div class="d-desc">Vietnam: 50% footwear, 28% apparel. Hardest hit. 90%+ manufacturing in 3 impacted regions.</div></div>
-          <div class="d-card"><div class="d-title">Adidas</div><div class="d-val">-11.7%</div><div class="d-desc">Vietnam: 39% footwear, 18% apparel. Significant Cambodia &amp; Indonesia exposure.</div></div>
-          <div class="d-card"><div class="d-title">Puma</div><div class="d-val">-11.1%</div><div class="d-desc">Vietnam exposure through footwear and apparel production lines.</div></div>
-          <div class="d-card"><div class="d-title">Lululemon</div><div class="d-val">-8–15%</div><div class="d-desc">Vietnam &amp; Cambodia apparel sourcing heavily impacted across all product lines.</div></div>
-          <div class="d-card"><div class="d-title">New Balance</div><div class="d-val" style="font-size:15px;color:var(--green)">Least Affected</div><div class="d-desc">US manufacturing in Maine &amp; Massachusetts cushions tariff impact significantly.</div></div>
-          <div class="d-card"><div class="d-title">Others</div><div class="d-val">-8–15%</div><div class="d-desc">Skechers, Under Armour, Deckers (Hoka), On Holding, H&amp;M, Inditex.</div></div>
-        </div>
-      </div>
-
-      <div class="refs">
-        <div class="refs-lbl">Sources</div>
-        <div class="ref-row">
-          <a class="ref-a" href="https://www.cnbc.com/2025/04/03/nike-adidas-tariff-vietnam-exposure.html" target="_blank">CNBC — Brand Exposure</a>
-          <a class="ref-a" href="https://www.businessoffashion.com/articles/global-markets/tariffs-athletic-brands-2025" target="_blank">Business of Fashion</a>
-          <a class="ref-a" href="https://www.reuters.com/business/athletic-brands-tariff-impact-2025" target="_blank">Reuters — Athletic Brands</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- §5 PRICING IMPACT -->
-    <div class="section">
-      <div class="sec-head">
-        <div class="sec-num">5</div>
-        <div class="sec-title-wrap">
-          <div class="sec-title">Consumer Pricing Impact</div>
-          <div class="sec-line"></div>
-        </div>
-      </div>
-      <div class="chart-wrap"><canvas id="pricingChart"></canvas></div>
-      <p class="chart-cap">Price escalation scenarios for popular Nike models at different tariff pass-through rates</p>
-
-      <div class="warn">⚠️ <strong>Retailers may raise prices 10–12% to offset costs</strong> — UBS analysts estimate this based on Nike's inability to fully absorb tariffs through margin compression alone.</div>
-      <div class="info"><strong>Industry-Wide:</strong> Global apparel tariff rate would increase from 14.5% (2024) to 27%+ by end of 2025 — the highest level since the 1970s. Nike's effective rate on Vietnam imports rises from 20% to 66%.</div>
-
-      <div class="refs">
-        <div class="refs-lbl">Sources</div>
-        <div class="ref-row">
-          <a class="ref-a" href="https://www.ubs.com/global/en/investment-bank/research" target="_blank">UBS Research — Pricing</a>
-          <a class="ref-a" href="https://www.wsj.com/business/retail/nike-sneaker-prices-tariffs-2025" target="_blank">WSJ — Nike Prices</a>
-          <a class="ref-a" href="https://www.bloomberg.com/news/apparel-tariff-history-2025" target="_blank">Bloomberg — Tariff History</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- §6 NIKE STRATEGY -->
-    <div class="section">
-      <div class="sec-head">
-        <div class="sec-num">6</div>
-        <div class="sec-title-wrap">
-          <div class="sec-title">Nike's Response &amp; Diversification Strategy</div>
-          <div class="sec-line"></div>
-        </div>
-      </div>
-
-      <div class="d-grid">
-        <div class="d-card"><div class="d-title">India Expansion</div><div class="d-val" style="font-size:18px">+26%</div><div class="d-desc">India sourcing share increasing; lower 26% US tariff rate. New factories ramping in Chennai &amp; Pune.</div></div>
-        <div class="d-card"><div class="d-title">Indonesia Shift</div><div class="d-val" style="font-size:18px">32%</div><div class="d-desc">Already 25% of Nike footwear. Capacity increasing despite 32% tariff — still better than Vietnam's 46%.</div></div>
-        <div class="d-card"><div class="d-title">Price Increases</div><div class="d-val" style="font-size:18px">+$5–10</div><div class="d-desc">Selective price hikes on Vietnam-manufactured models. Applied to premium tiers first.</div></div>
-        <div class="d-card"><div class="d-title">Inventory Buffer</div><div class="d-val" style="font-size:18px">90-day</div><div class="d-desc">Accelerated pre-tariff US inventory buildup. Estimated 90-day buffer before pricing hits consumers.</div></div>
-        <div class="d-card"><div class="d-title">Lobbying</div><div class="d-val" style="font-size:18px">Active</div><div class="d-desc">FDRA lobbying for footwear tariff exemptions in Washington. Nike CEO met with trade officials.</div></div>
-        <div class="d-card"><div class="d-title">DTC Focus</div><div class="d-val" style="font-size:18px">40%</div><div class="d-desc">Direct-to-consumer now 40% of revenue. Margin control allows selective absorption of tariff costs.</div></div>
-      </div>
-
-      <div class="refs">
-        <div class="refs-lbl">Sources</div>
-        <div class="ref-row">
-          <a class="ref-a" href="https://investors.nike.com/investors/financial-information/press-releases/default.aspx" target="_blank">Nike Q3 FY2025 Earnings</a>
-          <a class="ref-a" href="https://www.wsj.com/business/nike-supply-diversification-india-2025" target="_blank">WSJ — Diversification</a>
-          <a class="ref-a" href="https://www.fdra.org/tariff-relief-footwear" target="_blank">FDRA — Tariff Relief</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- §7 INDUSTRY CONTEXT -->
-    <div class="section">
-      <div class="sec-head">
-        <div class="sec-num">7</div>
-        <div class="sec-title-wrap">
-          <div class="sec-title">Broader Industry Context</div>
-          <div class="sec-line"></div>
-        </div>
-      </div>
-      <div class="chart-wrap"><canvas id="industryChart"></canvas></div>
-      <p class="chart-cap">Manufacturing exposure by country — Nike vs Adidas vs Puma (% of total footwear production)</p>
-
-      <div class="info"><strong>The "China+1" Strategy Backfired:</strong> Nike and peers spent a decade moving out of China into Vietnam, Indonesia, and Cambodia to reduce geopolitical risk. The April 2025 tariffs impose 46–49% duties on those exact same countries — penalizing the diversification that was supposed to reduce risk.</div>
-      <div class="warn">⚠️ <strong>Reshoring to the US is not economically viable.</strong> Labor costs are 10–15× higher than Vietnam. A shoe costing $18 in Vietnam would cost $60–$80 to make in the US, pushing retail prices above $200 for current $115 models.</div>
-
-      <div class="refs">
-        <div class="refs-lbl">Sources</div>
-        <div class="ref-row">
-          <a class="ref-a" href="https://www.fashionunited.com/news/china-plus-one-backfires-tariff-2025" target="_blank">FashionUnited — China+1</a>
-          <a class="ref-a" href="https://www.mckinsey.com/industries/retail/apparel-sourcing-tariff-2025" target="_blank">McKinsey — Apparel Sourcing</a>
-          <a class="ref-a" href="https://www.nytimes.com/2025/04/10/business/nike-sneaker-prices-tariffs.html" target="_blank">NYT — Sneaker Prices</a>
-          <a class="ref-a" href="https://www.tradingeconomics.com/vietnam/exports-to-united-states" target="_blank">Trading Economics</a>
-        </div>
-      </div>
-    </div>
-
-  </div><!-- /content -->
-</div><!-- /wrap -->
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
-/* Scroll bar */
-window.addEventListener('scroll', () => {
-  const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100;
-  document.getElementById('sb').style.width = pct + '%';
-});
-
-/* Section reveal */
-const io = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); io.unobserve(e.target); } });
-}, { threshold: 0.08 });
-document.querySelectorAll('.section').forEach(s => io.observe(s));
-
-/* Tab switch */
-function tab(btn, id) {
-  const sec = btn.closest('.section') || document;
-  sec.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  sec.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById(id).classList.add('active');
+/* ── image-slot web component ─────────────────────────────────────────────── */
+(()=>{
+const STATE_FILE='.image-slots.state.json';
+const MAX_DIM=1200;
+const ACCEPT=['image/png','image/jpeg','image/webp','image/avif'];
+const subs=new Set();let slots={};const tombstones=new Set();let loaded=false;let loadP=null;
+function load(){if(loadP)return loadP;loadP=fetch(STATE_FILE).then(r=>r.ok?r.json():null).then(j=>{if(j&&typeof j==='object'){const merged=Object.assign({},j,slots);for(const k in slots)if(merged[k]&&!merged[k].u&&j[k])merged[k].u=typeof j[k]==='string'?j[k]:j[k].u;for(const id of tombstones)delete merged[id];slots=merged;}tombstones.clear();}).catch(()=>{}).then(()=>{loaded=true;subs.forEach(fn=>fn());});return loadP;}
+let saving=false;let saveDirty=false;
+function save(){if(saving){saveDirty=true;return;}const w=window.omelette&&window.omelette.writeFile;if(!w)return;saving=true;Promise.resolve(w(STATE_FILE,JSON.stringify(slots))).catch(()=>{}).then(()=>{saving=false;if(saveDirty){saveDirty=false;save();}});}
+const S_MAX=5;const clampS=s=>Math.max(1,Math.min(S_MAX,s));
+function getSlot(id){const v=slots[id];if(!v)return null;return typeof v==='string'?{u:v,s:1,x:0,y:0}:v;}
+function setSlot(id,val){if(!id)return;if(val){slots[id]=val;tombstones.delete(id);}else{delete slots[id];if(!loaded)tombstones.add(id);}subs.forEach(fn=>fn());if(loaded)save();else load().then(save);}
+async function toDataUrl(file,targetW){const bitmap=await createImageBitmap(file);try{const cap=Math.min(MAX_DIM,Math.max(1,Math.round(targetW*2))||MAX_DIM);const scale=Math.min(1,cap/Math.max(bitmap.width,bitmap.height));const w=Math.max(1,Math.round(bitmap.width*scale));const h=Math.max(1,Math.round(bitmap.height*scale));const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;canvas.getContext('2d').drawImage(bitmap,0,0,w,h);return canvas.toDataURL('image/webp',.85);}finally{bitmap.close&&bitmap.close();}}
+const stylesheet=':host{display:inline-block;position:relative;vertical-align:top;font:13px/1.3 system-ui,-apple-system,sans-serif;color:rgba(0,0,0,.55);width:240px;height:160px}.frame{position:absolute;inset:0;overflow:hidden;background:rgba(0,0,0,.04)}.frame img{position:absolute;max-width:none;transform:translate(-50%,-50%);-webkit-user-drag:none;user-select:none;touch-action:none}.spill{position:absolute;transform:translate(-50%,-50%);display:none;z-index:1;cursor:grab;touch-action:none}:host([data-panning]) .spill{cursor:grabbing}.spill .ghost{position:absolute;inset:0;width:100%;height:100%;opacity:.35;pointer-events:none;-webkit-user-drag:none;user-select:none;box-shadow:0 0 0 1px rgba(0,0,0,.2),0 12px 32px rgba(0,0,0,.2)}.spill .handle{position:absolute;width:12px;height:12px;border-radius:50%;background:#fff;box-shadow:0 0 0 1.5px #c96442,0 1px 3px rgba(0,0,0,.3);transform:translate(-50%,-50%)}.spill .handle[data-c=nw]{left:0;top:0;cursor:nwse-resize}.spill .handle[data-c=ne]{left:100%;top:0;cursor:nesw-resize}.spill .handle[data-c=sw]{left:0;top:100%;cursor:nesw-resize}.spill .handle[data-c=se]{left:100%;top:100%;cursor:nwse-resize}:host([data-reframe]){z-index:10}:host([data-reframe]) .spill{display:block}:host([data-reframe]) .frame{box-shadow:0 0 0 2px #c96442}.empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;padding:12px;box-sizing:border-box;cursor:pointer;user-select:none}.empty svg{opacity:.45}.empty .cap{max-width:90%;font-weight:500;letter-spacing:.01em}.empty .sub{font-size:11px}.empty .sub u{text-underline-offset:2px;text-decoration-color:rgba(0,0,0,.25)}.empty:hover .sub u{color:rgba(0,0,0,.75);text-decoration-color:currentColor}:host([data-over]) .frame{outline:2px solid #c96442;outline-offset:-2px;background:rgba(201,100,66,.1)}.ring{position:absolute;inset:0;pointer-events:none;border:1.5px dashed rgba(0,0,0,.25);transition:border-color .12s}:host([data-over]) .ring{border-color:#c96442}:host([data-filled]) .ring{display:none}.ctl{position:absolute;top:100%;left:50%;transform:translateX(-50%);padding-top:8px;display:flex;gap:6px;opacity:0;pointer-events:none;transition:opacity .12s;z-index:2;white-space:nowrap}:host([data-filled][data-editable]:hover) .ctl,:host([data-reframe]) .ctl{opacity:1;pointer-events:auto}.ctl button{appearance:none;border:0;border-radius:6px;padding:5px 10px;cursor:pointer;background:rgba(0,0,0,.65);color:#fff;font:11px/1 system-ui,-apple-system,sans-serif;backdrop-filter:blur(6px)}.ctl button:hover{background:rgba(0,0,0,.8)}.err{position:absolute;left:8px;bottom:8px;right:8px;color:#b3261e;font-size:11px;background:rgba(255,255,255,.85);padding:4px 6px;border-radius:5px;pointer-events:none}';
+const icon='<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>';
+class ImageSlot extends HTMLElement{
+  static get observedAttributes(){return['shape','radius','mask','fit','position','placeholder','src','id'];}
+  constructor(){
+    super();const root=this.attachShadow({mode:'open'});
+    root.innerHTML='<style>'+stylesheet+'</style><div class="frame" part="frame"><img part="image" alt="" draggable="false" style="display:none"><div class="empty" part="empty">'+icon+'<div class="cap"></div><div class="sub">or <u>browse files</u></div></div><div class="ring" part="ring"></div></div><div class="spill"><img class="ghost" alt="" draggable="false"><div class="handle" data-c="nw"></div><div class="handle" data-c="ne"></div><div class="handle" data-c="sw"></div><div class="handle" data-c="se"></div></div><div class="ctl"><button data-act="replace">Replace</button><button data-act="clear">Remove</button></div><input type="file" accept="'+ACCEPT.join(',')+'" hidden>';
+    this._frame=root.querySelector('.frame');this._ring=root.querySelector('.ring');this._img=root.querySelector('.frame img');this._empty=root.querySelector('.empty');this._cap=root.querySelector('.cap');this._sub=root.querySelector('.sub');this._spill=root.querySelector('.spill');this._ghost=root.querySelector('.ghost');this._err=null;this._input=root.querySelector('input');this._depth=0;this._gen=0;this._view={s:1,x:0,y:0};this._subFn=()=>this._render();
+    this._empty.addEventListener('click',()=>this._input.click());
+    root.addEventListener('click',e=>{const act=e.target&&e.target.getAttribute&&e.target.getAttribute('data-act');if(act==='replace'){this._exitReframe(true);this._input.click();}if(act==='clear'){this._exitReframe(false);this._gen++;this._local=null;if(this.id)setSlot(this.id,null);else this._render();}});
+    this._input.addEventListener('change',()=>{const f=this._input.files&&this._input.files[0];if(f)this._ingest(f);this._input.value='';});
+    this._img.addEventListener('load',()=>this._applyView());
+    this.addEventListener('dblclick',e=>{if(!this.hasAttribute('data-editable')||!this._reframes())return;e.preventDefault();if(this.hasAttribute('data-reframe'))this._exitReframe(true);else this._enterReframe();});
+    this._spill.addEventListener('pointerdown',e=>{if(e.button!==0||!this.hasAttribute('data-reframe'))return;e.preventDefault();e.stopPropagation();this._spill.setPointerCapture(e.pointerId);const rect=this.getBoundingClientRect();const fw=rect.width||1,fh=rect.height||1;const corner=e.target.getAttribute&&e.target.getAttribute('data-c');let move;if(corner){const iw=this._img.naturalWidth||1,ih=this._img.naturalHeight||1;const base=Math.max(fw/iw,fh/ih);const sx=corner.includes('e')?1:-1;const sy=corner.includes('s')?1:-1;const s0=this._view.s;const w0=iw*base*s0,h0=ih*base*s0;const cx0=(50+this._view.x)/100*fw;const cy0=(50+this._view.y)/100*fh;const ox=cx0-sx*w0/2,oy=cy0-sy*h0/2;const diag0=Math.hypot(w0,h0);const ux=sx*w0/diag0,uy=sy*h0/diag0;move=ev=>{const proj=(ev.clientX-rect.left-ox)*ux+(ev.clientY-rect.top-oy)*uy;const s=clampS(s0*proj/diag0);const d=diag0*s/s0;this._view.s=s;this._view.x=(ox+ux*d/2)/fw*100-50;this._view.y=(oy+uy*d/2)/fh*100-50;this._clampView();this._applyView();};}else{this.setAttribute('data-panning','');const start={px:e.clientX,py:e.clientY,x:this._view.x,y:this._view.y};move=ev=>{this._view.x=start.x+(ev.clientX-start.px)/fw*100;this._view.y=start.y+(ev.clientY-start.py)/fh*100;this._clampView();this._applyView();};}const up=()=>{try{this._spill.releasePointerCapture(e.pointerId);}catch{}this._spill.removeEventListener('pointermove',move);this._spill.removeEventListener('pointerup',up);this._spill.removeEventListener('pointercancel',up);this.removeAttribute('data-panning');this._dragUp=null;};this._dragUp=up;this._spill.addEventListener('pointermove',move);this._spill.addEventListener('pointerup',up);this._spill.addEventListener('pointercancel',up);});
+    this.addEventListener('wheel',e=>{if(!this.hasAttribute('data-reframe'))return;e.preventDefault();const r=this.getBoundingClientRect();const cx=(e.clientX-r.left)/r.width*100-50;const cy=(e.clientY-r.top)/r.height*100-50;const prev=this._view.s;const next=clampS(prev*Math.pow(1.0015,-e.deltaY));if(next===prev)return;const k=next/prev;this._view.s=next;this._view.x=cx*(1-k)+this._view.x*k;this._view.y=cy*(1-k)+this._view.y*k;this._clampView();this._applyView();},{passive:false});
+  }
+  connectedCallback(){this.addEventListener('dragenter',this);this.addEventListener('dragover',this);this.addEventListener('dragleave',this);this.addEventListener('drop',this);subs.add(this._subFn);this._ro=new ResizeObserver(()=>this._render());this._ro.observe(this);load();this._render();}
+  disconnectedCallback(){subs.delete(this._subFn);this.removeEventListener('dragenter',this);this.removeEventListener('dragover',this);this.removeEventListener('dragleave',this);this.removeEventListener('drop',this);if(this._ro){this._ro.disconnect();this._ro=null;}this._exitReframe(false);}
+  _enterReframe(){if(this.hasAttribute('data-reframe'))return;this.setAttribute('data-reframe','');this._applyView();this._outside=e=>{if(e.composedPath&&e.composedPath().includes(this))return;this._exitReframe(true);};this._esc=e=>{if(e.key==='Escape')this._exitReframe(true);};document.addEventListener('pointerdown',this._outside,true);document.addEventListener('keydown',this._esc,true);}
+  _exitReframe(commit){if(!this.hasAttribute('data-reframe'))return;if(this._dragUp)this._dragUp();this.removeAttribute('data-reframe');this.removeAttribute('data-panning');if(this._outside)document.removeEventListener('pointerdown',this._outside,true);if(this._esc)document.removeEventListener('keydown',this._esc,true);this._outside=this._esc=null;if(commit)this._commitView();}
+  attributeChangedCallback(){if(this.shadowRoot)this._render();}
+  handleEvent(e){if(e.type==='dragenter'||e.type==='dragover'){e.preventDefault();e.stopPropagation();if(e.dataTransfer)e.dataTransfer.dropEffect='copy';if(e.type==='dragenter')this._depth++;this.setAttribute('data-over','');}else if(e.type==='dragleave'){if(--this._depth<=0){this._depth=0;this.removeAttribute('data-over');}}else if(e.type==='drop'){e.preventDefault();e.stopPropagation();this._depth=0;this.removeAttribute('data-over');const f=e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files[0];if(f)this._ingest(f);}}
+  async _ingest(file){this._setError(null);if(!file||ACCEPT.indexOf(file.type)<0){this._setError('Drop a PNG, JPEG, WebP, or AVIF image.');return;}const gen=++this._gen;try{const w=this.clientWidth||this.offsetWidth||MAX_DIM;const url=await toDataUrl(file,w);if(gen!==this._gen)return;this._exitReframe(false);const val={u:url,s:1,x:0,y:0};setSlot(this.id||'',val);if(!this.id){this._local=val;this._render();}}catch(err){if(gen!==this._gen)return;this._setError('Could not read that image.');}}
+  _setError(msg){if(this._err){this._err.remove();this._err=null;}if(!msg)return;const d=document.createElement('div');d.className='err';d.textContent=msg;this.shadowRoot.appendChild(d);this._err=d;setTimeout(()=>{if(this._err===d){d.remove();this._err=null;}},3000);}
+  _reframes(){return this.hasAttribute('data-filled')&&(this.getAttribute('fit')||'cover')==='cover';}
+  _geom(){const iw=this._img.naturalWidth,ih=this._img.naturalHeight;const fw=this.clientWidth,fh=this.clientHeight;if(!iw||!ih||!fw||!fh)return null;return{iw,ih,fw,fh,base:Math.max(fw/iw,fh/ih)};}
+  _clampView(){const g=this._geom();if(!g)return;const mx=Math.max(0,(g.iw*g.base*this._view.s/g.fw-1)*50);const my=Math.max(0,(g.ih*g.base*this._view.s/g.fh-1)*50);this._view.x=Math.max(-mx,Math.min(mx,this._view.x));this._view.y=Math.max(-my,Math.min(my,this._view.y));}
+  _applyView(){const g=this._geom();const fit=this.getAttribute('fit')||'cover';if(fit!=='cover'||!g){this._img.style.width='100%';this._img.style.height='100%';this._img.style.left='50%';this._img.style.top='50%';this._img.style.objectFit=fit;this._img.style.objectPosition=this.getAttribute('position')||'50% 50%';return;}const k=g.base*this._view.s;const w=(g.iw*k/g.fw*100)+'%';const h=(g.ih*k/g.fh*100)+'%';const l=(50+this._view.x)+'%';const t=(50+this._view.y)+'%';this._img.style.width=w;this._img.style.height=h;this._img.style.left=l;this._img.style.top=t;this._img.style.objectFit='';this._spill.style.width=w;this._spill.style.height=h;this._spill.style.left=l;this._spill.style.top=t;}
+  _commitView(){const v={s:this._view.s,x:this._view.x,y:this._view.y};if(this._userUrl)v.u=this._userUrl;if(this.id)setSlot(this.id,v);else this._local=v;}
+  _render(){const mask=this.getAttribute('mask');const shape=(this.getAttribute('shape')||'rounded').toLowerCase();let radius='';if(shape==='circle')radius='50%';else if(shape==='pill')radius='9999px';else if(shape==='rounded'){const n=parseFloat(this.getAttribute('radius'));radius=(Number.isFinite(n)?n:12)+'px';}this._frame.style.borderRadius=mask?'':radius;this._frame.style.clipPath=mask||'';this._ring.style.borderRadius=mask?'':radius;this._ring.style.display=mask?'none':'';const editable=!!(window.omelette&&window.omelette.writeFile);this.toggleAttribute('data-editable',editable);this._sub.style.display=editable?'':'none';let stored=this.id?getSlot(this.id):this._local;if(stored&&stored.u&&!/^data:image\//i.test(stored.u))stored=null;const srcAttr=this.getAttribute('src')||'';this._userUrl=(stored&&stored.u)||null;const url=this._userUrl||srcAttr;if(!this.hasAttribute('data-reframe')){this._view={s:stored&&Number.isFinite(stored.s)?clampS(stored.s):1,x:stored&&Number.isFinite(stored.x)?stored.x:0,y:stored&&Number.isFinite(stored.y)?stored.y:0};}this._cap.textContent=this.getAttribute('placeholder')||'Drop an image';if(url){if(this._img.getAttribute('src')!==url){this._img.src=url;this._ghost.src=url;}this._img.style.display='block';this._empty.style.display='none';this.setAttribute('data-filled','');this._clampView();this._applyView();}else{this._img.style.display='none';this._img.removeAttribute('src');this._ghost.removeAttribute('src');this._empty.style.display='flex';this.removeAttribute('data-filled');}}
 }
+if(!customElements.get('image-slot'))customElements.define('image-slot',ImageSlot);
+})();
+</script>
 
-/* Chart defaults */
-Chart.defaults.color = 'rgba(255,255,255,0.45)';
-Chart.defaults.borderColor = 'rgba(255,255,255,0.07)';
-const tip = {
-  backgroundColor:'#1C1C1C',
-  borderColor:'rgba(255,255,255,0.1)',
-  borderWidth:1,
-  titleColor:'#fff',
-  bodyColor:'rgba(255,255,255,0.65)',
-  padding:10,
-  cornerRadius:8,
+<script>
+/* ── MERIDIAN data ─────────────────────────────────────────────────────────── */
+window.MERIDIAN_DATA=(()=>{
+const rng=seed=>{let s=seed>>>0;return()=>{s=(s*1664525+1013904223)>>>0;return s/4294967296;};};
+const r=rng(20260525);
+const SKU_NAMES=["VAPOR // RUN-AIR PRO","RIDGE // TRAIL GTX","ATLAS // COURT MID","FLOW // STUDIO LITE","BOLT // FIELD TURF","DRIFT // SKATE LOW","OXIDE // LIFT TRAINER","MERIDIAN // CITY 01","HALO // TENNIS PRO","STRATA // HIKE HI","PULSE // RUN-CARBON","GLYPH // BASKET RETRO"];
+const REGIONS=[{code:"NAM",name:"North America",weight:.34},{code:"EUR",name:"Europe",weight:.27},{code:"APAC",name:"Asia Pacific",weight:.22},{code:"LATAM",name:"Latin America",weight:.09},{code:"MEA",name:"Middle East & Africa",weight:.08}];
+const CHANNELS=["Direct","Wholesale","Marketplace","Retail"];
+const FACTORIES=[{code:"VN-HCM-04",city:"Ho Chi Minh",country:"VN",capacity:480000,util:.87},{code:"ID-SBY-02",city:"Surabaya",country:"ID",capacity:360000,util:.92},{code:"PT-PRT-01",city:"Porto",country:"PT",capacity:180000,util:.71},{code:"MX-LEN-03",city:"León",country:"MX",capacity:220000,util:.78},{code:"TR-IZM-01",city:"İzmir",country:"TR",capacity:140000,util:.66},{code:"BD-DAC-05",city:"Dhaka",country:"BD",capacity:290000,util:.94}];
+const spark=(base,vol=.15)=>{const arr=[];let v=base;for(let i=0;i<24;i++){v=v*(1+(r()-.45)*vol);arr.push(v);}return arr;};
+const kpis=[{id:"rev",label:"Net Revenue",value:482.6,unit:"M",delta:12.4,spark:spark(420),accent:true},{id:"ord",label:"Orders Fulfilled",value:1.284,unit:"M",delta:8.1,spark:spark(1100)},{id:"ots",label:"On-Time Ship",value:94.3,unit:"%",delta:1.2,spark:spark(93,.04)},{id:"inv",label:"Inventory Days",value:47.2,unit:"d",delta:-3.4,spark:spark(52,.08)},{id:"ret",label:"Return Rate",value:4.8,unit:"%",delta:-.6,spark:spark(5.2,.08)},{id:"mar",label:"Gross Margin",value:46.1,unit:"%",delta:.9,spark:spark(45.5,.03)}];
+const STATUSES=["IN-TRANSIT","FULFILLED","PROCESSING","DELAYED","BACKORDER"];
+const orders=Array.from({length:48},(_,i)=>{const sku=SKU_NAMES[Math.floor(r()*SKU_NAMES.length)];const region=REGIONS[Math.floor(r()*REGIONS.length)];const channel=CHANNELS[Math.floor(r()*CHANNELS.length)];const status=STATUSES[Math.floor(r()*STATUSES.length)];const qty=Math.floor(20+r()*4800);const value=qty*(40+r()*180);const ts=new Date(2026,4,25,14-Math.floor(r()*96),Math.floor(r()*60));return{id:`MR-${String(82041+i).padStart(6,"0")}`,sku,region:region.code,channel,status,qty,value:Math.round(value),ts,lane:Math.random()>.5?"AIR":"SEA",etaDays:Math.floor(1+r()*18),customer:["NAGAMI ATHLETIC","RUNSPACE NYC","FOOT MARKET","ENDEAVOR SC","PACE GROUP","RELAY KOREA","PALAIS SPORT","NORTHSIDE CO"][Math.floor(r()*8)],progress:Math.floor(r()*100)};});
+const topSkus=SKU_NAMES.map((name,i)=>({rank:i+1,sku:name,units:Math.floor(8000+r()*92000),revenue:Math.floor(800+r()*6200),delta:(r()-.4)*30,margin:30+r()*30,stock:Math.floor(r()*100)})).sort((a,b)=>b.revenue-a.revenue).map((s,i)=>({...s,rank:i+1}));
+const campaigns=[{id:"C-2026-Q2-01",name:"VAPOR DROP — Spring",status:"LIVE",channels:["Direct","Social"],spend:1.84,reach:24.6,ctr:4.7,conv:2.9,days:14,daysLeft:6},{id:"C-2026-Q2-02",name:"RIDGE TRAIL — Summer Pre-Order",status:"LIVE",channels:["Direct","Email","Retail"],spend:2.12,reach:18.1,ctr:3.8,conv:3.4,days:21,daysLeft:11},{id:"C-2026-Q1-08",name:"ARCHIVE — Capsule 04",status:"ENDING",channels:["Direct","Marketplace"],spend:.94,reach:12.4,ctr:5.2,conv:4.1,days:28,daysLeft:2},{id:"C-2026-Q2-03",name:"TEAM ATLAS — Court Series",status:"SCHEDULED",channels:["Wholesale","Retail"],spend:1.20,reach:0,ctr:0,conv:0,days:18,daysLeft:18},{id:"C-2026-Q1-12",name:"FLOW STUDIO — Yoga Push",status:"ARCHIVED",channels:["Direct","Email"],spend:.62,reach:8.9,ctr:2.4,conv:1.7,days:14,daysLeft:0}];
+const series=(()=>{const days=90;const arr=[];let v=380;for(let i=0;i<days;i++){v=v*(1+(r()-.48)*.06);const dow=(i+4)%7;const seasonal=dow===5||dow===6?1.18:dow===0?.86:1;arr.push({day:i,date:new Date(2026,1,24+i),value:v*seasonal,orders:Math.floor((v*seasonal)*(35+r()*8))});}return arr;})();
+const lanes=[{from:{x:78,y:56,label:"HCM"},to:{x:18,y:38,label:"NAM-W"},volume:.42},{from:{x:78,y:56,label:"HCM"},to:{x:26,y:36,label:"NAM-E"},volume:.38},{from:{x:78,y:56,label:"HCM"},to:{x:48,y:32,label:"EUR"},volume:.51},{from:{x:80,y:60,label:"SBY"},to:{x:86,y:50,label:"APAC"},volume:.62},{from:{x:80,y:60,label:"SBY"},to:{x:22,y:40,label:"NAM"},volume:.28},{from:{x:48,y:28,label:"PRT"},to:{x:50,y:30,label:"EUR"},volume:.31},{from:{x:22,y:42,label:"LEN"},to:{x:28,y:40,label:"NAM"},volume:.24},{from:{x:54,y:34,label:"IZM"},to:{x:58,y:44,label:"MEA"},volume:.18},{from:{x:70,y:44,label:"DAC"},to:{x:50,y:34,label:"EUR"},volume:.36}];
+const ticker=["VAPOR // RUN-AIR PRO +14.2% week-on-week","Port of Long Beach dwell time +1.4d","HCM-04 capacity 87% — within target","USD/VND 25,418 ▲ 0.12","MERIDIAN // CITY 01 colorway 7 sold out (NAM)","BD-DAC-05 utilization 94% — near ceiling","Inbound air freight rates Asia→NAM -4.1% MoM","Q2 forecast revised +2.8% — guidance hold"];
+return{SKU_NAMES,REGIONS,CHANNELS,FACTORIES,STATUSES,kpis,orders,topSkus,campaigns,series,lanes,ticker};
+})();
+</script>
+
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<script type="text/babel">
+/* ── Shared utilities & components ─────────────────────────────────────────── */
+const { useState, useEffect, useRef, useMemo, useCallback } = React;
+
+const fmt = {
+  num:(n,d=0)=>Number(n).toLocaleString("en-US",{minimumFractionDigits:d,maximumFractionDigits:d}),
+  short:(n)=>{const a=Math.abs(n);if(a>=1e9)return(n/1e9).toFixed(2)+"B";if(a>=1e6)return(n/1e6).toFixed(2)+"M";if(a>=1e3)return(n/1e3).toFixed(1)+"K";return n.toFixed(0);},
+  pct:(n,d=1)=>`${n>=0?"+":""}${n.toFixed(d)}%`,
+  time:(d)=>d.toTimeString().slice(0,5),
+  date:(d)=>`${String(d.getDate()).padStart(2,"0")}.${String(d.getMonth()+1).padStart(2,"0")}`,
+  iso:(d)=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`,
 };
 
-/* Stock Chart */
-new Chart(document.getElementById('stockChart'), {
-  type:'bar',
-  data:{
-    labels:['Nike (NKE)','Adidas (ADS)','Puma (PUM)','Lululemon','Skechers','Under Armour'],
-    datasets:[{
-      data:[-14.4,-11.7,-11.1,-10.2,-9.5,-8.8],
-      backgroundColor:['rgba(239,68,68,.85)','rgba(239,68,68,.7)','rgba(239,68,68,.6)','rgba(245,158,11,.7)','rgba(245,158,11,.6)','rgba(245,158,11,.5)'],
-      borderColor:['rgba(239,68,68,1)','rgba(239,68,68,.9)','rgba(239,68,68,.8)','rgba(245,158,11,.9)','rgba(245,158,11,.8)','rgba(245,158,11,.7)'],
-      borderWidth:1, borderRadius:6,
-    }]
-  },
-  options:{
-    responsive:true, maintainAspectRatio:false, indexAxis:'y',
-    plugins:{ legend:{display:false}, tooltip:{...tip, callbacks:{label:c=>` ${c.parsed.x}%`}} },
-    scales:{
-      x:{ ticks:{callback:v=>v+'%'}, grid:{color:'rgba(255,255,255,0.05)'} },
-      y:{ grid:{display:false}, ticks:{font:{weight:'500'}} }
-    }
-  }
-});
+function Sparkline({values,width=120,height=36,stroke="var(--ink)",fill,showTip=true,fmtTip}){
+  const ref=useRef(null);
+  const [hover,setHover]=useState(null);
+  const min=Math.min(...values),max=Math.max(...values),range=max-min||1;
+  const pad=2,w=width-pad*2,h=height-pad*2,step=w/(values.length-1);
+  const points=values.map((v,i)=>[pad+i*step,pad+h-((v-min)/range)*h]);
+  const d=points.map((p,i)=>(i===0?`M${p[0]},${p[1]}`:`L${p[0]},${p[1]}`)).join(" ");
+  const area=`${d} L${points[points.length-1][0]},${pad+h} L${points[0][0]},${pad+h} Z`;
+  const onMove=(e)=>{if(!showTip)return;const rect=ref.current.getBoundingClientRect();const x=e.clientX-rect.left;let idx=Math.round((x-pad)/step);idx=Math.max(0,Math.min(values.length-1,idx));setHover({idx,x:points[idx][0],y:points[idx][1]});};
+  return(
+    <div ref={ref} style={{position:"relative",width,height}} onMouseMove={onMove} onMouseLeave={()=>setHover(null)}>
+      <svg width={width} height={height} style={{display:"block"}}>
+        {fill&&<path d={area} fill={fill} opacity="0.18"/>}
+        <path d={d} fill="none" stroke={stroke} strokeWidth="1.25"/>
+        {hover&&<><line x1={hover.x} y1={pad} x2={hover.x} y2={pad+h} stroke="var(--ink)" strokeWidth="0.5" strokeDasharray="2 2"/><circle cx={hover.x} cy={hover.y} r="3" fill="var(--accent)" stroke="var(--paper)" strokeWidth="1.5"/></>}
+      </svg>
+      {hover&&<div className="m-tip" style={{left:hover.x,top:hover.y}}>{fmtTip?fmtTip(values[hover.idx],hover.idx):fmt.short(values[hover.idx])}</div>}
+    </div>
+  );
+}
 
-/* Pricing Chart */
-new Chart(document.getElementById('pricingChart'), {
-  type:'bar',
-  data:{
-    labels:['Air Force 1','Jordan 1','Running Shoe','Training Shoe'],
-    datasets:[
-      { label:'Current Price', data:[115,180,95,75], backgroundColor:'rgba(59,130,246,.55)', borderColor:'rgba(59,130,246,.85)', borderWidth:1, borderRadius:4 },
-      { label:'+10–12% Increase', data:[127,200,106,84], backgroundColor:'rgba(245,158,11,.55)', borderColor:'rgba(245,158,11,.85)', borderWidth:1, borderRadius:4 },
-      { label:'Full Tariff Pass-Through', data:[145,229,121,96], backgroundColor:'rgba(239,68,68,.65)', borderColor:'rgba(239,68,68,.9)', borderWidth:1, borderRadius:4 },
-    ]
-  },
-  options:{
-    responsive:true, maintainAspectRatio:false,
-    plugins:{
-      legend:{ position:'top', labels:{padding:16, boxWidth:10, boxHeight:10, color:'rgba(255,255,255,0.6)'} },
-      tooltip:{...tip, callbacks:{label:c=>` ${c.dataset.label}: $${c.parsed.y}`}}
-    },
-    scales:{
-      x:{ grid:{display:false} },
-      y:{ ticks:{callback:v=>'$'+v}, grid:{color:'rgba(255,255,255,0.05)'} }
-    }
-  }
-});
+function KpiCard({kpi,dragging,onDragStart,onDragOver,onDrop}){
+  return(
+    <div className="m-card" draggable onDragStart={e=>onDragStart?.(e,kpi.id)} onDragOver={e=>{e.preventDefault();onDragOver?.(e,kpi.id);}} onDrop={e=>onDrop?.(e,kpi.id)}
+      style={{padding:"16px 16px 14px",cursor:"grab",opacity:dragging===kpi.id?.35:1,background:kpi.accent?"var(--ink)":"var(--paper)",color:kpi.accent?"var(--paper)":"var(--ink)",position:"relative",userSelect:"none"}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:16}}>
+        <span className="m-eyebrow" style={{color:kpi.accent?"rgba(245,241,234,.55)":"var(--ink-2)"}}>{kpi.label}</span>
+        <span className="m-mono" style={{fontSize:9.5,letterSpacing:".1em",color:kpi.delta>=0?(kpi.accent?"#9be8b8":"var(--good)"):(kpi.accent?"#ffb1a3":"var(--bad)")}}>{fmt.pct(kpi.delta)}</span>
+      </div>
+      <div style={{display:"flex",alignItems:"flex-end",justifyContent:"space-between",gap:12}}>
+        <div>
+          <div className="m-big-num m-num" style={{fontSize:44}}>{kpi.value<100?kpi.value.toFixed(1):fmt.num(kpi.value,0)}<span className="unit" style={{color:kpi.accent?"rgba(245,241,234,.55)":"var(--ink-2)"}}>{kpi.unit}</span></div>
+        </div>
+        <Sparkline values={kpi.spark} width={88} height={32} stroke={kpi.accent?"var(--accent)":"var(--ink)"} fill={kpi.accent?"var(--accent)":"var(--ink)"}/>
+      </div>
+    </div>
+  );
+}
 
-/* Industry Chart */
-new Chart(document.getElementById('industryChart'), {
-  type:'bar',
-  data:{
-    labels:['Vietnam','Indonesia','Cambodia','Bangladesh','India','Other'],
-    datasets:[
-      { label:'Nike', data:[50,25,8,2,5,10], backgroundColor:'rgba(239,68,68,.75)', borderRadius:4 },
-      { label:'Adidas', data:[39,15,10,15,6,15], backgroundColor:'rgba(59,130,246,.7)', borderRadius:4 },
-      { label:'Puma', data:[30,12,8,20,10,20], backgroundColor:'rgba(34,197,94,.65)', borderRadius:4 },
-    ]
-  },
-  options:{
-    responsive:true, maintainAspectRatio:false,
-    plugins:{
-      legend:{ position:'top', labels:{padding:16, boxWidth:10, color:'rgba(255,255,255,0.65)'} },
-      tooltip:{...tip, callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y}%`}}
-    },
-    scales:{
-      x:{ grid:{display:false} },
-      y:{ ticks:{callback:v=>v+'%'}, grid:{color:'rgba(255,255,255,0.05)'} }
-    }
-  }
-});
+function KpiRow({kpis,cols=6}){
+  const [order,setOrder]=useState(kpis.map(k=>k.id));
+  const [dragging,setDragging]=useState(null);
+  const map=Object.fromEntries(kpis.map(k=>[k.id,k]));
+  const onStart=(e,id)=>{setDragging(id);e.dataTransfer.effectAllowed="move";};
+  const onOver=(e,id)=>{if(!dragging||dragging===id)return;setOrder(o=>{const next=o.filter(x=>x!==dragging);const idx=next.indexOf(id);next.splice(idx,0,dragging);return next;});};
+  const onDrop=()=>setDragging(null);
+  return(
+    <div style={{display:"grid",gridTemplateColumns:`repeat(${cols},1fr)`,gap:0,borderTop:"1px solid var(--ink)",borderBottom:"1px solid var(--ink)"}}>
+      {order.map((id,i)=>(
+        <div key={id} style={{borderRight:i<order.length-1?"1px solid var(--rule)":"none"}}>
+          <KpiCard kpi={map[id]} dragging={dragging} onDragStart={onStart} onDragOver={onOver} onDrop={onDrop}/>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function Ticker({items}){
+  const list=[...items,...items];
+  return(
+    <div style={{borderTop:"1px solid var(--ink)",borderBottom:"1px solid var(--ink)",padding:"6px 0",overflow:"hidden",background:"var(--paper)"}}>
+      <div className="m-marquee m-mono" style={{fontSize:10.5,letterSpacing:".06em"}}>
+        {list.map((t,i)=><span key={i} style={{display:"inline-flex",alignItems:"center",gap:8}}><span style={{width:4,height:4,borderRadius:2,background:"var(--accent)"}}></span>{t}</span>)}
+      </div>
+    </div>
+  );
+}
+
+function LiveSearch({data=[],onPick,placeholder="Search SKU, order, supplier…",width=280}){
+  const [q,setQ]=useState("");
+  const [open,setOpen]=useState(false);
+  const results=q.trim().length>0?data.filter(d=>d.label.toLowerCase().includes(q.toLowerCase())).slice(0,8):[];
+  return(
+    <div style={{position:"relative",width}}>
+      <div style={{display:"flex",alignItems:"center",gap:8,borderBottom:"1px solid var(--ink)",paddingBottom:4}}>
+        <span className="m-mono" style={{fontSize:10,color:"var(--ink-2)",letterSpacing:".1em"}}>⌕</span>
+        <input className="m-input" style={{border:0}} value={q} placeholder={placeholder} onChange={e=>{setQ(e.target.value);setOpen(true);}} onFocus={()=>setOpen(true)} onBlur={()=>setTimeout(()=>setOpen(false),160)}/>
+        {q&&<button onClick={()=>setQ("")} className="m-mono" style={{border:0,background:"transparent",color:"var(--ink-2)",cursor:"pointer",fontSize:11}}>×</button>}
+      </div>
+      {open&&results.length>0&&(
+        <div style={{position:"absolute",top:"100%",left:0,right:0,background:"var(--paper)",border:"1px solid var(--ink)",borderTop:0,zIndex:30,maxHeight:280,overflow:"auto"}}>
+          {results.map((r,i)=>(
+            <div key={i} onMouseDown={()=>onPick?.(r)} style={{padding:"8px 10px",borderBottom:i<results.length-1?"1px solid var(--rule-soft)":"none",cursor:"pointer",display:"flex",justifyContent:"space-between",gap:8}}>
+              <div><div className="m-mono" style={{fontSize:11}}>{r.label}</div>{r.sub&&<div className="m-mono" style={{fontSize:9.5,color:"var(--ink-2)",letterSpacing:".08em",textTransform:"uppercase",marginTop:2}}>{r.sub}</div>}</div>
+              {r.right&&<div className="m-mono" style={{fontSize:10,color:"var(--ink-2)"}}>{r.right}</div>}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function DateRange({value,onChange}){
+  const [open,setOpen]=useState(false);
+  const presets=[{id:"7d",label:"Last 7 days"},{id:"30d",label:"Last 30 days"},{id:"90d",label:"Last 90 days"},{id:"qtd",label:"Quarter to date"},{id:"ytd",label:"Year to date"}];
+  const current=presets.find(p=>p.id===value)||presets[2];
+  return(
+    <div style={{position:"relative"}}>
+      <button className="m-btn ghost" onClick={()=>setOpen(!open)} style={{display:"inline-flex",gap:8,alignItems:"center",padding:"6px 10px"}}>
+        <span>{current.label}</span><span style={{fontSize:9,opacity:.5}}>▾</span>
+      </button>
+      {open&&(
+        <div style={{position:"absolute",right:0,top:"calc(100% + 4px)",background:"var(--paper)",border:"1px solid var(--ink)",zIndex:30,minWidth:200}}>
+          {presets.map((p,i)=>(
+            <button key={p.id} className="m-mono" onClick={()=>{onChange?.(p.id);setOpen(false);}}
+              style={{display:"block",width:"100%",textAlign:"left",padding:"8px 12px",border:0,background:p.id===current.id?"var(--ink)":"transparent",color:p.id===current.id?"var(--paper)":"var(--ink)",fontSize:10.5,letterSpacing:".08em",textTransform:"uppercase",cursor:"pointer",borderBottom:i<presets.length-1?"1px solid var(--rule-soft)":"none"}}>
+              {p.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function Drawer({open,onClose,children,width=520}){
+  return(
+    <>
+      <div onClick={onClose} style={{position:"absolute",inset:0,background:"rgba(20,17,14,.5)",opacity:open?1:0,pointerEvents:open?"auto":"none",transition:"opacity .25s",zIndex:40}}/>
+      <div style={{position:"absolute",top:0,right:0,bottom:0,width,background:"var(--paper)",borderLeft:"1px solid var(--ink)",transform:open?"translateX(0)":"translateX(100%)",transition:"transform .35s cubic-bezier(.2,.7,.2,1)",zIndex:41,display:"flex",flexDirection:"column",overflow:"hidden"}}>
+        {children}
+      </div>
+    </>
+  );
+}
+
+function StatusPill({status}){
+  const map={"IN-TRANSIT":{bg:"transparent",color:"var(--ink)",border:"var(--ink)"},"FULFILLED":{bg:"var(--good)",color:"#fff",border:"var(--good)"},"PROCESSING":{bg:"transparent",color:"var(--ink-2)",border:"var(--rule)"},"DELAYED":{bg:"var(--bad)",color:"#fff",border:"var(--bad)"},"BACKORDER":{bg:"var(--warn)",color:"#fff",border:"var(--warn)"},"LIVE":{bg:"var(--accent)",color:"#fff",border:"var(--accent)"},"ENDING":{bg:"var(--warn)",color:"#fff",border:"var(--warn)"},"SCHEDULED":{bg:"transparent",color:"var(--ink)",border:"var(--ink)"},"ARCHIVED":{bg:"transparent",color:"var(--ink-3)",border:"var(--rule)"}};
+  const s=map[status]||map["PROCESSING"];
+  return <span className="m-mono" style={{fontSize:9,letterSpacing:".1em",textTransform:"uppercase",padding:"2px 6px",lineHeight:1.2,background:s.bg,color:s.color,border:`1px solid ${s.border}`}}>{status}</span>;
+}
+
+function WorldMap({lanes=[],height=240}){
+  const [dots,setDots]=useState([]);
+  useEffect(()=>{
+    const blobs=[{cx:22,cy:36,rx:10,ry:12},{cx:28,cy:60,rx:5,ry:10},{cx:49,cy:32,rx:5,ry:6},{cx:51,cy:50,rx:7,ry:11},{cx:58,cy:32,rx:8,ry:5},{cx:68,cy:44,rx:5,ry:5},{cx:78,cy:42,rx:7,ry:7},{cx:84,cy:64,rx:5,ry:4}];
+    const out=[];const rng=s=>{let v=s>>>0;return()=>{v=(v*1664525+1013904223)>>>0;return v/4294967296;};};const r=rng(7);
+    for(const b of blobs){const n=Math.floor(b.rx*b.ry*2.0);for(let i=0;i<n;i++){const a=r()*Math.PI*2;const rad=Math.sqrt(r());const x=b.cx+Math.cos(a)*rad*b.rx;const y=b.cy+Math.sin(a)*rad*b.ry;if(x>0&&x<100&&y>0&&y<100)out.push({x,y});}}
+    setDots(out);
+  },[]);
+  return(
+    <svg viewBox="0 0 100 70" width="100%" height={height} preserveAspectRatio="xMidYMid meet" style={{display:"block"}}>
+      {dots.map((d,i)=><circle key={i} cx={d.x} cy={d.y} r="0.35" fill="var(--ink)" opacity="0.35"/>)}
+      {lanes.map((l,i)=>{const mx=(l.from.x+l.to.x)/2;const my=Math.min(l.from.y,l.to.y)-8-l.volume*6;return(<g key={i}><path d={`M${l.from.x},${l.from.y} Q${mx},${my} ${l.to.x},${l.to.y}`} fill="none" stroke="var(--accent)" strokeWidth={.3+l.volume*.7} opacity=".85"/><circle cx={l.from.x} cy={l.from.y} r=".9" fill="var(--ink)"/><circle cx={l.to.x} cy={l.to.y} r=".6" fill="var(--accent)"/></g>);})}
+    </svg>
+  );
+}
+
+function BarSplit({items,valueKey="value",labelKey="label",maxValue,accent}){
+  const max=maxValue||Math.max(...items.map(i=>i[valueKey]));
+  return(
+    <div style={{display:"flex",flexDirection:"column",gap:10}}>
+      {items.map((it,i)=>{const pct=(it[valueKey]/max)*100;return(
+        <div key={i} style={{display:"grid",gridTemplateColumns:"60px 1fr 60px",gap:12,alignItems:"center"}}>
+          <span className="m-mono" style={{fontSize:10,letterSpacing:".08em",textTransform:"uppercase"}}>{it[labelKey]}</span>
+          <div style={{height:6,background:"var(--paper-2)",position:"relative"}}><div style={{position:"absolute",inset:0,width:`${pct}%`,background:accent||"var(--ink)"}}/></div>
+          <span className="m-mono m-num" style={{fontSize:10,textAlign:"right"}}>{typeof it[valueKey]==="number"&&it[valueKey]<100?it[valueKey].toFixed(1):fmt.short(it[valueKey])}</span>
+        </div>
+      );})}
+    </div>
+  );
+}
+
+function AreaChart({data,width,height,xKey="day",yKey="value",accent}){
+  const ref=useRef(null);
+  const [hover,setHover]=useState(null);
+  const pad={l:36,r:16,t:12,b:24};
+  const w=width-pad.l-pad.r,h=height-pad.t-pad.b;
+  const min=Math.min(...data.map(d=>d[yKey])),max=Math.max(...data.map(d=>d[yKey])),range=max-min;
+  const step=w/(data.length-1);
+  const pts=data.map((d,i)=>[pad.l+i*step,pad.t+h-((d[yKey]-min)/range)*h]);
+  const path=pts.map((p,i)=>(i===0?`M${p[0]},${p[1]}`:`L${p[0]},${p[1]}`)).join(" ");
+  const area=`${path} L${pts[pts.length-1][0]},${pad.t+h} L${pts[0][0]},${pad.t+h} Z`;
+  const ticks=4;const ytickVals=Array.from({length:ticks+1},(_,i)=>min+(range*i)/ticks);
+  const onMove=e=>{const rect=ref.current.getBoundingClientRect();const x=e.clientX-rect.left;let idx=Math.round((x-pad.l)/step);idx=Math.max(0,Math.min(data.length-1,idx));setHover({idx,x:pts[idx][0],y:pts[idx][1]});};
+  return(
+    <div ref={ref} style={{position:"relative",width,height}} onMouseMove={onMove} onMouseLeave={()=>setHover(null)}>
+      <svg width={width} height={height} style={{display:"block"}}>
+        {ytickVals.map((v,i)=>{const y=pad.t+h-((v-min)/range)*h;return(<g key={i}><line x1={pad.l} y1={y} x2={pad.l+w} y2={y} stroke="var(--rule-soft)" strokeWidth=".5"/><text x={pad.l-6} y={y+3} fontSize="9" fontFamily="var(--mono)" fill="var(--ink-2)" textAnchor="end">{fmt.short(v)}</text></g>);})}
+        {data.filter((_,i)=>i%Math.floor(data.length/6)===0).map((d,i)=>{const idx=data.indexOf(d);const x=pad.l+idx*step;return(<text key={i} x={x} y={pad.t+h+14} fontSize="9" fontFamily="var(--mono)" fill="var(--ink-2)" textAnchor="middle">{fmt.date(d.date)}</text>);})}
+        <path d={area} fill={accent||"var(--accent)"} opacity=".12"/>
+        <path d={path} fill="none" stroke={accent||"var(--accent)"} strokeWidth="1.5"/>
+        {hover&&<><line x1={hover.x} y1={pad.t} x2={hover.x} y2={pad.t+h} stroke="var(--ink)" strokeWidth=".5" strokeDasharray="3 3"/><circle cx={hover.x} cy={hover.y} r="4" fill="var(--paper)" stroke={accent||"var(--accent)"} strokeWidth="1.5"/></>}
+      </svg>
+      {hover&&<div className="m-tip" style={{left:hover.x,top:hover.y}}>{fmt.date(data[hover.idx].date)} · ${fmt.short(data[hover.idx][yKey]*1000)}</div>}
+    </div>
+  );
+}
+
+function SideNav({current,brand="MERIDIAN"}){
+  const items=[{id:"overview",label:"Overview",code:"01"},{id:"sales",label:"Sales Analytics",code:"02"},{id:"orders",label:"Orders",code:"03"},{id:"campaigns",label:"Campaigns",code:"04"},{id:"suppliers",label:"Suppliers",code:"05",disabled:true},{id:"products",label:"Products",code:"06",disabled:true},{id:"settings",label:"Settings",code:"07",disabled:true}];
+  return(
+    <nav style={{borderRight:"1px solid var(--ink)",padding:"20px 0",display:"flex",flexDirection:"column",height:"100%",background:"var(--paper)"}}>
+      <div style={{padding:"0 20px 20px",borderBottom:"1px solid var(--rule)"}}>
+        <div className="m-serif" style={{fontSize:24,lineHeight:.9,letterSpacing:"-.02em"}}>{brand}</div>
+        <div className="m-eyebrow" style={{marginTop:6}}>Athletic Supply Co.</div>
+      </div>
+      <div style={{padding:"16px 0",flex:1}}>
+        {items.map(it=>{const active=it.id===current;return(
+          <button key={it.id} onClick={()=>!it.disabled&&(window.__setScreen?.(it.id))} disabled={it.disabled}
+            style={{width:"100%",textAlign:"left",padding:"10px 20px",border:0,background:active?"var(--ink)":"transparent",color:active?"var(--paper)":(it.disabled?"var(--ink-3)":"var(--ink)"),fontFamily:"var(--mono)",fontSize:10.5,letterSpacing:".1em",textTransform:"uppercase",display:"flex",alignItems:"center",justifyContent:"space-between",cursor:it.disabled?"not-allowed":"pointer",borderLeft:active?"3px solid var(--accent)":"3px solid transparent"}}>
+            <span>{it.label}</span><span style={{opacity:.5,fontSize:9}}>{it.code}</span>
+          </button>
+        );})}
+      </div>
+      <div style={{padding:"16px 20px",borderTop:"1px solid var(--rule)"}}>
+        <div className="m-eyebrow">Logged in</div>
+        <div className="m-mono" style={{fontSize:11,marginTop:6}}>A. KOMORI</div>
+        <div className="m-mono" style={{fontSize:9.5,color:"var(--ink-2)",letterSpacing:".08em",textTransform:"uppercase",marginTop:2}}>Supply Planner · HQ</div>
+      </div>
+    </nav>
+  );
+}
+
+/* ── Overview screen ───────────────────────────────────────────────────────── */
+function OverviewScreen(){
+  const D=window.MERIDIAN_DATA;
+  const [range,setRange]=useState("90d");
+  const recentOrders=D.orders.slice(0,8);
+  const searchData=useMemo(()=>[...D.SKU_NAMES.map(s=>({label:s,sub:"PRODUCT"})),...D.orders.slice(0,20).map(o=>({label:o.id,sub:`${o.customer} · ${o.region}`,right:fmt.short(o.value)})),...D.FACTORIES.map(f=>({label:f.code,sub:`${f.city} · ${f.country}`,right:`${(f.util*100).toFixed(0)}%`}))],[]);
+  const channelData=[{label:"Direct",value:184.2},{label:"Wholesale",value:142.9},{label:"Marketplace",value:98.4},{label:"Retail",value:57.1}];
+  const regionData=D.REGIONS.map(r=>({label:r.code,value:482.6*r.weight}));
+  const now=new Date(2026,4,25,14,22);
+  return(
+    <div className="m-root" style={{display:"grid",gridTemplateColumns:"220px 1fr",height:"100%",overflow:"hidden"}}>
+      <SideNav current="overview"/>
+      <div style={{display:"flex",flexDirection:"column",overflow:"hidden"}}>
+        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"14px 28px",borderBottom:"1px solid var(--ink)",gap:16}}>
+          <div style={{display:"flex",alignItems:"center",gap:16}}>
+            <span className="m-eyebrow">Vol. XII · Issue 21 · {fmt.iso(now)}</span>
+            <span className="m-mono m-pulse" style={{fontSize:10,color:"var(--accent)",letterSpacing:".1em"}}>● LIVE</span>
+            <span className="m-mono" style={{fontSize:10,color:"var(--ink-2)",letterSpacing:".08em"}}>{fmt.time(now)} HKT · MARKET OPEN</span>
+          </div>
+          <div style={{display:"flex",alignItems:"center",gap:16}}>
+            <LiveSearch data={searchData} width={300}/>
+            <DateRange value={range} onChange={setRange}/>
+            <button className="m-btn">Export</button>
+          </div>
+        </div>
+        <Ticker items={D.ticker}/>
+        <div className="m-scroll" style={{flex:1,overflow:"auto"}}>
+          <section style={{display:"grid",gridTemplateColumns:"1.2fr 1.4fr 1fr",borderBottom:"1px solid var(--ink)"}}>
+            <div style={{padding:"28px 28px 28px",borderRight:"1px solid var(--rule)",display:"flex",flexDirection:"column",justifyContent:"space-between",minHeight:360}}>
+              <div>
+                <div className="m-eyebrow">The Week / Briefing</div>
+                <h1 className="m-hero-h" style={{fontSize:56,margin:"16px 0 0"}}>Vapor<br/><em style={{fontStyle:"italic",color:"var(--accent)"}}>outpaces</em><br/>the floor.</h1>
+              </div>
+              <div>
+                <div style={{display:"flex",gap:24,marginBottom:16}}>
+                  <div><div className="m-eyebrow">Hero SKU</div><div className="m-mono" style={{fontSize:12,marginTop:6}}>VAPOR // RUN-AIR PRO</div></div>
+                  <div><div className="m-eyebrow">Lift</div><div className="m-mono" style={{fontSize:12,marginTop:6,color:"var(--good)"}}>+14.2% WoW</div></div>
+                </div>
+                <p style={{fontFamily:"var(--sans)",fontSize:13,lineHeight:1.55,color:"var(--ink-2)",maxWidth:360,margin:0}}>Air-cushion restock from HCM-04 cleared in 38 hours. Direct channel carried 62% of the week's lift. EUR pre-orders open Friday.</p>
+              </div>
+            </div>
+            <div style={{position:"relative",borderRight:"1px solid var(--rule)",overflow:"hidden"}}>
+              <image-slot id="overview-hero" shape="rect" placeholder="HERO PRODUCT SHOT — VAPOR // RUN-AIR PRO" style={{width:"100%",height:"100%",display:"block"}}></image-slot>
+              <div style={{position:"absolute",top:16,left:16,display:"flex",flexDirection:"column",gap:4,pointerEvents:"none"}}>
+                <span className="m-tag live">● LIVE DROP</span>
+              </div>
+              <div style={{position:"absolute",bottom:16,left:16,right:16,display:"flex",justifyContent:"space-between",alignItems:"flex-end",pointerEvents:"none"}}>
+                <div>
+                  <div className="m-mono" style={{fontSize:9.5,color:"var(--ink-2)",letterSpacing:".1em",textTransform:"uppercase"}}>FW26 / 04</div>
+                  <div className="m-serif" style={{fontSize:32,lineHeight:1,marginTop:2}}>Air‑Cushion 7.2</div>
+                </div>
+                <div style={{textAlign:"right"}}>
+                  <div className="m-eyebrow">Units / week</div>
+                  <div className="m-mono" style={{fontSize:18,marginTop:2}}>48,210</div>
+                </div>
+              </div>
+            </div>
+            <div style={{padding:"24px 24px",display:"flex",flexDirection:"column",gap:14,justifyContent:"space-between"}}>
+              <div>
+                <div className="m-eyebrow">Today / Snapshot</div>
+                <div style={{marginTop:14}}>
+                  <div className="m-big-num m-num" style={{fontSize:56}}>482<span style={{color:"var(--ink-3)"}}>.6</span><span className="unit">M USD</span></div>
+                  <div className="m-mono" style={{fontSize:10.5,marginTop:6,color:"var(--good)",letterSpacing:".06em"}}>▲ +12.4% vs. last period · target 460M</div>
+                </div>
+              </div>
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,paddingTop:14,borderTop:"1px solid var(--rule)"}}>
+                <div><div className="m-eyebrow">In Transit</div><div className="m-mono m-num" style={{fontSize:18,marginTop:4}}>284K <span style={{fontSize:10,color:"var(--ink-2)"}}>units</span></div></div>
+                <div><div className="m-eyebrow">At Risk</div><div className="m-mono m-num" style={{fontSize:18,marginTop:4,color:"var(--bad)"}}>14 <span style={{fontSize:10,color:"var(--ink-2)"}}>orders</span></div></div>
+                <div><div className="m-eyebrow">Avg. Lead Time</div><div className="m-mono m-num" style={{fontSize:18,marginTop:4}}>11.4d</div></div>
+                <div><div className="m-eyebrow">Stockouts</div><div className="m-mono m-num" style={{fontSize:18,marginTop:4}}>3 SKU</div></div>
+              </div>
+            </div>
+          </section>
+          <section>
+            <div style={{padding:"8px 28px",display:"flex",justifyContent:"space-between",alignItems:"baseline"}}>
+              <div className="m-eyebrow">Key Indicators / drag to reorder</div>
+              <div className="m-mono" style={{fontSize:10,color:"var(--ink-2)"}}>HOVER FOR DETAIL</div>
+            </div>
+            <KpiRow kpis={D.kpis} cols={6}/>
+          </section>
+          <section style={{display:"grid",gridTemplateColumns:"1.6fr 1fr",borderTop:"1px solid var(--ink)"}}>
+            <div style={{borderRight:"1px solid var(--rule)"}}>
+              <div style={{padding:"16px 28px 8px",display:"flex",justifyContent:"space-between",alignItems:"baseline",borderBottom:"1px solid var(--rule)"}}>
+                <div><div className="m-eyebrow">Recent / Orders</div><h3 className="m-serif" style={{fontSize:22,margin:"4px 0 0",lineHeight:1}}>Latest Movement</h3></div>
+                <div className="m-mono" style={{fontSize:10,color:"var(--ink-2)"}}>{D.orders.length} TOTAL · {recentOrders.length} SHOWN</div>
+              </div>
+              <table className="m-table" style={{tableLayout:"fixed"}}>
+                <thead><tr><th style={{width:100}}>Order</th><th>SKU</th><th style={{width:80}}>Region</th><th style={{width:70}}>Lane</th><th style={{width:70,textAlign:"right"}}>Qty</th><th style={{width:90,textAlign:"right"}}>Value</th><th style={{width:100}}>Status</th></tr></thead>
+                <tbody>{recentOrders.map(o=><tr key={o.id}><td style={{color:"var(--ink-2)"}}>{o.id}</td><td style={{overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{o.sku}</td><td>{o.region}</td><td style={{color:"var(--ink-2)"}}>{o.lane}</td><td className="m-num" style={{textAlign:"right"}}>{fmt.num(o.qty)}</td><td className="m-num" style={{textAlign:"right"}}>${fmt.short(o.value)}</td><td><StatusPill status={o.status}/></td></tr>)}</tbody>
+              </table>
+            </div>
+            <div style={{display:"flex",flexDirection:"column"}}>
+              <div style={{padding:"16px 24px",borderBottom:"1px solid var(--rule)"}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:8}}>
+                  <div className="m-eyebrow">Global / Lanes</div>
+                  <div className="m-mono" style={{fontSize:10,color:"var(--ink-2)"}}>9 ACTIVE</div>
+                </div>
+                <WorldMap lanes={D.lanes} height={180}/>
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:0,marginTop:8,borderTop:"1px solid var(--rule-soft)"}}>
+                  <div style={{padding:"8px 0",borderRight:"1px solid var(--rule-soft)"}}><div className="m-eyebrow">Origin</div><div className="m-mono" style={{fontSize:13,marginTop:4}}>VN · ID</div></div>
+                  <div style={{padding:"8px 12px",borderRight:"1px solid var(--rule-soft)"}}><div className="m-eyebrow">Bottleneck</div><div className="m-mono" style={{fontSize:13,marginTop:4,color:"var(--bad)"}}>BD-DAC-05</div></div>
+                  <div style={{padding:"8px 0 8px 12px"}}><div className="m-eyebrow">Avg ETA</div><div className="m-mono" style={{fontSize:13,marginTop:4}}>11.4d</div></div>
+                </div>
+              </div>
+              <div style={{padding:"16px 24px"}}>
+                <div className="m-eyebrow">Revenue / Channel</div>
+                <div style={{marginTop:12}}><BarSplit items={channelData} accent="var(--ink)"/></div>
+                <div className="m-eyebrow" style={{marginTop:20}}>Revenue / Region</div>
+                <div style={{marginTop:12}}><BarSplit items={regionData} accent="var(--accent)"/></div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Sales screen ──────────────────────────────────────────────────────────── */
+function SalesScreen(){
+  const D=window.MERIDIAN_DATA;
+  const [range,setRange]=useState("90d");
+  const [metric,setMetric]=useState("revenue");
+  const [hoveredRow,setHoveredRow]=useState(null);
+  const rangeDays={"7d":7,"30d":30,"90d":90,"qtd":56,"ytd":145};
+  const filteredSeries=D.series.slice(-rangeDays[range]);
+  const totalRev=filteredSeries.reduce((s,d)=>s+d.value,0);
+  const totalOrders=filteredSeries.reduce((s,d)=>s+d.orders,0);
+  const avgOrder=totalRev/filteredSeries.length;
+  const peakDay=filteredSeries.reduce((p,c)=>c.value>p.value?c:p,filteredSeries[0]);
+  return(
+    <div className="m-root" style={{display:"grid",gridTemplateColumns:"220px 1fr",height:"100%",overflow:"hidden"}}>
+      <SideNav current="sales"/>
+      <div style={{display:"flex",flexDirection:"column",overflow:"hidden"}}>
+        <div style={{padding:"20px 28px 16px",borderBottom:"1px solid var(--ink)"}}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end"}}>
+            <div>
+              <div className="m-eyebrow">02 / Sales Analytics</div>
+              <h1 className="m-serif" style={{fontSize:44,margin:"8px 0 0",lineHeight:.95,letterSpacing:"-.02em"}}>The <em style={{color:"var(--accent)"}}>shape</em> of demand.</h1>
+            </div>
+            <div style={{display:"flex",gap:12,alignItems:"center"}}>
+              <DateRange value={range} onChange={setRange}/>
+              <button className="m-btn">Export CSV</button>
+              <button className="m-btn primary">Share</button>
+            </div>
+          </div>
+        </div>
+        <div className="m-scroll" style={{flex:1,overflow:"auto"}}>
+          <section style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",borderBottom:"1px solid var(--ink)"}}>
+            {[{label:"Net Revenue",val:`$${fmt.short(totalRev*1000)}`,sub:"vs. $412M LP",delta:"+12.4%"},{label:"Orders",val:fmt.short(totalOrders),sub:"vs. 1.19M LP",delta:"+8.1%"},{label:"Avg. Order Value",val:`$${fmt.num(avgOrder,0)}`,sub:"vs. $362 LP",delta:"+3.9%"},{label:"Peak Day",val:fmt.date(peakDay.date),sub:`$${fmt.short(peakDay.value*1000)}`,delta:"RECORD"}].map((s,i,arr)=>(
+              <div key={i} style={{padding:"20px 24px",borderRight:i<arr.length-1?"1px solid var(--rule)":"none"}}>
+                <div className="m-eyebrow">{s.label}</div>
+                <div className="m-big-num m-num" style={{fontSize:40,marginTop:10}}>{s.val}</div>
+                <div style={{display:"flex",gap:10,marginTop:8,alignItems:"baseline"}}>
+                  <span className="m-mono" style={{fontSize:10,color:"var(--ink-2)",letterSpacing:".06em"}}>{s.sub}</span>
+                  <span className="m-mono" style={{fontSize:10,letterSpacing:".08em",color:s.delta.startsWith("+")??"var(--good)":s.delta==="RECORD"?"var(--accent)":"var(--bad)"}}>{s.delta}</span>
+                </div>
+              </div>
+            ))}
+          </section>
+          <section style={{display:"grid",gridTemplateColumns:"1.7fr 1fr",borderBottom:"1px solid var(--ink)"}}>
+            <div style={{padding:"20px 28px",borderRight:"1px solid var(--rule)"}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:12}}>
+                <div><div className="m-eyebrow">Series / {range.toUpperCase()}</div><h3 className="m-serif" style={{fontSize:24,margin:"4px 0 0"}}>Revenue Curve</h3></div>
+                <div style={{display:"flex",gap:4}}>
+                  {["revenue","orders","units"].map(m=><button key={m} onClick={()=>setMetric(m)} className="m-mono" style={{padding:"6px 10px",border:"1px solid var(--rule)",background:m===metric?"var(--ink)":"transparent",color:m===metric?"var(--paper)":"var(--ink-2)",fontSize:10,letterSpacing:".1em",textTransform:"uppercase",cursor:"pointer"}}>{m}</button>)}
+                </div>
+              </div>
+              <div style={{overflowX:"auto"}}>
+                <AreaChart data={filteredSeries} width={680} height={300}/>
+              </div>
+              <div style={{marginTop:16,paddingTop:16,borderTop:"1px solid var(--rule)",display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:16}}>
+                <div><div className="m-eyebrow">Trend</div><div className="m-mono" style={{fontSize:12,marginTop:4,color:"var(--good)"}}>▲ Bullish · 7 of 10 sessions up</div></div>
+                <div><div className="m-eyebrow">Volatility</div><div className="m-mono" style={{fontSize:12,marginTop:4}}>σ 0.064</div></div>
+                <div><div className="m-eyebrow">Drawdown</div><div className="m-mono" style={{fontSize:12,marginTop:4,color:"var(--bad)"}}>-8.2% on day 41</div></div>
+                <div><div className="m-eyebrow">Forecast</div><div className="m-mono" style={{fontSize:12,marginTop:4}}>$528M · 90% CI</div></div>
+              </div>
+            </div>
+            <div style={{padding:"20px 24px",display:"flex",flexDirection:"column",gap:20}}>
+              <div>
+                <div className="m-eyebrow">Breakdown / Region</div>
+                <div style={{marginTop:12}}><BarSplit items={D.REGIONS.map(r=>({label:r.code,value:totalRev*r.weight/1000}))} accent="var(--accent)"/></div>
+              </div>
+              <div>
+                <div className="m-eyebrow">Breakdown / Channel</div>
+                <div style={{marginTop:12}}><BarSplit items={[{label:"Direct",value:totalRev*.38/1000},{label:"Wholesale",value:totalRev*.30/1000},{label:"Marketplace",value:totalRev*.20/1000},{label:"Retail",value:totalRev*.12/1000}]} accent="var(--ink)"/></div>
+              </div>
+              <div style={{marginTop:"auto",padding:"12px 0",borderTop:"1px solid var(--rule)"}}>
+                <div className="m-eyebrow">Composition Note</div>
+                <p style={{fontSize:12,lineHeight:1.55,color:"var(--ink-2)",margin:"8px 0 0",fontFamily:"var(--sans)"}}>Direct continues its 6-week lift driven by VAPOR // RUN-AIR PRO restock. Wholesale soft in EUR — confirm Q3 forward orders Friday.</p>
+              </div>
+            </div>
+          </section>
+          <section style={{padding:"20px 28px"}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:12}}>
+              <div><div className="m-eyebrow">Movers / SKU</div><h3 className="m-serif" style={{fontSize:24,margin:"4px 0 0"}}>Top 12 by revenue</h3></div>
+              <div className="m-mono" style={{fontSize:10,color:"var(--ink-2)"}}>HOVER ROW FOR SPARKLINE</div>
+            </div>
+            <table className="m-table">
+              <thead><tr><th style={{width:40}}>#</th><th>SKU</th><th style={{width:90,textAlign:"right"}}>Units</th><th style={{width:110,textAlign:"right"}}>Revenue</th><th style={{width:90,textAlign:"right"}}>vs LP</th><th style={{width:90,textAlign:"right"}}>Margin</th><th style={{width:120}}>Trend</th><th style={{width:100}}>Stock</th></tr></thead>
+              <tbody>
+                {D.topSkus.map((s,i)=>(
+                  <tr key={s.sku} onMouseEnter={()=>setHoveredRow(i)} onMouseLeave={()=>setHoveredRow(null)}>
+                    <td style={{color:"var(--ink-3)"}}>{String(s.rank).padStart(2,"0")}</td>
+                    <td><div style={{display:"flex",alignItems:"center",gap:10}}><div className="m-stripe" style={{width:28,height:28,flex:"0 0 28px"}}></div><span>{s.sku}</span></div></td>
+                    <td className="m-num" style={{textAlign:"right"}}>{fmt.num(s.units)}</td>
+                    <td className="m-num" style={{textAlign:"right"}}>${fmt.short(s.revenue*1000)}</td>
+                    <td className="m-num" style={{textAlign:"right",color:s.delta>=0?"var(--good)":"var(--bad)"}}>{fmt.pct(s.delta)}</td>
+                    <td className="m-num" style={{textAlign:"right"}}>{s.margin.toFixed(1)}%</td>
+                    <td><Sparkline values={Array.from({length:12},(_,k)=>Math.sin(k*.5+i)*5+10+(s.delta>0?k*.5:-k*.3))} width={96} height={24} showTip={false}/></td>
+                    <td>
+                      <div style={{display:"flex",alignItems:"center",gap:8}}>
+                        <div style={{flex:1,height:4,background:"var(--paper-2)",position:"relative"}}><div style={{position:"absolute",inset:0,width:`${s.stock}%`,background:s.stock<30?"var(--bad)":s.stock<60?"var(--warn)":"var(--good)"}}></div></div>
+                        <span className="m-mono m-num" style={{fontSize:10,color:"var(--ink-2)",width:28,textAlign:"right"}}>{s.stock}%</span>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </section>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Orders screen ─────────────────────────────────────────────────────────── */
+function OrdersScreen(){
+  const D=window.MERIDIAN_DATA;
+  const [filter,setFilter]=useState("ALL");
+  const [q,setQ]=useState("");
+  const [selected,setSelected]=useState(null);
+  const [sort,setSort]=useState({key:"ts",dir:"desc"});
+  const statuses=["ALL",...D.STATUSES];
+  const filtered=useMemo(()=>{
+    let arr=D.orders;
+    if(filter!=="ALL")arr=arr.filter(o=>o.status===filter);
+    if(q.trim()){const qq=q.toLowerCase();arr=arr.filter(o=>o.id.toLowerCase().includes(qq)||o.sku.toLowerCase().includes(qq)||o.customer.toLowerCase().includes(qq)||o.region.toLowerCase().includes(qq));}
+    arr=[...arr].sort((a,b)=>{const dir=sort.dir==="asc"?1:-1;const va=a[sort.key];const vb=b[sort.key];if(va<vb)return -1*dir;if(va>vb)return 1*dir;return 0;});
+    return arr;
+  },[filter,q,sort]);
+  const counts=D.STATUSES.reduce((acc,s)=>{acc[s]=D.orders.filter(o=>o.status===s).length;return acc;},{});
+  const totalValue=filtered.reduce((s,o)=>s+o.value,0);
+  const toggleSort=key=>setSort(s=>({key,dir:s.key===key&&s.dir==="desc"?"asc":"desc"}));
+  return(
+    <div className="m-root" style={{position:"relative",display:"grid",gridTemplateColumns:"220px 1fr",height:"100%",overflow:"hidden"}}>
+      <SideNav current="orders"/>
+      <div style={{display:"flex",flexDirection:"column",overflow:"hidden"}}>
+        <div style={{padding:"20px 28px 16px",borderBottom:"1px solid var(--ink)"}}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end"}}>
+            <div>
+              <div className="m-eyebrow">03 / Orders</div>
+              <h1 className="m-serif" style={{fontSize:44,margin:"8px 0 0",lineHeight:.95,letterSpacing:"-.02em"}}>In motion <em style={{color:"var(--accent)"}}>now</em>.</h1>
+            </div>
+            <div style={{display:"flex",gap:12}}>
+              <button className="m-btn">Export</button>
+              <button className="m-btn primary">+ New Order</button>
+            </div>
+          </div>
+        </div>
+        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"10px 28px",borderBottom:"1px solid var(--ink)",gap:16,background:"var(--paper-2)"}}>
+          <div style={{display:"flex",gap:4,alignItems:"center",flexWrap:"wrap"}}>
+            {statuses.map(s=>{const active=s===filter;const count=s==="ALL"?D.orders.length:counts[s]||0;return(
+              <button key={s} onClick={()=>setFilter(s)} className="m-mono"
+                style={{padding:"5px 10px",border:"1px solid "+(active?"var(--ink)":"var(--rule)"),background:active?"var(--ink)":"transparent",color:active?"var(--paper)":"var(--ink-2)",fontSize:10,letterSpacing:".1em",textTransform:"uppercase",cursor:"pointer",display:"inline-flex",gap:8,alignItems:"center"}}>
+                <span>{s}</span><span style={{opacity:.6,fontSize:9}}>{count}</span>
+              </button>
+            );})}
+          </div>
+          <div style={{display:"flex",gap:16,alignItems:"center"}}>
+            <div style={{display:"flex",alignItems:"center",gap:8,borderBottom:"1px solid var(--ink)",width:240,paddingBottom:2}}>
+              <span className="m-mono" style={{fontSize:10,color:"var(--ink-2)"}}>⌕</span>
+              <input className="m-input" style={{border:0}} value={q} placeholder="ID, SKU, customer, region…" onChange={e=>setQ(e.target.value)}/>
+            </div>
+            <div className="m-mono" style={{fontSize:10,color:"var(--ink-2)",letterSpacing:".08em"}}>{filtered.length} / {D.orders.length} · ${fmt.short(totalValue)}</div>
+          </div>
+        </div>
+        <div className="m-scroll" style={{flex:1,overflow:"auto"}}>
+          <table className="m-table">
+            <thead style={{position:"sticky",top:0,background:"var(--paper)",zIndex:5}}>
+              <tr>
+                {[{k:"id",l:"Order",w:110},{k:"sku",l:"SKU",w:220},{k:"customer",l:"Customer",w:170},{k:"region",l:"Region",w:70},{k:"channel",l:"Channel",w:100},{k:"lane",l:"Lane",w:60},{k:"etaDays",l:"ETA",w:60,align:"right"},{k:"qty",l:"Qty",w:70,align:"right"},{k:"value",l:"Value",w:90,align:"right"},{k:"progress",l:"Progress",w:110},{k:"status",l:"Status",w:110}].map(c=>(
+                  <th key={c.k} onClick={()=>toggleSort(c.k)} style={{width:c.w,textAlign:c.align||"left",cursor:"pointer",userSelect:"none"}}>
+                    <span style={{display:"inline-flex",gap:4,alignItems:"center"}}>{c.l}<span style={{opacity:sort.key===c.k?1:.25,fontSize:8}}>{sort.key===c.k?(sort.dir==="asc"?"▲":"▼"):"▾"}</span></span>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.map(o=>(
+                <tr key={o.id} onClick={()=>setSelected(o)}>
+                  <td style={{color:"var(--ink-2)"}}>{o.id}</td>
+                  <td style={{overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{o.sku}</td>
+                  <td style={{overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{o.customer}</td>
+                  <td>{o.region}</td>
+                  <td style={{color:"var(--ink-2)"}}>{o.channel}</td>
+                  <td style={{color:"var(--ink-2)"}}>{o.lane}</td>
+                  <td className="m-num" style={{textAlign:"right"}}>{o.etaDays}d</td>
+                  <td className="m-num" style={{textAlign:"right"}}>{fmt.num(o.qty)}</td>
+                  <td className="m-num" style={{textAlign:"right"}}>${fmt.short(o.value)}</td>
+                  <td>
+                    <div style={{display:"flex",alignItems:"center",gap:6}}>
+                      <div style={{flex:1,height:3,background:"var(--paper-2)",position:"relative"}}>
+                        <div style={{position:"absolute",inset:0,width:`${o.progress}%`,background:o.status==="DELAYED"?"var(--bad)":o.status==="FULFILLED"?"var(--good)":"var(--ink)"}}></div>
+                      </div>
+                      <span className="m-mono m-num" style={{fontSize:9.5,color:"var(--ink-2)",width:26,textAlign:"right"}}>{o.progress}%</span>
+                    </div>
+                  </td>
+                  <td><StatusPill status={o.status}/></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <Drawer open={!!selected} onClose={()=>setSelected(null)} width={520}>
+        {selected&&<OrderDetail order={selected} onClose={()=>setSelected(null)}/>}
+      </Drawer>
+    </div>
+  );
+}
+
+function OrderDetail({order,onClose}){
+  const stages=[
+    {id:"1",label:"Order Placed",done:true,ts:"May 18 · 09:14"},
+    {id:"2",label:"Manufactured",done:true,ts:"May 21 · 18:30"},
+    {id:"3",label:"Dispatched",done:order.progress>=40,ts:"May 23 · 06:42"},
+    {id:"4",label:"In Transit",done:order.progress>=60,ts:order.lane==="AIR"?"AIR · LH8413":"SEA · MAERSK 2207E"},
+    {id:"5",label:"Customs Cleared",done:order.progress>=85,ts:order.progress>=85?"Pending":"—"},
+    {id:"6",label:"Delivered",done:order.status==="FULFILLED",ts:order.status==="FULFILLED"?"Today · 11:08":"—"},
+  ];
+  return(
+    <>
+      <div style={{padding:"20px 24px",borderBottom:"1px solid var(--ink)",display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+        <div>
+          <div className="m-eyebrow">Order Detail</div>
+          <div className="m-mono" style={{fontSize:14,marginTop:6}}>{order.id}</div>
+          <div className="m-serif" style={{fontSize:22,marginTop:8,lineHeight:1}}>{order.sku}</div>
+        </div>
+        <button onClick={onClose} style={{border:0,background:"transparent",cursor:"pointer",fontSize:18,lineHeight:1,color:"var(--ink-2)"}}>×</button>
+      </div>
+      <div className="m-scroll" style={{flex:1,overflow:"auto"}}>
+        <div style={{padding:"16px 24px",borderBottom:"1px solid var(--rule)"}}>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16,rowGap:14}}>
+            <OField l="Customer" v={order.customer}/><OField l="Status" v={<StatusPill status={order.status}/>}/>
+            <OField l="Region" v={order.region}/><OField l="Channel" v={order.channel}/>
+            <OField l="Lane" v={order.lane}/><OField l="ETA" v={`${order.etaDays} days`}/>
+            <OField l="Quantity" v={fmt.num(order.qty)+" units"}/><OField l="Value" v={`$${fmt.num(order.value)}`}/>
+          </div>
+        </div>
+        <div style={{padding:"16px 24px",borderBottom:"1px solid var(--rule)"}}>
+          <div className="m-eyebrow" style={{marginBottom:8}}>Item</div>
+          <image-slot id={`order-img-${order.id}`} shape="rect" placeholder={`PRODUCT IMAGE — ${order.sku}`} style={{width:"100%",height:200,display:"block"}}></image-slot>
+        </div>
+        <div style={{padding:"16px 24px",borderBottom:"1px solid var(--rule)"}}>
+          <div className="m-eyebrow" style={{marginBottom:14}}>Pipeline / Status</div>
+          <div style={{display:"flex",flexDirection:"column",gap:0}}>
+            {stages.map((s,i)=>(
+              <div key={s.id} style={{display:"grid",gridTemplateColumns:"20px 1fr auto",gap:12,alignItems:"center",padding:"8px 0",position:"relative"}}>
+                <div style={{width:12,height:12,border:"1.5px solid "+(s.done?"var(--ink)":"var(--rule)"),background:s.done?"var(--accent)":"transparent",borderRadius:0,position:"relative",zIndex:1}}></div>
+                {i<stages.length-1&&<div style={{position:"absolute",left:5,top:20,bottom:-4,width:2,background:s.done?"var(--ink)":"var(--rule)"}}></div>}
+                <div className="m-mono" style={{fontSize:11,color:s.done?"var(--ink)":"var(--ink-3)"}}>{s.label}</div>
+                <div className="m-mono" style={{fontSize:10,color:"var(--ink-2)",letterSpacing:".06em"}}>{s.ts}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div style={{padding:"16px 24px"}}>
+          <div className="m-eyebrow" style={{marginBottom:10}}>Documents</div>
+          <div style={{display:"flex",flexDirection:"column",gap:0}}>
+            {[["INV-"+order.id.slice(3),"Commercial Invoice","PDF · 184 KB"],["BOL-"+order.id.slice(3),"Bill of Lading","PDF · 92 KB"],["PCK-"+order.id.slice(3),"Packing List","PDF · 56 KB"]].map(([id,label,meta])=>(
+              <div key={id} style={{padding:"10px 0",borderBottom:"1px solid var(--rule-soft)",display:"flex",justifyContent:"space-between",alignItems:"center",cursor:"pointer"}}>
+                <div><div className="m-mono" style={{fontSize:11}}>{id}</div><div className="m-mono" style={{fontSize:9.5,color:"var(--ink-2)",letterSpacing:".08em",textTransform:"uppercase",marginTop:2}}>{label}</div></div>
+                <div className="m-mono" style={{fontSize:9.5,color:"var(--ink-2)"}}>{meta}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+      <div style={{padding:"16px 24px",borderTop:"1px solid var(--ink)",display:"flex",gap:8,background:"var(--paper-2)"}}>
+        <button className="m-btn ghost" style={{flex:1}}>Flag</button>
+        <button className="m-btn ghost" style={{flex:1}}>Reroute</button>
+        <button className="m-btn primary" style={{flex:1}}>Open Full</button>
+      </div>
+    </>
+  );
+}
+
+function OField({l,v}){
+  return(<div><div className="m-eyebrow">{l}</div><div className="m-mono" style={{fontSize:12,marginTop:4}}>{v}</div></div>);
+}
+
+/* ── Campaigns screen ──────────────────────────────────────────────────────── */
+function CampaignsScreen(){
+  const D=window.MERIDIAN_DATA;
+  const [filter,setFilter]=useState("ALL");
+  const tabs=["ALL","LIVE","SCHEDULED","ENDING","ARCHIVED"];
+  const filtered=filter==="ALL"?D.campaigns:D.campaigns.filter(c=>c.status===filter);
+  return(
+    <div className="m-root" style={{display:"grid",gridTemplateColumns:"220px 1fr",height:"100%",overflow:"hidden"}}>
+      <SideNav current="campaigns"/>
+      <div style={{display:"flex",flexDirection:"column",overflow:"hidden"}}>
+        <div style={{padding:"20px 28px 16px",borderBottom:"1px solid var(--ink)"}}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end"}}>
+            <div>
+              <div className="m-eyebrow">04 / Campaigns</div>
+              <h1 className="m-serif" style={{fontSize:44,margin:"8px 0 0",lineHeight:.95,letterSpacing:"-.02em"}}>Brand <em style={{color:"var(--accent)"}}>in motion</em>.</h1>
+            </div>
+            <div style={{display:"flex",gap:12}}>
+              <button className="m-btn">Calendar view</button>
+              <button className="m-btn primary">+ New Campaign</button>
+            </div>
+          </div>
+        </div>
+        <section style={{display:"grid",gridTemplateColumns:"repeat(5,1fr)",borderBottom:"1px solid var(--ink)"}}>
+          {[{label:"Live Now",val:"2",unit:"campaigns",color:"var(--accent)"},{label:"Total Spend",val:"$6.72",unit:"M USD"},{label:"Reach",val:"63.9",unit:"M unique"},{label:"Avg. CTR",val:"4.2",unit:"%"},{label:"Conv. Rate",val:"3.0",unit:"%"}].map((s,i,arr)=>(
+            <div key={i} style={{padding:"20px 24px",borderRight:i<arr.length-1?"1px solid var(--rule)":"none"}}>
+              <div className="m-eyebrow">{s.label}</div>
+              <div className="m-big-num m-num" style={{fontSize:40,marginTop:10,color:s.color||"var(--ink)"}}>{s.val}<span className="unit">{s.unit}</span></div>
+            </div>
+          ))}
+        </section>
+        <div style={{padding:"10px 28px",borderBottom:"1px solid var(--ink)",display:"flex",gap:4,background:"var(--paper-2)"}}>
+          {tabs.map(t=>{const active=t===filter;const count=t==="ALL"?D.campaigns.length:D.campaigns.filter(c=>c.status===t).length;return(
+            <button key={t} onClick={()=>setFilter(t)} className="m-mono"
+              style={{padding:"5px 10px",border:"1px solid "+(active?"var(--ink)":"var(--rule)"),background:active?"var(--ink)":"transparent",color:active?"var(--paper)":"var(--ink-2)",fontSize:10,letterSpacing:".1em",textTransform:"uppercase",cursor:"pointer",display:"inline-flex",gap:8,alignItems:"center"}}>
+              <span>{t}</span><span style={{opacity:.6,fontSize:9}}>{count}</span>
+            </button>
+          );})}
+        </div>
+        <div className="m-scroll" style={{flex:1,overflow:"auto"}}>
+          {filtered.map((c,idx)=><CampaignRow key={c.id} c={c} idx={idx}/>)}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CampaignRow({c,idx}){
+  const engagement=Array.from({length:28},(_,i)=>{const base=c.reach/28*1000;return base*(.7+.6*Math.sin(i*.6+idx)+Math.random()*.4);});
+  return(
+    <article style={{display:"grid",gridTemplateColumns:"260px 1fr 340px",borderBottom:"1px solid var(--rule)",minHeight:220}}>
+      <div style={{borderRight:"1px solid var(--rule)",position:"relative"}}>
+        <image-slot id={`camp-${c.id}`} shape="rect" placeholder={`KEY ART — ${c.name}`} style={{width:"100%",height:"100%",display:"block"}}></image-slot>
+        <div style={{position:"absolute",top:12,left:12,pointerEvents:"none"}}><StatusPill status={c.status}/></div>
+      </div>
+      <div style={{padding:"20px 24px",display:"flex",flexDirection:"column",justifyContent:"space-between",borderRight:"1px solid var(--rule)"}}>
+        <div>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:8}}>
+            <div className="m-mono" style={{fontSize:10,color:"var(--ink-2)",letterSpacing:".1em"}}>{c.id}</div>
+            <div className="m-mono" style={{fontSize:10,color:"var(--ink-2)",letterSpacing:".08em",textTransform:"uppercase"}}>{c.daysLeft>0?`${c.daysLeft}d / ${c.days}d remaining`:`${c.days}d total`}</div>
+          </div>
+          <h3 className="m-serif" style={{fontSize:28,lineHeight:1,letterSpacing:"-.01em",margin:0}}>{c.name}</h3>
+          <div style={{display:"flex",gap:6,marginTop:10,flexWrap:"wrap"}}>{c.channels.map(ch=><span key={ch} className="m-tag">{ch}</span>)}</div>
+        </div>
+        <div style={{marginTop:16}}>
+          <div style={{height:4,background:"var(--paper-2)",position:"relative"}}><div style={{position:"absolute",inset:0,width:`${((c.days-c.daysLeft)/c.days)*100}%`,background:c.status==="LIVE"?"var(--accent)":c.status==="ENDING"?"var(--warn)":"var(--ink)"}}></div></div>
+          <div style={{display:"flex",justifyContent:"space-between",marginTop:6}}>
+            <span className="m-mono" style={{fontSize:9.5,color:"var(--ink-2)",letterSpacing:".08em"}}>START</span>
+            <span className="m-mono" style={{fontSize:9.5,color:"var(--ink-2)",letterSpacing:".08em"}}>END</span>
+          </div>
+        </div>
+      </div>
+      <div style={{padding:"20px 24px",display:"grid",gridTemplateRows:"auto 1fr",gap:12}}>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:0}}>
+          <CMetric label="Spend" val={`$${c.spend.toFixed(2)}M`}/>
+          <CMetric label="Reach" val={`${c.reach.toFixed(1)}M`}/>
+          <CMetric label="CTR" val={`${c.ctr.toFixed(1)}%`}/>
+          <CMetric label="Conv." val={`${c.conv.toFixed(1)}%`}/>
+        </div>
+        <div style={{marginTop:4}}>
+          <div className="m-eyebrow" style={{marginBottom:6}}>Engagement / 28d</div>
+          <Sparkline values={engagement} width={300} height={48} stroke={c.status==="LIVE"?"var(--accent)":"var(--ink)"} fill={c.status==="LIVE"?"var(--accent)":"var(--ink)"} fmtTip={v=>fmt.short(v)+" imp."}/>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function CMetric({label,val}){
+  return(
+    <div style={{borderRight:"1px solid var(--rule-soft)",paddingRight:12}}>
+      <div className="m-eyebrow">{label}</div>
+      <div className="m-mono m-num" style={{fontSize:18,marginTop:4}}>{val}</div>
+    </div>
+  );
+}
+
+/* ── Tweaks panel ──────────────────────────────────────────────────────────── */
+const FONT_THEMES={
+  editorial:{serif:'"DM Serif Display","Times New Roman",serif',sans:'"Archivo","Helvetica Neue",sans-serif',mono:'"JetBrains Mono","SF Mono","Menlo",monospace'},
+  humanist:{serif:'"Spectral","Times New Roman",serif',sans:'"Space Grotesk","Helvetica Neue",sans-serif',mono:'"Space Mono","SF Mono","Menlo",monospace'},
+  terminal:{serif:'"IBM Plex Serif","Times New Roman",serif',sans:'"IBM Plex Sans","Helvetica Neue",sans-serif',mono:'"IBM Plex Mono","SF Mono","Menlo",monospace'},
+};
+const ACCENT_PRESETS=["#ff4500","#0057ff","#00b359","#9b30ff","#e8a000","#14110e"];
+
+function TweaksPanel(){
+  const [open,setOpen]=useState(false);
+  const [fontTheme,setFontTheme]=useState("editorial");
+  const [accent,setAccent]=useState("#ff4500");
+
+  useEffect(()=>{
+    const t=FONT_THEMES[fontTheme];
+    const root=document.documentElement;
+    root.style.setProperty("--serif",t.serif);
+    root.style.setProperty("--sans",t.sans);
+    root.style.setProperty("--mono",t.mono);
+    root.style.setProperty("--accent",accent);
+  },[fontTheme,accent]);
+
+  return(
+    <>
+      <button onClick={()=>setOpen(o=>!o)}
+        style={{position:"fixed",bottom:20,right:20,zIndex:100,background:"var(--ink)",color:"var(--paper)",border:"none",padding:"8px 14px",fontFamily:"var(--mono)",fontSize:10,letterSpacing:".12em",textTransform:"uppercase",cursor:"pointer"}}>
+        {open?"✕ Close":"⚙ Tweaks"}
+      </button>
+      {open&&(
+        <div style={{position:"fixed",bottom:60,right:20,zIndex:99,background:"var(--paper)",border:"1px solid var(--ink)",padding:20,width:240,boxShadow:"4px 4px 0 var(--ink)"}}>
+          <div className="m-eyebrow" style={{marginBottom:12}}>Typography</div>
+          <div style={{display:"flex",flexDirection:"column",gap:4,marginBottom:20}}>
+            {Object.keys(FONT_THEMES).map(k=>(
+              <button key={k} onClick={()=>setFontTheme(k)}
+                style={{padding:"6px 10px",border:"1px solid "+(fontTheme===k?"var(--ink)":"var(--rule)"),background:fontTheme===k?"var(--ink)":"transparent",color:fontTheme===k?"var(--paper)":"var(--ink)",fontFamily:"var(--mono)",fontSize:10,letterSpacing:".1em",textTransform:"uppercase",cursor:"pointer",textAlign:"left"}}>
+                {k}
+              </button>
+            ))}
+          </div>
+          <div className="m-eyebrow" style={{marginBottom:12}}>Accent color</div>
+          <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+            {ACCENT_PRESETS.map(c=>(
+              <button key={c} onClick={()=>setAccent(c)}
+                style={{width:28,height:28,background:c,border:accent===c?"2px solid var(--ink)":"2px solid transparent",cursor:"pointer",outline:accent===c?"2px solid var(--paper)":"none",outlineOffset:-4}}>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+/* ── App root ──────────────────────────────────────────────────────────────── */
+function App(){
+  const [screen,setScreen]=useState("overview");
+  useEffect(()=>{ window.__setScreen=setScreen; },[]);
+  const screens={overview:OverviewScreen,sales:SalesScreen,orders:OrdersScreen,campaigns:CampaignsScreen};
+  const Screen=screens[screen]||OverviewScreen;
+  return(
+    <>
+      <div style={{height:"100%"}}>
+        <Screen/>
+      </div>
+      <TweaksPanel/>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
 </script>
 </body>
 </html>
