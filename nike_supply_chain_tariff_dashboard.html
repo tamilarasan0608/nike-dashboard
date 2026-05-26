@@ -709,9 +709,289 @@ body::after {
 @media(max-width:640px) {
   .kpi-rings { grid-template-columns:1fr; }
 }
+
+/* ═══════════════════════════════════════════════════════
+   GLOBAL BUSINESS DATA — SECTIONS §8-§11
+═══════════════════════════════════════════════════════ */
+.sec-num-blue {
+  width:26px;height:26px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--blue),#93C5FD);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:800;color:#fff;
+}
+.sec-num-green {
+  width:26px;height:26px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--green),#86efac);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:800;color:#fff;
+}
+.ov-kpi-grid {
+  display:grid;grid-template-columns:repeat(6,1fr);
+  gap:1px;background:var(--border);border-radius:var(--r-lg);
+  overflow:hidden;margin-top:1.25rem;
+}
+.ov-card {
+  background:var(--card);padding:1.25rem 1rem;text-align:center;
+  transition:background .2s;position:relative;
+}
+.ov-card:hover{background:#1E1E1E;}
+.ov-label{font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.9px;margin-bottom:7px;}
+.ov-val{font-size:20px;font-weight:800;font-family:var(--mono);letter-spacing:-.5px;}
+.ov-sub{font-size:10px;color:var(--t3);margin-top:4px;}
+
+.rev-bar-row{margin-bottom:1.1rem;}
+.rev-bar-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
+.rev-bar-name{font-size:13px;font-weight:600;color:var(--t1);}
+.rev-bar-val{font-family:var(--mono);font-size:12px;font-weight:700;}
+.rev-bar-track{height:10px;background:rgba(255,255,255,.06);border-radius:5px;overflow:hidden;}
+.rev-bar-fill{height:100%;border-radius:5px;width:0;transition:width 1.4s cubic-bezier(.16,1,.3,1);}
+.rev-bar-sub{font-size:11px;color:var(--t3);margin-top:3px;}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.5rem;}
+.panel-title{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:1.1rem;}
+
+.channel-bar{display:flex;height:44px;border-radius:var(--r-md);overflow:hidden;margin:.75rem 0;}
+.ch-seg{
+  height:100%;display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;font-family:var(--mono);
+  width:0;overflow:hidden;white-space:nowrap;
+  transition:width 1.4s cubic-bezier(.16,1,.3,1);
+}
+
+.dig-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;}
+.dig-card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);
+  padding:1.25rem;position:relative;transition:all .3s ease;overflow:hidden;
+}
+.dig-card:hover{border-color:var(--border-red);transform:translateY(-3px);box-shadow:0 6px 20px rgba(226,75,74,.15);}
+.dig-icon{font-size:22px;margin-bottom:8px;}
+.dig-label{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.7px;margin-bottom:5px;}
+.dig-val{font-size:24px;font-weight:800;font-family:var(--mono);letter-spacing:-.5px;}
+.dig-sub{font-size:11px;color:var(--t3);margin-top:3px;}
+
+.mkt-row{margin-bottom:1.25rem;}
+.mkt-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
+.mkt-brand{font-size:14px;font-weight:700;}
+.mkt-pct{font-family:var(--mono);font-size:18px;font-weight:800;}
+.mkt-track{height:14px;background:rgba(255,255,255,.06);border-radius:7px;overflow:hidden;}
+.mkt-fill{height:100%;border-radius:7px;width:0;transition:width 1.5s cubic-bezier(.16,1,.3,1);}
+.mkt-sub{font-size:11px;color:var(--t3);margin-top:3px;}
+
+.store-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-top:1rem;}
+.store-card{background:var(--card2);border:1px solid var(--border);border-radius:var(--r-md);padding:1rem;text-align:center;}
+.store-count{font-family:var(--mono);font-size:24px;font-weight:800;color:var(--blue);}
+.store-region{font-size:10px;color:var(--t3);margin-top:4px;text-transform:uppercase;letter-spacing:.5px;}
+
+@media(max-width:760px){
+  .two-col{grid-template-columns:1fr;}
+  .dig-grid{grid-template-columns:repeat(2,1fr);}
+  .ov-kpi-grid{grid-template-columns:repeat(3,1fr);}
+  .store-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:480px){
+  .ov-kpi-grid{grid-template-columns:repeat(2,1fr);}
+}
+
+/* ═══════════════════════════════════════════════════════
+   MOTION GRAPHICS v2 · DYNAMIC SCROLL ENGINE
+═══════════════════════════════════════════════════════ */
+
+/* Neutralise pseudo-element orbs — real divs take over */
+body::before,body::after{opacity:0!important;animation:none!important;}
+
+/* ── Parallax orb divs ── */
+.orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;will-change:transform;}
+.orb-1{
+  width:700px;height:700px;top:-20%;right:-10%;
+  background:radial-gradient(circle,rgba(226,75,74,.09) 0%,transparent 70%);
+  animation:floatA 10s ease-in-out infinite;
+}
+.orb-2{
+  width:600px;height:600px;bottom:-20%;left:-10%;
+  background:radial-gradient(circle,rgba(59,130,246,.06) 0%,transparent 70%);
+  animation:floatA 13s ease-in-out infinite reverse;
+}
+.orb-3{
+  width:460px;height:460px;top:55%;left:48%;
+  background:radial-gradient(circle,rgba(34,197,94,.04) 0%,transparent 70%);
+  animation:floatA 17s ease-in-out infinite;
+}
+
+/* ── Particle canvas ── */
+#particles-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.38;}
+
+/* ── Film-grain noise texture ── */
+#noise-overlay{
+  position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.022;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:200px 200px;
+}
+
+/* ── Subtle dot grid ── */
+#grid-overlay{
+  position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.3;
+  background-image:radial-gradient(circle,rgba(255,255,255,.1) 1px,transparent 1px);
+  background-size:52px 52px;
+  mask-image:radial-gradient(ellipse 85% 85% at 50% 50%,black 0%,transparent 100%);
+  -webkit-mask-image:radial-gradient(ellipse 85% 85% at 50% 50%,black 0%,transparent 100%);
+}
+
+/* ── Side navigation dots ── */
+#sidenav{
+  position:fixed;right:1.5rem;top:50%;
+  transform:translateY(-50%);z-index:500;
+  display:flex;flex-direction:column;gap:12px;
+  opacity:0;transition:opacity .6s ease;
+}
+#sidenav.ready{opacity:1;}
+.sn-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:rgba(255,255,255,.15);cursor:pointer;
+  transition:all .35s cubic-bezier(.34,1.56,.64,1);
+  position:relative;
+}
+.sn-dot::after{
+  content:attr(data-label);
+  position:absolute;right:18px;top:50%;
+  transform:translateY(-50%) translateX(5px);
+  background:rgba(9,9,11,.96);backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,.1);
+  padding:4px 11px;border-radius:5px;white-space:nowrap;
+  font-family:var(--mono);font-size:9px;letter-spacing:.09em;color:var(--t2);
+  opacity:0;pointer-events:none;
+  transition:opacity .18s ease,transform .18s ease;
+}
+.sn-dot:hover{background:rgba(255,255,255,.42);transform:scale(1.6);}
+.sn-dot:hover::after{opacity:1;transform:translateY(-50%) translateX(0);}
+.sn-dot.active{
+  background:var(--red);width:9px;height:9px;
+  box-shadow:0 0 16px rgba(226,75,74,.75);transform:scale(1.4);
+}
+@media(max-width:960px){#sidenav{display:none;}}
+
+/* ── Enhanced section reveal — alternating horizontal slide + blur ── */
+.section{
+  position:relative;
+  will-change:opacity,transform,filter;
+  filter:blur(.55px);
+  transition:
+    opacity .8s cubic-bezier(.16,1,.3,1),
+    transform .8s cubic-bezier(.16,1,.3,1),
+    filter .8s cubic-bezier(.16,1,.3,1);
+}
+.section:nth-child(odd) {transform:translateX(26px) translateY(22px);}
+.section:nth-child(even){transform:translateX(-26px) translateY(22px);}
+.section.vis{opacity:1!important;transform:none!important;filter:blur(0)!important;}
+
+/* ── Scan-line sweep on section entry ── */
+.section::before{
+  content:'';position:absolute;left:0;top:0;right:0;height:1px;z-index:2;
+  background:linear-gradient(90deg,transparent,rgba(59,130,246,.55),rgba(226,75,74,.75),rgba(59,130,246,.55),transparent);
+  transform:scaleX(0);transform-origin:left;pointer-events:none;
+  transition:transform 1.1s cubic-bezier(.16,1,.3,1) .05s;
+}
+.section.vis::before{transform:scaleX(1);}
+
+/* ── Section bottom progress line ── */
+.section-progress{
+  position:absolute;bottom:0;left:0;height:1px;pointer-events:none;
+  background:linear-gradient(90deg,var(--red),rgba(226,75,74,0));
+  width:0;transition:width 1.5s cubic-bezier(.16,1,.3,1) .5s;
+}
+.section.vis .section-progress{width:100%;}
+
+/* ── Section watermark number ── */
+.sec-stamp-mg{
+  font-family:var(--mono);font-size:120px;font-weight:900;
+  color:rgba(255,255,255,0);position:absolute;
+  right:-.75rem;top:-2.5rem;line-height:1;
+  pointer-events:none;user-select:none;z-index:0;
+  transition:color 1.3s ease .25s;
+}
+.section.vis .sec-stamp-mg{color:rgba(255,255,255,.032);}
+
+/* ── Section number badge pop ── */
+@keyframes secNumBounce{
+  0%{transform:scale(.55);opacity:0}
+  60%{transform:scale(1.3)}
+  82%{transform:scale(.92)}
+  100%{transform:scale(1);opacity:1}
+}
+.section.vis .sec-num,
+.section.vis .sec-num-blue,
+.section.vis .sec-num-green{animation:secNumBounce .65s cubic-bezier(.34,1.56,.64,1) .28s both;}
+
+/* ── Glassmorphism panels ── */
+.panel{
+  background:rgba(12,12,15,.9)!important;
+  backdrop-filter:blur(24px) saturate(1.5);
+  -webkit-backdrop-filter:blur(24px) saturate(1.5);
+  border:1px solid rgba(255,255,255,.09)!important;
+  transition:border-color .3s ease,box-shadow .3s ease;
+}
+.panel:hover{border-color:rgba(255,255,255,.16)!important;box-shadow:0 10px 36px rgba(0,0,0,.4);}
+
+/* ── Floating digital cards ── */
+@keyframes cardFloat{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-6px)}
+}
+.dig-grid .dig-card:nth-child(1){animation:cardFloat 5s 0s ease-in-out infinite;}
+.dig-grid .dig-card:nth-child(2){animation:cardFloat 5s -1.25s ease-in-out infinite;}
+.dig-grid .dig-card:nth-child(3){animation:cardFloat 5s -2.5s ease-in-out infinite;}
+.dig-grid .dig-card:nth-child(4){animation:cardFloat 5s -3.75s ease-in-out infinite;}
+.dig-grid .dig-card:hover{
+  animation:none!important;
+  transform:translateY(-8px) scale(1.03)!important;
+  border-color:rgba(226,75,74,.48)!important;
+  box-shadow:0 14px 36px rgba(226,75,74,.22)!important;
+}
+.dig-card:hover .dig-val{text-shadow:0 0 26px currentColor;}
+
+/* ── KPI hover glow ── */
+.ov-card:hover .ov-val{text-shadow:0 0 30px currentColor;transition:text-shadow .35s ease;}
+.d-card{transition:all .35s cubic-bezier(.34,1.56,.64,1)!important;}
+.d-card:hover{transform:translateY(-8px) scale(1.025)!important;}
+
+/* ── Store card ── */
+.store-card{transition:all .32s cubic-bezier(.34,1.56,.64,1);cursor:default;}
+.store-card:hover{transform:translateY(-5px) scale(1.05);border-color:rgba(59,130,246,.42);box-shadow:0 8px 26px rgba(59,130,246,.2);}
+
+/* ── Market bar shimmer sweep ── */
+@keyframes barShimmer{
+  0%{background-position:-200% 0}
+  100%{background-position:200% 0}
+}
+.mkt-fill{position:relative;overflow:hidden;}
+.mkt-fill.shimmer::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent 20%,rgba(255,255,255,.26) 50%,transparent 80%);
+  background-size:200% 100%;
+  animation:barShimmer 2.4s linear infinite;
+}
+
+/* ── Chart wrap hover ── */
+.chart-wrap{transition:box-shadow .3s ease;}
+.chart-wrap:hover{box-shadow:0 0 42px rgba(226,75,74,.07),inset 0 0 0 1px rgba(255,255,255,.06);}
+
+/* ── Extra stagger-rows children ── */
+.stagger-rows.vis tr:nth-child(7){opacity:1;transform:none;transition-delay:.44s}
+.stagger-rows.vis tr:nth-child(8){opacity:1;transform:none;transition-delay:.50s}
+.stagger-rows.vis tr:nth-child(9){opacity:1;transform:none;transition-delay:.56s}
+.stagger-rows.vis tr:nth-child(10){opacity:1;transform:none;transition-delay:.62s}
 </style>
 </head>
 <body>
+
+<!-- ── MOTION GRAPHICS LAYER ── -->
+<canvas id="particles-canvas"></canvas>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+<div id="noise-overlay"></div>
+<div id="grid-overlay"></div>
+<nav id="sidenav" aria-label="Section navigation"></nav>
 
 <!-- ── CINEMATIC MULTI-PHASE INTRO ── -->
 <div id="intro">
@@ -1369,6 +1649,290 @@ body::after {
       </div>
     </div>
 
+
+    <!-- ══════════════════════════════════════════════════
+         §8 — NIKE FY2024 GLOBAL BUSINESS SNAPSHOT
+    ══════════════════════════════════════════════════ -->
+    <div class="section">
+      <div class="sec-head">
+        <div class="sec-num-blue">8</div>
+        <div class="sec-title-wrap">
+          <div class="sec-title">Nike FY2024 — Global Business Snapshot</div>
+          <div class="sec-line" style="background:linear-gradient(90deg,var(--blue),transparent)"></div>
+        </div>
+      </div>
+      <p style="font-size:13px;color:var(--t2);max-width:640px;line-height:1.6;margin-bottom:.25rem">Nike, Inc. (NYSE: NKE) is the world's #1 athletic brand. All figures sourced from the official FY2024 Form 10-K SEC filing.</p>
+      <div class="ov-kpi-grid stagger-grid">
+        <div class="ov-card">
+          <div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--blue)"></div>
+          <div class="ov-label">Annual Revenue</div>
+          <div class="ov-val" style="color:var(--blue)">$46.7B</div>
+          <div class="ov-sub">FY2024 · SEC 10-K</div>
+        </div>
+        <div class="ov-card">
+          <div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--green)"></div>
+          <div class="ov-label">Net Income</div>
+          <div class="ov-val" style="color:var(--green)">$5.1B</div>
+          <div class="ov-sub">11% net margin</div>
+        </div>
+        <div class="ov-card">
+          <div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--green)"></div>
+          <div class="ov-label">Gross Margin</div>
+          <div class="ov-val" style="color:var(--green)">44%</div>
+          <div class="ov-sub">$20.5B gross profit</div>
+        </div>
+        <div class="ov-card">
+          <div style="position:absolute;top:0;left:0;right:0;height:2px;background:rgba(255,255,255,.2)"></div>
+          <div class="ov-label">Employees</div>
+          <div class="ov-val">76.7K+</div>
+          <div class="ov-sub">Worldwide</div>
+        </div>
+        <div class="ov-card">
+          <div style="position:absolute;top:0;left:0;right:0;height:2px;background:rgba(255,255,255,.2)"></div>
+          <div class="ov-label">Countries</div>
+          <div class="ov-val">170+</div>
+          <div class="ov-sub">Active markets</div>
+        </div>
+        <div class="ov-card">
+          <div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--yellow)"></div>
+          <div class="ov-label">Diluted EPS</div>
+          <div class="ov-val" style="color:var(--yellow)">$3.47</div>
+          <div class="ov-sub">Per share FY2024</div>
+        </div>
+      </div>
+      <div class="d-grid stagger-grid" style="margin-top:1rem;grid-template-columns:repeat(auto-fill,minmax(180px,1fr))">
+        <div class="d-card"><div class="d-title">Operating Income</div><div class="d-val" style="color:var(--green)">$6.2B</div><div class="d-desc">13% operating margin — consistent multi-year performance</div></div>
+        <div class="d-card"><div class="d-title">Operating Cash Flow</div><div class="d-val" style="color:var(--blue)">$3.8B</div><div class="d-desc">Strong free cash flow — funds buybacks &amp; dividends</div></div>
+        <div class="d-card"><div class="d-title">R&amp;D Investment</div><div class="d-val" style="color:var(--yellow)">$800M+</div><div class="d-desc">Annual R&amp;D spend — 150+ patents filed yearly</div></div>
+        <div class="d-card"><div class="d-title">New Products / Year</div><div class="d-val">2,000+</div><div class="d-desc">Launched annually across footwear, apparel &amp; equipment</div></div>
+      </div>
+      <div class="refs" style="margin-top:1rem">
+        <div class="refs-lbl">Sources</div>
+        <div class="ref-row">
+          <a class="ref-a" href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001318605&type=10-K&dateb=&owner=exclude&count=100" target="_blank">Nike Form 10-K FY2024 (SEC EDGAR)</a>
+          <a class="ref-a" href="https://investors.nike.com/" target="_blank">Nike Investor Relations</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+         §9 — REVENUE INTELLIGENCE
+    ══════════════════════════════════════════════════ -->
+    <div class="section">
+      <div class="sec-head">
+        <div class="sec-num-blue">9</div>
+        <div class="sec-title-wrap">
+          <div class="sec-title">Revenue Intelligence — $46.7B Breakdown</div>
+          <div class="sec-line" style="background:linear-gradient(90deg,var(--blue),transparent)"></div>
+        </div>
+      </div>
+      <div class="two-col">
+        <!-- By Product -->
+        <div class="panel" id="prodRevPanel">
+          <div class="panel-title">By Product Category</div>
+          <div class="rev-bar-row">
+            <div class="rev-bar-hd"><span class="rev-bar-name">Footwear</span><span class="rev-bar-val" style="color:#E24B4A">$21.5B · 46%</span></div>
+            <div class="rev-bar-track"><div class="rev-bar-fill" data-w="46%" style="background:linear-gradient(90deg,#E24B4A,rgba(226,75,74,.5))"></div></div>
+            <div class="rev-bar-sub">Air Max, Jordan, React, ZoomX, Vaporfly</div>
+          </div>
+          <div class="rev-bar-row">
+            <div class="rev-bar-hd"><span class="rev-bar-name">Apparel</span><span class="rev-bar-val" style="color:#3B82F6">$18.2B · 39%</span></div>
+            <div class="rev-bar-track"><div class="rev-bar-fill" data-w="39%" style="background:linear-gradient(90deg,#3B82F6,rgba(59,130,246,.5))"></div></div>
+            <div class="rev-bar-sub">Dri-FIT, ACG, performance &amp; lifestyle</div>
+          </div>
+          <div class="rev-bar-row">
+            <div class="rev-bar-hd"><span class="rev-bar-name">Equipment &amp; Accessories</span><span class="rev-bar-val" style="color:#22C55E">$6.5B · 15%</span></div>
+            <div class="rev-bar-track"><div class="rev-bar-fill" data-w="15%" style="background:linear-gradient(90deg,#22C55E,rgba(34,197,94,.5))"></div></div>
+            <div class="rev-bar-sub">Bags, socks, hats, sports accessories</div>
+          </div>
+        </div>
+        <!-- By Geography -->
+        <div class="panel" id="geoRevPanel">
+          <div class="panel-title">By Geography</div>
+          <div class="rev-bar-row">
+            <div class="rev-bar-hd"><span class="rev-bar-name">🇺🇸 North America</span><span class="rev-bar-val" style="color:#E24B4A">$18.5B · 40%</span></div>
+            <div class="rev-bar-track"><div class="rev-bar-fill" data-w="40%" style="background:#E24B4A"></div></div>
+            <div class="rev-bar-sub">Largest single market — US + Canada</div>
+          </div>
+          <div class="rev-bar-row">
+            <div class="rev-bar-hd"><span class="rev-bar-name">🌏 Asia-Pacific</span><span class="rev-bar-val" style="color:#22C55E">$12.2B · 26%</span></div>
+            <div class="rev-bar-track"><div class="rev-bar-fill" data-w="26%" style="background:#22C55E"></div></div>
+            <div class="rev-bar-sub">China, Japan, South Korea, ANZ</div>
+          </div>
+          <div class="rev-bar-row">
+            <div class="rev-bar-hd"><span class="rev-bar-name">🌍 EMEA</span><span class="rev-bar-val" style="color:#3B82F6">$10.8B · 23%</span></div>
+            <div class="rev-bar-track"><div class="rev-bar-fill" data-w="23%" style="background:#3B82F6"></div></div>
+            <div class="rev-bar-sub">Europe, Middle East &amp; Africa</div>
+          </div>
+          <div class="rev-bar-row">
+            <div class="rev-bar-hd"><span class="rev-bar-name">🌎 Latin America</span><span class="rev-bar-val" style="color:#F59E0B">$5.2B · 11%</span></div>
+            <div class="rev-bar-track"><div class="rev-bar-fill" data-w="11%" style="background:#F59E0B"></div></div>
+            <div class="rev-bar-sub">Brazil-led, growing urban consumer base</div>
+          </div>
+        </div>
+      </div>
+      <!-- Channel Mix -->
+      <div class="panel" style="margin-top:1.25rem" id="chanPanel">
+        <div class="panel-title">Revenue by Sales Channel — DTC vs Wholesale</div>
+        <div class="channel-bar">
+          <div class="ch-seg" data-w="40%" style="background:rgba(226,75,74,.88);color:#fff">DTC — 40% ($18.7B)</div>
+          <div class="ch-seg" data-w="60%" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.75)">Wholesale — 60% ($28.0B)</div>
+        </div>
+        <div style="display:flex;gap:2rem;flex-wrap:wrap;font-size:12px;color:var(--t2);margin-top:.25rem">
+          <span><strong style="color:#E24B4A">DTC:</strong> Nike Retail $11.2B + E-commerce $7.5B (+15% YoY)</span>
+          <span><strong style="color:var(--t1)">Wholesale:</strong> Foot Locker, Dick's, JD Sports, Zalando + global partners</span>
+        </div>
+      </div>
+      <div class="info" style="margin-top:1rem">
+        <strong>DTC Strategy:</strong> Nike's direct-to-consumer share has grown from 30% (FY2020) to 40% (FY2024) — boosting margins by cutting out wholesale middlemen and deepening consumer data ownership.
+      </div>
+      <div class="refs" style="margin-top:1rem">
+        <div class="refs-lbl">Source</div>
+        <div class="ref-row">
+          <a class="ref-a" href="https://www.sec.gov/Archives/edgar/container/1318605/000131860524070449/nke-20240531.htm" target="_blank">Nike 10-K FY2024 — Consolidated Statements (SEC)</a>
+          <a class="ref-a" href="https://investors.nike.com/" target="_blank">Nike Investor Relations</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+         §10 — DIGITAL & RETAIL FOOTPRINT
+    ══════════════════════════════════════════════════ -->
+    <div class="section">
+      <div class="sec-head">
+        <div class="sec-num-blue">10</div>
+        <div class="sec-title-wrap">
+          <div class="sec-title">Digital &amp; Retail Footprint</div>
+          <div class="sec-line" style="background:linear-gradient(90deg,var(--blue),transparent)"></div>
+        </div>
+      </div>
+      <div class="dig-grid stagger-grid">
+        <div class="dig-card">
+          <div style="position:absolute;top:0;left:0;right:0;height:2px;background:#E24B4A"></div>
+          <div class="dig-icon">🛒</div>
+          <div class="dig-label">E-Commerce Revenue</div>
+          <div class="dig-val" style="color:#E24B4A">$7.5B</div>
+          <div class="dig-sub">+15% year-over-year growth</div>
+        </div>
+        <div class="dig-card">
+          <div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--blue)"></div>
+          <div class="dig-icon">📱</div>
+          <div class="dig-label">SNKRS App Downloads</div>
+          <div class="dig-val" style="color:var(--blue)">25M+</div>
+          <div class="dig-sub">Global installs — exclusive drops</div>
+        </div>
+        <div class="dig-card">
+          <div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--green)"></div>
+          <div class="dig-icon">👥</div>
+          <div class="dig-label">Digital Subscribers</div>
+          <div class="dig-val" style="color:var(--green)">40M+</div>
+          <div class="dig-sub">Active Nike app members</div>
+        </div>
+        <div class="dig-card">
+          <div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--yellow)"></div>
+          <div class="dig-icon">📣</div>
+          <div class="dig-label">Social Media Reach</div>
+          <div class="dig-val" style="color:var(--yellow)">150M+</div>
+          <div class="dig-sub">Combined platform followers</div>
+        </div>
+      </div>
+      <div style="margin-top:1.5rem">
+        <div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:.75rem">Global Retail Store Network</div>
+        <div class="store-grid stagger-grid">
+          <div class="store-card">
+            <div class="store-count">1,000+</div>
+            <div class="store-region">🌍 Total Worldwide</div>
+          </div>
+          <div class="store-card">
+            <div class="store-count" style="color:#E24B4A">350+</div>
+            <div class="store-region">🇺🇸 United States</div>
+          </div>
+          <div class="store-card">
+            <div class="store-count" style="color:var(--green)">280+</div>
+            <div class="store-region">🌏 Asia-Pacific</div>
+          </div>
+          <div class="store-card">
+            <div class="store-count" style="color:var(--yellow)">250+</div>
+            <div class="store-region">🌍 Europe</div>
+          </div>
+        </div>
+      </div>
+      <div class="refs" style="margin-top:1.25rem">
+        <div class="refs-lbl">Sources</div>
+        <div class="ref-row">
+          <a class="ref-a" href="https://www.sec.gov/Archives/edgar/container/1318605/000131860524070449/nke-20240531.htm" target="_blank">Nike 10-K FY2024 — Digital Section</a>
+          <a class="ref-a" href="https://www.nike.com/a/newsroom" target="_blank">Nike Newsroom</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+         §11 — GLOBAL MARKET POSITION
+    ══════════════════════════════════════════════════ -->
+    <div class="section">
+      <div class="sec-head">
+        <div class="sec-num-green">11</div>
+        <div class="sec-title-wrap">
+          <div class="sec-title">Global Market Position</div>
+          <div class="sec-line" style="background:linear-gradient(90deg,var(--green),transparent)"></div>
+        </div>
+      </div>
+      <div class="two-col">
+        <div class="panel" id="mktPanel">
+          <div class="panel-title">Athletic Footwear — Global Market Share</div>
+          <div class="mkt-row">
+            <div class="mkt-hd"><span class="mkt-brand" style="color:#E24B4A">Nike (NKE)</span><span class="mkt-pct" style="color:#E24B4A">34%</span></div>
+            <div class="mkt-track"><div class="mkt-fill" data-w="68%" style="background:linear-gradient(90deg,#E24B4A,rgba(226,75,74,.5))"></div></div>
+            <div class="mkt-sub">Undisputed global leader · Brand Value $40–45B · Forbes Top 20</div>
+          </div>
+          <div class="mkt-row">
+            <div class="mkt-hd"><span class="mkt-brand" style="color:#F59E0B">Adidas (ADS)</span><span class="mkt-pct" style="color:#F59E0B">16%</span></div>
+            <div class="mkt-track"><div class="mkt-fill" data-w="32%" style="background:linear-gradient(90deg,#F59E0B,rgba(245,158,11,.5))"></div></div>
+            <div class="mkt-sub">Closest competitor — Nike holds 2× Adidas's share</div>
+          </div>
+          <div class="mkt-row">
+            <div class="mkt-hd"><span class="mkt-brand" style="color:var(--t3)">Others (fragmented)</span><span class="mkt-pct" style="color:var(--t3)">50%</span></div>
+            <div class="mkt-track"><div class="mkt-fill" data-w="100%" style="background:rgba(255,255,255,.12)"></div></div>
+            <div class="mkt-sub">Puma, New Balance, Skechers, On, Hoka + hundreds more</div>
+          </div>
+          <div class="info" style="margin-top:1rem;font-size:12px">
+            Nike holds approximately <strong style="color:#E24B4A">2× the market share</strong> of Adidas, its nearest rival — a dominance maintained for over 30 years.
+          </div>
+        </div>
+        <div class="d-grid" style="grid-template-columns:1fr 1fr;gap:1rem;align-content:start">
+          <div class="d-card">
+            <div class="d-title">Brand Value</div>
+            <div class="d-val" style="color:var(--green)">$40–45B</div>
+            <div class="d-desc">Forbes Top 20 Global Brands — world's most valuable sports brand</div>
+          </div>
+          <div class="d-card">
+            <div class="d-title">Market Cap</div>
+            <div class="d-val" style="color:var(--blue)">$120–140B</div>
+            <div class="d-desc">NYSE: NKE · stock price $70–95 range (FY2024)</div>
+          </div>
+          <div class="d-card">
+            <div class="d-title">Design Centers</div>
+            <div class="d-val" style="font-size:16px;letter-spacing:-.3px">5 Global</div>
+            <div class="d-desc">Tokyo · London · Shanghai · LA · Amsterdam + Beaverton HQ (8,000+ staff)</div>
+          </div>
+          <div class="d-card">
+            <div class="d-title">Sustainability</div>
+            <div class="d-val" style="font-size:16px;color:var(--green)">2050 Target</div>
+            <div class="d-desc">Carbon neutral by 2050 · 95%+ factory compliance · 400+ audits/year</div>
+          </div>
+        </div>
+      </div>
+      <div class="refs" style="margin-top:1.25rem">
+        <div class="refs-lbl">Sources</div>
+        <div class="ref-row">
+          <a class="ref-a" href="https://www.statista.com/outlook/cco/footwear/athletic-footwear" target="_blank">Statista — Athletic Footwear Market</a>
+          <a class="ref-a" href="https://www.forbes.com/lists/best-global-brands/" target="_blank">Forbes — Best Global Brands</a>
+          <a class="ref-a" href="https://purpose.nike.com/report" target="_blank">Nike Responsibility Report 2024</a>
+          <a class="ref-a" href="https://finance.yahoo.com/quote/NKE" target="_blank">Yahoo Finance — NKE</a>
+        </div>
+      </div>
+    </div>
+
   </div><!-- /content -->
 </div><!-- /wrap -->
 
@@ -1716,6 +2280,177 @@ new Chart(document.getElementById('industryChart'), {
       y:{ ticks:{callback:v=>v+'%'}, grid:{color:'rgba(255,255,255,0.05)'} }
     }
   }
+});
+
+/* ═══════════════════════════════════════════════════════
+   MOTION GRAPHICS v2 · DYNAMIC SCROLL ENGINE
+═══════════════════════════════════════════════════════ */
+
+/* ── Assign section IDs + inject watermarks, progress bars, sidenav ── */
+(function () {
+  const labels = [
+    '§1 Supply Chain','§2 Tariff Impact','§3 Stock Reaction',
+    '§4 Manufacturers','§5 Pricing','§6 Strategy','§7 Industry',
+    '§8 FY2024 KPIs','§9 Revenue','§10 Digital','§11 Market'
+  ];
+  const sections = document.querySelectorAll('.section');
+  sections.forEach((s, i) => {
+    if (!s.id) s.id = 'sec' + (i + 1);
+    const wm = document.createElement('div');
+    wm.className = 'sec-stamp-mg';
+    wm.textContent = String(i + 1).padStart(2, '0');
+    s.appendChild(wm);
+    const pb = document.createElement('div');
+    pb.className = 'section-progress';
+    s.appendChild(pb);
+  });
+  const nav = document.getElementById('sidenav');
+  if (!nav) return;
+  sections.forEach((s, i) => {
+    const d = document.createElement('div');
+    d.className = 'sn-dot';
+    d.dataset.label = labels[i] || ('§' + (i + 1));
+    d.setAttribute('role', 'button');
+    d.addEventListener('click', () =>
+      s.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    );
+    nav.appendChild(d);
+  });
+  // Reveal nav after intro finishes (auto-dismiss at ~14.8s, plus buffer)
+  setTimeout(() => nav.classList.add('ready'), 15600);
+})();
+
+/* ── Active section tracker — highlights sidenav dot ── */
+(function () {
+  const sections = document.querySelectorAll('.section');
+  const dots     = document.querySelectorAll('.sn-dot');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      const i = Array.from(sections).indexOf(e.target);
+      if (i < 0 || !e.isIntersecting) return;
+      dots.forEach(d => d.classList.remove('active'));
+      if (dots[i]) dots[i].classList.add('active');
+    });
+  }, { threshold: 0.4 });
+  sections.forEach(s => obs.observe(s));
+})();
+
+/* ── Parallax orbs tied to scrollY ── */
+(function () {
+  const o1 = document.querySelector('.orb-1');
+  const o2 = document.querySelector('.orb-2');
+  const o3 = document.querySelector('.orb-3');
+  let pending = false;
+  window.addEventListener('scroll', () => {
+    if (pending) return;
+    pending = true;
+    requestAnimationFrame(() => {
+      const sy = window.scrollY;
+      if (o1) o1.style.transform = `translate(${sy * .046}px,${sy * .068}px)`;
+      if (o2) o2.style.transform = `translate(${-sy * .032}px,${-sy * .052}px)`;
+      if (o3) o3.style.transform = `translate(${sy * .022}px,${-sy * .038}px)`;
+      pending = false;
+    });
+  }, { passive: true });
+})();
+
+/* ── Canvas particle system ── */
+(function () {
+  const canvas = document.getElementById('particles-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  function resize() { W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
+  resize();
+  window.addEventListener('resize', resize, { passive: true });
+
+  const COUNT = 68, LINK = 128;
+  const pts = Array.from({ length: COUNT }, () => ({
+    x: Math.random() * (W || 1920),
+    y: Math.random() * (H || 1080),
+    vx: (Math.random() - .5) * .3,
+    vy: (Math.random() - .5) * .3,
+    r:  Math.random() * 1.25 + .38,
+    a:  Math.random() * .42 + .07,
+  }));
+
+  function tick() {
+    ctx.clearRect(0, 0, W, H);
+    pts.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = W; else if (p.x > W) p.x = 0;
+      if (p.y < 0) p.y = H; else if (p.y > H) p.y = 0;
+    });
+    for (let i = 0; i < COUNT; i++) {
+      for (let j = i + 1; j < COUNT; j++) {
+        const dx = pts[i].x - pts[j].x;
+        const dy = pts[i].y - pts[j].y;
+        const d  = Math.hypot(dx, dy);
+        if (d < LINK) {
+          ctx.beginPath();
+          ctx.moveTo(pts[i].x, pts[i].y);
+          ctx.lineTo(pts[j].x, pts[j].y);
+          ctx.strokeStyle = `rgba(226,75,74,${(1 - d / LINK) * .11})`;
+          ctx.lineWidth = .75;
+          ctx.stroke();
+        }
+      }
+    }
+    pts.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,255,255,${p.a})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(tick);
+  }
+  tick();
+})();
+
+/* ── Market bar shimmer — activates after bars draw ── */
+(function () {
+  const mp = document.getElementById('mktPanel');
+  if (!mp) return;
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      setTimeout(() => {
+        e.target.querySelectorAll('.mkt-fill').forEach(el => el.classList.add('shimmer'));
+      }, 1900);
+      obs.unobserve(e.target);
+    });
+  }, { threshold: 0.3 });
+  obs.observe(mp);
+})();
+
+/* ── Revenue, channel & market bar animations (§9–§11) ── */
+function animRevBars(panel) {
+  panel.querySelectorAll('.rev-bar-fill').forEach((bar, i) =>
+    setTimeout(() => { bar.style.width = bar.dataset.w; }, i * 200 + 80)
+  );
+}
+function animChBars(panel) {
+  panel.querySelectorAll('.ch-seg').forEach((seg, i) =>
+    setTimeout(() => { seg.style.width = seg.dataset.w; }, i * 300 + 80)
+  );
+}
+function animMktBars(panel) {
+  panel.querySelectorAll('.mkt-fill').forEach((bar, i) =>
+    setTimeout(() => { bar.style.width = bar.dataset.w; }, i * 250 + 80)
+  );
+}
+[
+  { id: 'prodRevPanel', fn: animRevBars },
+  { id: 'geoRevPanel',  fn: animRevBars },
+  { id: 'chanPanel',    fn: animChBars  },
+  { id: 'mktPanel',     fn: animMktBars },
+].forEach(({ id, fn }) => {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { fn(e.target); obs.unobserve(e.target); } });
+  }, { threshold: 0.2 });
+  obs.observe(el);
 });
 </script>
 </body>
