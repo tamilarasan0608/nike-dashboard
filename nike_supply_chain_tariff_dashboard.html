@@ -506,6 +506,192 @@ body::after {
 /* ── Animated counter ── */
 .count-anim { display:inline-block; }
 
+/* ─────────────────────────────────────────────────────
+   INTRO PHASE SYSTEM
+───────────────────────────────────────────────────── */
+.intro-phase {
+  position:absolute; width:100%; padding:0 2rem;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  opacity:0; transition:opacity .55s cubic-bezier(.16,1,.3,1);
+  pointer-events:none;
+}
+.intro-phase.ip-show { opacity:1; }
+
+/* Phase 2 — factory grid */
+.intro-factory-headline {
+  font-family:var(--mono); font-size:11px; letter-spacing:.22em;
+  text-transform:uppercase; color:rgba(255,255,255,.3);
+  margin-bottom:1.25rem; text-align:center;
+}
+.intro-factory-grid {
+  display:flex; flex-wrap:wrap; justify-content:center; gap:7px;
+  max-width:640px; margin:0 auto 1.25rem;
+}
+.ifactory-dot {
+  display:flex; flex-direction:column; align-items:center; gap:3px;
+  opacity:0; animation:factoryPop .28s ease both;
+}
+@keyframes factoryPop {
+  from { opacity:0; transform:scale(.5) translateY(6px); }
+  to   { opacity:1; transform:scale(1) translateY(0); }
+}
+.ifactory-icon {
+  width:40px; height:38px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:6px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:16px; color:rgba(255,255,255,.25);
+}
+.ifactory-code {
+  font-family:var(--mono); font-size:8px; letter-spacing:.08em;
+  color:rgba(255,255,255,.18); text-transform:uppercase;
+}
+.intro-factory-sub {
+  font-family:var(--mono); font-size:10px; letter-spacing:.18em;
+  text-transform:uppercase; color:rgba(255,255,255,.18);
+  text-align:center;
+}
+
+/* Phase 3 — ZERO reveal */
+.intro-zero-label {
+  font-family:var(--mono); font-size:11px; letter-spacing:.25em;
+  color:rgba(255,255,255,.3); text-transform:uppercase; margin-bottom:.5rem;
+}
+.intro-zero {
+  font-size:clamp(78px,14vw,130px); font-weight:900; letter-spacing:-5px;
+  line-height:.9; color:var(--red);
+  text-shadow:0 0 80px rgba(226,75,74,.55);
+}
+.intro-zero-sub {
+  font-size:clamp(12px,1.6vw,15px); color:rgba(255,255,255,.35);
+  margin-top:.75rem; max-width:460px; text-align:center; line-height:1.6;
+}
+.intro-zero-rule {
+  height:1px; width:0; background:linear-gradient(90deg,transparent,var(--red),transparent);
+  margin:1.2rem auto; transition:width .9s ease;
+}
+.intro-zero-rule.expand { width:min(280px,55vw); }
+.intro-outsource {
+  font-family:var(--mono); font-size:clamp(16px,2.8vw,26px); font-weight:700;
+  letter-spacing:.12em; color:rgba(255,255,255,.75);
+  opacity:0; transform:translateY(8px);
+  transition:opacity .5s ease .15s, transform .5s ease .15s;
+}
+.intro-outsource.show { opacity:1; transform:none; }
+
+/* Phase 4 — concentration bars */
+.intro-conc-label {
+  font-family:var(--mono); font-size:11px; letter-spacing:.22em;
+  text-transform:uppercase; color:rgba(255,255,255,.3); margin-bottom:.4rem;
+}
+.intro-conc-country {
+  font-size:clamp(48px,8vw,88px); font-weight:900; letter-spacing:-2px;
+  color:var(--red); margin-bottom:1.25rem;
+  text-shadow:0 0 50px rgba(226,75,74,.45);
+}
+.intro-conc-bars { width:min(420px,82vw); }
+.intro-bar-item {
+  display:flex; align-items:center; gap:10px; margin-bottom:9px;
+  font-family:var(--mono); font-size:11px; color:rgba(255,255,255,.45);
+}
+.intro-bar-item > span:first-child { width:72px; text-align:right; flex-shrink:0; font-size:10px; }
+.intro-bar-track { flex:1; height:7px; background:rgba(255,255,255,.07); border-radius:4px; overflow:hidden; }
+.intro-bar-fill { height:100%; border-radius:4px; width:0; }
+.intro-bar-pct { width:36px; flex-shrink:0; font-weight:700; }
+
+/* ─────────────────────────────────────────────────────
+   PRODUCTION DISTRIBUTION SECTION (§0)
+───────────────────────────────────────────────────── */
+.prod-section {
+  padding:2rem 2.5rem 2.5rem; margin-bottom:0;
+  background:linear-gradient(180deg,rgba(226,75,74,.045) 0%,transparent 60%);
+  border-bottom:1px solid var(--border); position:relative;
+}
+.prod-section-head { margin-bottom:1.5rem; }
+.prod-section-badge {
+  display:inline-flex; align-items:center; gap:6px;
+  background:rgba(239,68,68,.1); border:1px solid rgba(239,68,68,.28);
+  border-radius:100px; padding:3px 11px;
+  font-size:9px; font-weight:700; color:var(--red);
+  text-transform:uppercase; letter-spacing:1.1px; margin-bottom:.75rem;
+}
+.prod-section-title {
+  font-size:clamp(20px,3vw,28px); font-weight:800; letter-spacing:-.5px; line-height:1.2;
+}
+.prod-section-sub { font-size:13px; color:var(--t2); margin-top:.4rem; max-width:640px; line-height:1.6; }
+
+.prod-layout { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; align-items:start; margin-top:1.25rem; }
+
+/* Donut chart */
+.prod-donut-wrap {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:var(--r-lg); padding:1.5rem;
+}
+.prod-donut-label { font-size:10px; font-weight:700; color:var(--t3); text-transform:uppercase; letter-spacing:.8px; margin-bottom:1rem; }
+.prod-donut-container { position:relative; width:180px; height:180px; margin:0 auto; }
+.prod-donut-center {
+  position:absolute; inset:0; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; pointer-events:none;
+}
+.prod-donut-pct { font-family:var(--mono); font-size:30px; font-weight:800; color:var(--red); line-height:1; }
+.prod-donut-ctry { font-family:var(--mono); font-size:9px; color:var(--t3); letter-spacing:.1em; text-transform:uppercase; margin-top:1px; }
+.donut-arc {
+  fill:none; stroke-width:30;
+  stroke-dasharray:0 566;
+  transition:stroke-dasharray 1.1s cubic-bezier(.16,1,.3,1);
+}
+.prod-legend { display:flex; flex-direction:column; gap:7px; margin-top:1.1rem; }
+.prod-leg-row { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--t2); }
+.prod-leg-dot { width:10px; height:10px; border-radius:2px; flex-shrink:0; }
+.prod-leg-name { flex:1; }
+.prod-leg-val { font-family:var(--mono); font-size:12px; font-weight:700; }
+.prod-leg-share { font-size:10px; color:var(--t3); margin-left:2px; }
+
+/* Competitor comparison */
+.comp-wrap {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:var(--r-lg); padding:1.5rem;
+}
+.comp-title { font-size:10px; font-weight:700; color:var(--t3); text-transform:uppercase; letter-spacing:.8px; margin-bottom:1.1rem; }
+.comp-brand-row { margin-bottom:1.1rem; }
+.comp-brand-row:last-child { margin-bottom:0; }
+.comp-brand-hd { display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; }
+.comp-brand-name { font-size:13px; font-weight:700; color:var(--t1); }
+.comp-risk-badge {
+  font-family:var(--mono); font-size:8px; font-weight:800; letter-spacing:.08em;
+  padding:2px 7px; border-radius:3px; text-transform:uppercase;
+}
+.risk-critical { background:rgba(239,68,68,.14); color:#EF4444; border:1px solid rgba(239,68,68,.28); }
+.risk-high     { background:rgba(245,158,11,.12); color:#F59E0B; border:1px solid rgba(245,158,11,.25); }
+.risk-moderate { background:rgba(245,158,11,.08); color:rgba(245,158,11,.7); border:1px solid rgba(245,158,11,.18); }
+.risk-low      { background:rgba(34,197,94,.1);   color:#22C55E;  border:1px solid rgba(34,197,94,.25); }
+.comp-bar-stack { display:flex; height:20px; border-radius:4px; overflow:hidden; gap:1px; }
+.comp-seg {
+  height:100%; width:0;
+  transition:width 1.1s cubic-bezier(.16,1,.3,1);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--mono); font-size:8px; font-weight:700; color:rgba(255,255,255,.7);
+  overflow:hidden; white-space:nowrap; min-width:0;
+}
+.comp-legend { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+.comp-legend-item { display:flex; align-items:center; gap:4px; font-size:10px; color:var(--t3); }
+.comp-legend-dot { width:8px; height:8px; border-radius:2px; flex-shrink:0; }
+
+.prod-insight {
+  background:rgba(226,75,74,.05); border:1px solid rgba(226,75,74,.18);
+  border-left:3px solid var(--red);
+  padding:.9rem 1.1rem; border-radius:var(--r-md);
+  font-size:12.5px; color:rgba(255,255,255,.65); line-height:1.65;
+  margin-top:1.25rem;
+}
+.prod-insight strong { color:var(--t1); }
+
+@media(max-width:760px) {
+  .prod-layout { grid-template-columns:1fr; }
+  .prod-section { padding:1.5rem; }
+}
+
 /* ── Section number label ── */
 .sec-stamp {
   font-family:var(--mono); font-size:80px; font-weight:900;
@@ -527,18 +713,73 @@ body::after {
 </head>
 <body>
 
-<!-- ── CINEMATIC INTRO ── -->
+<!-- ── CINEMATIC MULTI-PHASE INTRO ── -->
 <div id="intro">
   <div class="intro-top-bar"></div>
   <div class="intro-corner tl"></div>
   <div class="intro-corner tr"></div>
   <div class="intro-corner bl"></div>
   <div class="intro-corner br"></div>
-  <div class="intro-eyebrow">Trade Analysis · May 2025 · Deep Dive</div>
-  <div class="intro-brand">NIKE<br><span class="accent">VIETNAM</span></div>
-  <div class="intro-rule"></div>
-  <div class="intro-num" id="intro-counter">0%</div>
-  <div class="intro-num-label">Vietnam Tariff Rate</div>
+
+  <!-- Phase 1: Nike brand reveal -->
+  <div class="intro-phase" id="ip1">
+    <div class="intro-eyebrow">Supply Chain · Trade War · Deep Dive · 2025</div>
+    <div class="intro-brand">NIKE<br><span style="color:rgba(255,255,255,.12);font-size:.55em;letter-spacing:-.05em">INC.</span></div>
+    <div class="intro-rule" style="animation:introRule .8s .6s ease both"></div>
+    <div style="font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:rgba(255,255,255,.2);text-transform:uppercase;margin-top:.25rem;animation:introFade .5s .9s ease both">The world's largest athletic brand</div>
+  </div>
+
+  <!-- Phase 2: Factory dots — outsourcing revelation -->
+  <div class="intro-phase" id="ip2">
+    <div class="intro-factory-headline">Nike operates through ~500 contract factories in 42 countries</div>
+    <div class="intro-factory-grid" id="introFactoryGrid"></div>
+    <div class="intro-factory-sub">contract manufacturers · not a single one owned by Nike</div>
+  </div>
+
+  <!-- Phase 3: ZERO factories reveal -->
+  <div class="intro-phase" id="ip3">
+    <div class="intro-zero-label">but Nike owns</div>
+    <div class="intro-zero">ZERO</div>
+    <div class="intro-zero-sub">factories, outlets, or production facilities anywhere on the planet</div>
+    <div class="intro-zero-rule" id="introZeroRule"></div>
+    <div class="intro-outsource" id="introOutsource">100% OUTSOURCED</div>
+  </div>
+
+  <!-- Phase 4: Vietnam concentration (the problem) -->
+  <div class="intro-phase" id="ip4">
+    <div class="intro-conc-label">50% of all footwear made in</div>
+    <div class="intro-conc-country">VIETNAM</div>
+    <div class="intro-conc-bars">
+      <div class="intro-bar-item">
+        <span>Vietnam</span>
+        <div class="intro-bar-track"><div class="intro-bar-fill" style="background:#E24B4A" data-w="50%"></div></div>
+        <span class="intro-bar-pct" style="color:#E24B4A">50%</span>
+      </div>
+      <div class="intro-bar-item">
+        <span>Indonesia</span>
+        <div class="intro-bar-track"><div class="intro-bar-fill" style="background:#F59E0B" data-w="27%"></div></div>
+        <span class="intro-bar-pct" style="color:#F59E0B">27%</span>
+      </div>
+      <div class="intro-bar-item">
+        <span>China</span>
+        <div class="intro-bar-track"><div class="intro-bar-fill" style="background:rgba(255,255,255,.35)" data-w="18%"></div></div>
+        <span class="intro-bar-pct">18%</span>
+      </div>
+      <div class="intro-bar-item">
+        <span>Others</span>
+        <div class="intro-bar-track"><div class="intro-bar-fill" style="background:rgba(255,255,255,.18)" data-w="5%"></div></div>
+        <span class="intro-bar-pct" style="color:rgba(255,255,255,.3)">5%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phase 5: Tariff impact -->
+  <div class="intro-phase" id="ip5">
+    <div class="intro-num-label" style="margin-bottom:.6rem">Trump's Vietnam Tariff — April 9, 2025</div>
+    <div class="intro-num" id="intro-counter">0%</div>
+    <div class="intro-num-label" style="margin-top:.6rem;font-size:11px;color:rgba(255,255,255,.2)">50% of Nike's footwear production — now at maximum tariff risk</div>
+  </div>
+
   <button class="intro-skip" id="intro-skip">Skip ↵</button>
 </div>
 
@@ -586,6 +827,120 @@ body::after {
 
   <!-- CONTENT -->
   <div class="content">
+
+    <!-- §0 PRODUCTION DISTRIBUTION — the core problem -->
+    <div class="prod-section" id="prodSection">
+      <div class="prod-section-head">
+        <div class="prod-section-badge"><span class="badge-dot"></span> Core Vulnerability</div>
+        <div class="prod-section-title">Nike's Production Distribution — <span class="accent">The Concentration Problem</span></div>
+        <div class="prod-section-sub">Nike outsources 100% of manufacturing to contract factories. With 50% of footwear in a single country, any one tariff becomes an existential supply shock — something no competitor is as exposed to.</div>
+      </div>
+
+      <div class="prod-layout">
+
+        <!-- Donut chart: Nike breakdown -->
+        <div class="prod-donut-wrap">
+          <div class="prod-donut-label">Nike Footwear Production by Country</div>
+          <div class="prod-donut-container" id="nikeDonutWrap">
+            <svg width="180" height="180" viewBox="0 0 180 180" style="transform:rotate(-90deg)">
+              <!-- Background ring -->
+              <circle cx="90" cy="90" r="70" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="30"/>
+              <!-- Vietnam 50% → 565*0.50=282.5 -->
+              <circle id="da1" class="donut-arc" cx="90" cy="90" r="90" stroke="#E24B4A"
+                style="stroke-dashoffset:0; r:70"/>
+              <!-- Indonesia 27% → 282.5 offset, 152.6 length -->
+              <circle id="da2" class="donut-arc" cx="90" cy="90" r="70" stroke="#F59E0B"
+                style="stroke-dashoffset:-283"/>
+              <!-- China 18% → 283+153=436 offset, 101.7 length -->
+              <circle id="da3" class="donut-arc" cx="90" cy="90" r="70" stroke="#60A5FA"
+                style="stroke-dashoffset:-436"/>
+              <!-- Others 5% → 436+102=538 offset, 28.3 length -->
+              <circle id="da4" class="donut-arc" cx="90" cy="90" r="70" stroke="rgba(255,255,255,.18)"
+                style="stroke-dashoffset:-538"/>
+            </svg>
+            <div class="prod-donut-center">
+              <div class="prod-donut-pct" id="donutPct">0%</div>
+              <div class="prod-donut-ctry">Vietnam</div>
+            </div>
+          </div>
+          <div class="prod-legend">
+            <div class="prod-leg-row"><div class="prod-leg-dot" style="background:#E24B4A"></div><span class="prod-leg-name">Vietnam</span><span class="prod-leg-val" style="color:#E24B4A">50%</span><span class="prod-leg-share">footwear</span></div>
+            <div class="prod-leg-row"><div class="prod-leg-dot" style="background:#F59E0B"></div><span class="prod-leg-name">Indonesia</span><span class="prod-leg-val" style="color:#F59E0B">27%</span><span class="prod-leg-share">footwear</span></div>
+            <div class="prod-leg-row"><div class="prod-leg-dot" style="background:#60A5FA"></div><span class="prod-leg-name">China</span><span class="prod-leg-val" style="color:#60A5FA">18%</span><span class="prod-leg-share">components</span></div>
+            <div class="prod-leg-row"><div class="prod-leg-dot" style="background:rgba(255,255,255,.25)"></div><span class="prod-leg-name">Others</span><span class="prod-leg-val">5%</span><span class="prod-leg-share">mixed</span></div>
+          </div>
+        </div>
+
+        <!-- Competitor comparison stacked bars -->
+        <div class="comp-wrap" id="compWrap">
+          <div class="comp-title">Competitor Geographic Spread — Who Is More Resilient?</div>
+
+          <div class="comp-brand-row">
+            <div class="comp-brand-hd">
+              <span class="comp-brand-name">Nike (NKE)</span>
+              <span class="comp-risk-badge risk-critical">Critical Risk</span>
+            </div>
+            <div class="comp-bar-stack">
+              <div class="comp-seg" style="background:#E24B4A" data-w="50%">VN 50%</div>
+              <div class="comp-seg" style="background:#c97000" data-w="27%">ID 27%</div>
+              <div class="comp-seg" style="background:#3B82F6" data-w="18%">CN 18%</div>
+              <div class="comp-seg" style="background:rgba(255,255,255,.12)" data-w="5%"></div>
+            </div>
+          </div>
+
+          <div class="comp-brand-row">
+            <div class="comp-brand-hd">
+              <span class="comp-brand-name">Adidas (ADS)</span>
+              <span class="comp-risk-badge risk-high">High Risk</span>
+            </div>
+            <div class="comp-bar-stack">
+              <div class="comp-seg" style="background:rgba(226,75,74,.7)" data-w="39%">VN 39%</div>
+              <div class="comp-seg" style="background:rgba(201,112,0,.7)" data-w="25%">ID 25%</div>
+              <div class="comp-seg" style="background:rgba(59,130,246,.6)" data-w="20%">CN</div>
+              <div class="comp-seg" style="background:rgba(255,255,255,.1)" data-w="16%">Other</div>
+            </div>
+          </div>
+
+          <div class="comp-brand-row">
+            <div class="comp-brand-hd">
+              <span class="comp-brand-name">Puma (PUM)</span>
+              <span class="comp-risk-badge risk-moderate">Moderate</span>
+            </div>
+            <div class="comp-bar-stack">
+              <div class="comp-seg" style="background:rgba(226,75,74,.55)" data-w="30%">VN 30%</div>
+              <div class="comp-seg" style="background:rgba(201,112,0,.55)" data-w="28%">ID</div>
+              <div class="comp-seg" style="background:rgba(59,130,246,.45)" data-w="22%">CN</div>
+              <div class="comp-seg" style="background:rgba(34,197,94,.3)" data-w="20%">BD/IN</div>
+            </div>
+          </div>
+
+          <div class="comp-brand-row">
+            <div class="comp-brand-hd">
+              <span class="comp-brand-name">New Balance</span>
+              <span class="comp-risk-badge risk-low">Low Risk</span>
+            </div>
+            <div class="comp-bar-stack">
+              <div class="comp-seg" style="background:rgba(34,197,94,.75)" data-w="25%">US 25%</div>
+              <div class="comp-seg" style="background:rgba(34,197,94,.45)" data-w="22%">UK/EU</div>
+              <div class="comp-seg" style="background:rgba(226,75,74,.4)" data-w="20%">VN</div>
+              <div class="comp-seg" style="background:rgba(255,255,255,.12)" data-w="33%">Mixed</div>
+            </div>
+          </div>
+
+          <div class="comp-legend">
+            <div class="comp-legend-item"><div class="comp-legend-dot" style="background:#E24B4A"></div>Vietnam</div>
+            <div class="comp-legend-item"><div class="comp-legend-dot" style="background:#c97000"></div>Indonesia</div>
+            <div class="comp-legend-item"><div class="comp-legend-dot" style="background:#3B82F6"></div>China</div>
+            <div class="comp-legend-item"><div class="comp-legend-dot" style="background:#22C55E"></div>US/EU domestic</div>
+            <div class="comp-legend-item"><div class="comp-legend-dot" style="background:rgba(255,255,255,.2)"></div>Diversified</div>
+          </div>
+        </div>
+      </div><!-- /prod-layout -->
+
+      <div class="prod-insight">
+        <strong>Why concentration kills:</strong> When a single country holds 50%+ of production, a single tariff announcement wipes out years of cost optimization overnight. Adidas and Puma face the same tariffs — but their spread means Vietnam's 46% hits a smaller share. New Balance's US domestic production is tariff-immune. Nike bet everything on Vietnam's cheap labour and lost the geopolitical hedge.
+      </div>
+    </div><!-- /prod-section -->
 
     <!-- §1 SUPPLY CHAIN FLOW -->
     <div class="section">
@@ -1053,28 +1408,151 @@ function tab(btn, id) {
   if (id === 'p1c') triggerMapAnimation();
 }
 
-/* ── Cinematic intro ── */
+/* ── Multi-phase cinematic intro ── */
 (function() {
   const intro = document.getElementById('intro');
-  const counter = document.getElementById('intro-counter');
-  const skip = document.getElementById('intro-skip');
+  const skip  = document.getElementById('intro-skip');
+  let counterTick, dismissed = false;
 
-  // Animate counter 0% → 46%
-  let val = 0;
-  const tick = setInterval(() => {
-    val = Math.min(46, val + 1);
-    counter.textContent = val + '%';
-    if (val >= 46) clearInterval(tick);
-  }, 35);
-
+  function showPhase(id, delay) {
+    setTimeout(() => {
+      const el = document.getElementById(id);
+      if (el && !dismissed) el.classList.add('ip-show');
+    }, delay);
+  }
+  function hidePhase(id, delay) {
+    setTimeout(() => {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('ip-show');
+    }, delay);
+  }
   function dismiss() {
-    clearInterval(tick);
+    if (dismissed) return;
+    dismissed = true;
+    clearInterval(counterTick);
     intro.classList.add('hide');
     setTimeout(() => intro.remove(), 750);
   }
 
-  setTimeout(dismiss, 3800);
+  // ── Generate factory dots ──
+  const codes = ['VN','ID','CN','IN','TH','BD','PH','MY','PK','TR',
+                 'MX','BR','SG','KH','MM','LK','ET','EG','KR','TW',
+                 'AR','MA','NG','PE','RO'];
+  const icons = ['🏭','🏗️','⚙️','🔧','🏭','🔩','🏗️','⚙️','🏭','🔧'];
+  const grid = document.getElementById('introFactoryGrid');
+  codes.forEach((c, i) => {
+    const d = document.createElement('div');
+    d.className = 'ifactory-dot';
+    d.style.animationDelay = (i * 75 + 200) + 'ms';
+    d.innerHTML = `<div class="ifactory-icon">${icons[i%icons.length]}</div><div class="ifactory-code">${c}</div>`;
+    grid.appendChild(d);
+  });
+
+  // ── Phase timeline ──
+  // Phase 1 — brand (0ms)
+  showPhase('ip1', 150);
+  hidePhase('ip1', 2200);
+
+  // Phase 2 — factory grid (2400ms)
+  showPhase('ip2', 2400);
+  hidePhase('ip2', 5400);
+
+  // Phase 3 — ZERO reveal (5600ms)
+  showPhase('ip3', 5600);
+  setTimeout(() => {
+    const rule = document.getElementById('introZeroRule');
+    const out  = document.getElementById('introOutsource');
+    if (rule && !dismissed) rule.classList.add('expand');
+    setTimeout(() => { if (out && !dismissed) out.classList.add('show'); }, 500);
+  }, 5900);
+  hidePhase('ip3', 8600);
+
+  // Phase 4 — Vietnam concentration (8800ms)
+  showPhase('ip4', 8800);
+  setTimeout(() => {
+    if (dismissed) return;
+    document.querySelectorAll('#ip4 .intro-bar-fill').forEach((bar, i) => {
+      setTimeout(() => {
+        bar.style.transition = 'width 1s cubic-bezier(.16,1,.3,1)';
+        bar.style.width = bar.dataset.w;
+      }, i * 280 + 200);
+    });
+  }, 9000);
+  hidePhase('ip4', 11700);
+
+  // Phase 5 — tariff counter (11900ms)
+  showPhase('ip5', 11900);
+  setTimeout(() => {
+    if (dismissed) return;
+    let val = 0;
+    counterTick = setInterval(() => {
+      val = Math.min(46, val + 1);
+      const el = document.getElementById('intro-counter');
+      if (el) el.textContent = val + '%';
+      if (val >= 46) clearInterval(counterTick);
+    }, 40);
+  }, 12000);
+
+  // Auto-dismiss
+  setTimeout(dismiss, 14800);
   skip.addEventListener('click', dismiss);
+})();
+
+/* ── Production distribution animations ── */
+(function() {
+  // Donut chart
+  const C = 2 * Math.PI * 70; // ≈439.8 for r=70
+
+  // Segments: Vietnam 50%, Indonesia 27%, China 18%, Others 5%
+  // arc length = pct/100 * C, gap of 3px between segments
+  const segments = [
+    { id:'da1', pct:0.50, gap:3 },
+    { id:'da2', pct:0.27, gap:3 },
+    { id:'da3', pct:0.18, gap:3 },
+    { id:'da4', pct:0.05, gap:2 },
+  ];
+
+  function animateDonut() {
+    segments.forEach((s, i) => {
+      const el = document.getElementById(s.id);
+      if (!el) return;
+      const len = C * s.pct - s.gap;
+      setTimeout(() => {
+        el.style.strokeDasharray = len + ' ' + C;
+      }, i * 180 + 100);
+    });
+    // Animate center counter
+    let val = 0;
+    const pctEl = document.getElementById('donutPct');
+    const tick = setInterval(() => {
+      val = Math.min(50, val + 1);
+      if (pctEl) pctEl.textContent = val + '%';
+      if (val >= 50) clearInterval(tick);
+    }, 28);
+  }
+
+  function animateCompBars() {
+    document.querySelectorAll('.comp-bar-stack').forEach((stack, si) => {
+      stack.querySelectorAll('.comp-seg').forEach((seg, i) => {
+        setTimeout(() => {
+          seg.style.width = seg.dataset.w;
+        }, si * 120 + i * 90 + 100);
+      });
+    });
+  }
+
+  const prodObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        animateDonut();
+        animateCompBars();
+        prodObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  const ps = document.getElementById('prodSection');
+  if (ps) prodObs.observe(ps);
 })();
 
 /* ── Animated counters (header metrics) ── */
