@@ -17,8 +17,8 @@
   --border: rgba(255,255,255,0.07);
   --border-red: rgba(226,75,74,0.35);
   --t1: #FFFFFF;
-  --t2: rgba(255,255,255,0.55);
-  --t3: rgba(255,255,255,0.3);
+  --t2: rgba(255,255,255,0.88);
+  --t3: rgba(255,255,255,0.65);
   --green: #22C55E;
   --yellow: #F59E0B;
   --danger: #EF4444;
@@ -991,12 +991,12 @@ body::before,body::after{opacity:0!important;animation:none!important;}
 .section:nth-child(odd),
 .section:nth-child(even) {
   opacity: 0;
-  transform: translateY(60px) scale(0.985) !important;
-  filter: blur(3px) saturate(0.7) !important;
+  transform: translateY(40px) scale(0.99) !important;
+  filter: blur(1px) saturate(0.9) !important;
   transition:
-    opacity   .72s cubic-bezier(.16,1,.3,1),
-    transform .72s cubic-bezier(.16,1,.3,1),
-    filter    .72s cubic-bezier(.16,1,.3,1) !important;
+    opacity   .65s cubic-bezier(.16,1,.3,1),
+    transform .65s cubic-bezier(.16,1,.3,1),
+    filter    .65s cubic-bezier(.16,1,.3,1) !important;
   will-change: opacity, transform, filter;
 }
 
@@ -1010,22 +1010,22 @@ body::before,body::after{opacity:0!important;animation:none!important;}
 
 /* ── EXIT UP — completely scrolled past (above viewport) ── */
 .section.exit-up {
-  opacity: 0 !important;
-  transform: translateY(-48px) scale(0.97) !important;
-  filter: blur(2.5px) saturate(0.5) !important;
+  opacity: 0.12 !important;
+  transform: translateY(-30px) scale(0.98) !important;
+  filter: blur(0.5px) saturate(0.8) !important;
   z-index: 1;
   pointer-events: none;
   transition:
-    opacity   .55s cubic-bezier(.4,0,1,1),
-    transform .55s cubic-bezier(.4,0,1,1),
-    filter    .55s cubic-bezier(.4,0,1,1) !important;
+    opacity   .5s cubic-bezier(.4,0,1,1),
+    transform .5s cubic-bezier(.4,0,1,1),
+    filter    .5s cubic-bezier(.4,0,1,1) !important;
 }
 
 /* ── EXIT DOWN — not yet reached (below viewport) ── */
 .section.exit-down {
   opacity: 0 !important;
-  transform: translateY(60px) scale(0.985) !important;
-  filter: blur(3px) saturate(0.7) !important;
+  transform: translateY(40px) scale(0.99) !important;
+  filter: blur(1px) saturate(0.9) !important;
   z-index: 0;
   pointer-events: none;
 }
@@ -1047,18 +1047,8 @@ canvas { transition: filter .2s ease; }
   to   { clip-path: inset(0 0% 0 0); }
 }
 
-/* ── Scroll-depth marker on section ── */
-.scroll-depth-line {
-  position: absolute;
-  left: 0; top: 0; bottom: 0;
-  width: 2px;
-  background: linear-gradient(180deg, var(--red), transparent);
-  transform: scaleY(0);
-  transform-origin: top;
-  transition: transform .9s cubic-bezier(.16,1,.3,1) .35s;
-  border-radius: 2px;
-}
-.section.vis .scroll-depth-line { transform: scaleY(1); }
+/* ── Scroll-depth marker — removed for clean look ── */
+.scroll-depth-line { display: none !important; }
 
 /* ── Tooltip upgrade ── */
 .chartjs-tooltip-enhanced {
@@ -1233,18 +1223,222 @@ canvas { transition: filter .2s ease; }
 }
 .section .char {
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity .4s ease, transform .4s cubic-bezier(.16,1,.3,1);
+  transform: translateY(14px);
+  transition: opacity .35s ease, transform .35s cubic-bezier(.16,1,.3,1);
 }
 .section.vis .char { opacity: 1 !important; transform: translateY(0) !important; }
-.section.exit-up .char,
-.section.exit-down .char { opacity: 0 !important; transform: translateY(20px) !important; }
+.section.exit-up .char { opacity: 0.2 !important; transform: translateY(-6px) !important; }
+.section.exit-down .char { opacity: 0 !important; transform: translateY(14px) !important; }
 
 /* ── Header title will be parallax'd by JS ── */
 .header h1, .header .subtitle { will-change: transform, opacity; }
 
 /* ── Scrub-safe chart scale ── */
 .chart-wrap { will-change: transform; }
+
+/* ══════════════════════════════════════════════════════
+   SENIOR DEV FIX — Full-viewport sections, clean layout
+   Root causes fixed:
+   1. No min-height → two sections on screen → FIXED
+   2. No scroll-snap → choppy transitions → FIXED
+   3. Chart too small → feels cramped → FIXED
+   4. Scan-line sweep & left red line → distracting → REMOVED
+   5. Inconsistent padding → misaligned edges → FIXED
+══════════════════════════════════════════════════════ */
+
+/* 1. Remove noisy decorative elements */
+.section::before  { display: none !important; }  /* scan-line sweep */
+.scroll-depth-line{ display: none !important; }  /* red left line */
+
+/* 2. Scroll snap — proximity keeps hscroll working */
+html { scroll-snap-type: y proximity; }
+
+/* 3. Header — full viewport, vertically centred */
+.header {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3.5rem 3rem 0;
+  scroll-snap-align: start;
+}
+
+/* 4. Content wrapper owns no padding — sections manage their own */
+.content { padding: 0 !important; }
+
+/* 5. Every section = exactly one viewport, flex column layout */
+.section,
+.prod-section {
+  min-height: 100vh !important;
+  display: flex !important;
+  flex-direction: column !important;
+  padding: 2.5rem 3rem !important;
+  margin-bottom: 0 !important;
+  box-sizing: border-box;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+/* 6. Horizontal showcase is also a snap target */
+.hscroll-outer { scroll-snap-align: start; }
+
+/* 7. Section heading — larger, more presence */
+.sec-head { margin-bottom: 1.5rem; flex-shrink: 0; }
+.sec-title {
+  font-size: clamp(22px, 2.8vw, 32px) !important;
+  letter-spacing: -0.6px !important;
+  line-height: 1.2 !important;
+}
+
+/* 8. Chart grows to fill the section's available height */
+.chart-wrap {
+  height: clamp(260px, 44vh, 440px) !important;
+  margin: 0.75rem 0 !important;
+  flex-shrink: 0;
+}
+
+/* 9. d-grid — max 3 columns, breathing room */
+.d-grid {
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)) !important;
+  gap: 1.25rem !important;
+}
+
+/* 10. Cards — proper padding, clean borders */
+.d-card  { padding: 1.4rem !important; border-color: rgba(255,255,255,0.07) !important; }
+.d-card:hover { transform: translateY(-5px) !important; }
+
+/* 11. KPI rings — consistent spacing */
+.kpi-rings { gap: 1.25rem !important; }
+
+/* 12. OV KPI grid — use all 6 columns on wide screens */
+.ov-kpi-grid { grid-template-columns: repeat(6, 1fr) !important; }
+
+/* 13. Two-column panels — equal width */
+.two-col { grid-template-columns: 1fr 1fr !important; gap: 1.5rem !important; }
+
+/* 14. Section progress line still shows (it's at the bottom, not the left) */
+.section-progress { bottom: 0; }
+
+/* Mobile */
+@media (max-width: 768px) {
+  .header, .section, .prod-section { padding: 2rem 1.5rem !important; }
+  .d-grid  { grid-template-columns: 1fr !important; }
+  .ov-kpi-grid  { grid-template-columns: repeat(3, 1fr) !important; }
+  .two-col { grid-template-columns: 1fr !important; }
+  .chart-wrap { height: clamp(200px, 38vh, 300px) !important; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   VISIBILITY ENHANCEMENT — boost dim text globally
+   Fixes: grey labels, table text, card descriptions,
+   info/warn banners, subtitle, meta tags, chart captions
+═══════════════════════════════════════════════════════ */
+
+/* Subtitle and meta */
+.subtitle       { color: rgba(255,255,255,0.88) !important; }
+.header-meta span { color: rgba(255,255,255,0.65) !important; }
+
+/* Section description text */
+.sec-title      { color: #fff !important; }
+.d-desc         { color: rgba(255,255,255,0.86) !important; }
+.d-title        { color: rgba(255,255,255,0.72) !important; }
+
+/* Metric cards */
+.m-label        { color: rgba(255,255,255,0.70) !important; }
+.m-unit         { color: rgba(255,255,255,0.80) !important; }
+.ov-label       { color: rgba(255,255,255,0.72) !important; }
+.ov-sub         { color: rgba(255,255,255,0.62) !important; }
+
+/* Tables */
+.tbl td         { color: rgba(255,255,255,0.86) !important; }
+.tbl th         { color: rgba(255,255,255,0.72) !important; }
+
+/* Info/warn banners */
+.info           { color: rgba(255,255,255,0.86) !important; }
+.warn           { color: #FCA5A5 !important; }
+
+/* Cards */
+.tariff-name    { color: rgba(255,255,255,0.92) !important; }
+.tariff-sub     { color: rgba(255,255,255,0.65) !important; }
+.tariff-vis-title { color: rgba(255,255,255,0.72) !important; }
+
+/* KPI rings */
+.kpi-ring-label { color: rgba(255,255,255,0.72) !important; }
+.kpi-ring-sub   { color: rgba(255,255,255,0.65) !important; }
+
+/* Chart captions */
+.chart-cap      { color: rgba(255,255,255,0.62) !important; }
+
+/* Production section */
+.prod-section-sub { color: rgba(255,255,255,0.86) !important; }
+.prod-leg-row     { color: rgba(255,255,255,0.88) !important; }
+.prod-leg-share   { color: rgba(255,255,255,0.65) !important; }
+.prod-donut-ctry  { color: rgba(255,255,255,0.65) !important; }
+.prod-insight     { color: rgba(255,255,255,0.82) !important; }
+.comp-title       { color: rgba(255,255,255,0.72) !important; }
+.comp-legend-item { color: rgba(255,255,255,0.65) !important; }
+
+/* Horizontal scroll cards */
+.hsc-desc       { color: rgba(255,255,255,0.88) !important; }
+.hsc-label      { color: rgba(255,255,255,0.72) !important; }
+
+/* Overview panels */
+.panel-title    { color: rgba(255,255,255,0.72) !important; }
+.rev-bar-sub    { color: rgba(255,255,255,0.65) !important; }
+.dig-label      { color: rgba(255,255,255,0.72) !important; }
+.dig-sub        { color: rgba(255,255,255,0.65) !important; }
+.mkt-sub        { color: rgba(255,255,255,0.65) !important; }
+.store-region   { color: rgba(255,255,255,0.65) !important; }
+
+/* Flow diagram */
+.f-box small    { color: rgba(255,255,255,0.75) !important; }
+
+/* Tab buttons */
+.tab-btn        { color: rgba(255,255,255,0.82) !important; }
+
+/* Filter buttons */
+.f-btn          { color: rgba(255,255,255,0.82) !important; }
+
+/* ── VISUAL ENHANCEMENTS ────────────────────────────── */
+
+/* Brighter card borders so cards stand out on dark bg */
+.d-card, .panel, .kpi-ring-card, .comp-wrap,
+.prod-donut-wrap, .tariff-vis, .chart-wrap {
+  border-color: rgba(255,255,255,0.10) !important;
+}
+
+/* Section title accent — glow on hover */
+.sec-title:hover { text-shadow: 0 0 28px rgba(226,75,74,0.45); cursor: default; }
+
+/* Section number badge — stronger glow */
+.sec-num  { box-shadow: 0 0 18px rgba(226,75,74,0.55); }
+.sec-num-blue  { box-shadow: 0 0 18px rgba(59,130,246,0.45); }
+.sec-num-green { box-shadow: 0 0 18px rgba(34,197,94,0.45); }
+
+/* Section container — thin colored left border when in view for orientation */
+.section.vis {
+  border-left: 2px solid rgba(226,75,74,0.22) !important;
+  padding-left: calc(3rem - 2px) !important;
+}
+
+/* Increase body text line height for readability */
+.d-desc, .info, .warn, .prod-section-sub, .prod-insight {
+  line-height: 1.75 !important;
+}
+
+/* Horizontal scroll card numbers — brighter */
+.hsc-num { opacity: 1 !important; }
+
+/* Better header h1 readability */
+.header h1 { text-shadow: 0 2px 40px rgba(0,0,0,0.6); }
+
+/* Metrics value text — ensure full brightness */
+.m-val, .ov-val, .d-val, .dig-val, .kpi-ring-val, .store-count {
+  opacity: 1 !important;
+}
+
+/* Ensure the ring SVG arcs render at full clarity when visible */
+.section.vis .ring-arc { filter: none; }
 </style>
 </head>
 <body>
@@ -2626,18 +2820,18 @@ new Chart(document.getElementById('industryChart'), {
 
   const jobs = [];
 
-  /* 1 ── Header title parallax */
+  /* 1 ── Header title parallax (gentler fade) */
   const hdr    = document.querySelector('.header');
   const hdrH1  = document.querySelector('.header h1');
   const hdrSub = document.querySelector('.header .subtitle');
   if (hdr && hdrH1) {
     jobs.push(() => {
       const p = Math.max(0, Math.min(1, -hdr.getBoundingClientRect().top / (hdr.offsetHeight || 1)));
-      hdrH1.style.transform = `translateY(${p * -85}px)`;
-      hdrH1.style.opacity   = `${1 - p * 1.9}`;
+      hdrH1.style.transform = `translateY(${p * -60}px)`;
+      hdrH1.style.opacity   = `${Math.max(0, 1 - p * 1.2)}`;
       if (hdrSub) {
-        hdrSub.style.transform = `translateY(${p * -55}px)`;
-        hdrSub.style.opacity   = `${1 - p * 2.3}`;
+        hdrSub.style.transform = `translateY(${p * -40}px)`;
+        hdrSub.style.opacity   = `${Math.max(0, 1 - p * 1.5)}`;
       }
     });
   }
@@ -2675,7 +2869,7 @@ new Chart(document.getElementById('industryChart'), {
     });
   });
 
-  /* 5 ── KPI ring cards — stagger wave on section approach */
+  /* 5 ── KPI ring cards — stagger wave on section approach (transform only) */
   document.querySelectorAll('.kpi-ring-card').forEach((card, i) => {
     const sec = card.closest('.section');
     if (!sec) return;
@@ -2683,11 +2877,10 @@ new Chart(document.getElementById('industryChart'), {
       const p  = sp(sec, 0.38, 0.85);
       const cp = Math.max(0, Math.min(1, p * 1.4 - i * 0.15));
       card.style.transform = `translateY(${lerp(36, 0, easeOut(cp))}px)`;
-      card.style.opacity   = `${cp}`;
     });
   });
 
-  /* 6 ── OV KPI cards — cascade in by column on scroll */
+  /* 6 ── OV KPI cards — cascade in by column on scroll (transform only) */
   document.querySelectorAll('.ov-kpi-grid').forEach(grid => {
     const sec = grid.closest('.section');
     if (!sec) return;
@@ -2697,12 +2890,11 @@ new Chart(document.getElementById('industryChart'), {
       cards.forEach((c, i) => {
         const cp = Math.max(0, Math.min(1, p * 1.6 - i * 0.09));
         c.style.transform = `translateY(${lerp(24, 0, easeOut(cp))}px)`;
-        c.style.opacity   = `${cp}`;
       });
     });
   });
 
-  /* 7 ── D-cards depth parallax (transform only) */
+  /* 7 ── D-cards depth parallax (transform only, no opacity) */
   document.querySelectorAll('.d-grid').forEach(grid => {
     const sec = grid.closest('.section');
     if (!sec) return;
@@ -2712,12 +2904,11 @@ new Chart(document.getElementById('industryChart'), {
       items.forEach((c, i) => {
         const cp = Math.max(0, Math.min(1, p * 1.5 - i * 0.1));
         c.style.transform = `translateY(${lerp(28, 0, easeOut(cp))}px)`;
-        c.style.opacity   = `${cp}`;
       });
     });
   });
 
-  /* 8 ── Dig cards — float in from below */
+  /* 8 ── Dig cards — float in from below (transform only, preserve float animation) */
   const digGrid = document.querySelector('.dig-grid');
   if (digGrid) {
     const sec = digGrid.closest('.section');
@@ -2726,8 +2917,8 @@ new Chart(document.getElementById('industryChart'), {
       const p = sp(sec, 0.42, 0.88);
       items.forEach((c, i) => {
         const cp = Math.max(0, Math.min(1, p * 1.6 - i * 0.12));
-        c.style.opacity   = `${cp}`;
-        c.style.animation = cp > 0.8 ? '' : 'none';
+        if (cp < 0.8) c.style.transform = `translateY(${lerp(28, 0, easeOut(cp))}px)`;
+        else c.style.transform = '';
       });
     });
   }
@@ -2754,7 +2945,7 @@ new Chart(document.getElementById('industryChart'), {
 
   const secs = Array.from(document.querySelectorAll('.section'));
   const VH   = () => window.innerHeight;
-  const EDGE  = 10; // px buffer before triggering exit
+  const EDGE  = 40; // px buffer before triggering exit (larger = smoother transitions)
 
   function classify() {
     const vh = VH();
@@ -2775,13 +2966,6 @@ new Chart(document.getElementById('industryChart'), {
       }
     });
   }
-
-  // Inject vertical depth lines into each section
-  secs.forEach(s => {
-    const line = document.createElement('div');
-    line.className = 'scroll-depth-line';
-    s.appendChild(line);
-  });
 
   // Classify immediately (handles page-load state)
   classify();
