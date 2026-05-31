@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nike AF1 — Supply Chain Crisis Command Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Fira+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════
+   UI/UX PRO MAX DESIGN SYSTEM · APPLIED
+   Style: Dark Mode OLED + Glassmorphism (Data-Dense Dashboard)
+   Typography: Fira Code (data/mono) + Fira Sans (UI text)
+   Colors: OLED #000 · Red #E24B4A · Amber #F59E0B · Blue #3B82F6
+   Effects: backdrop-filter blur-16px · glow · 200-300ms easing
+   Skill rules: prefers-reduced-motion · cursor-pointer · 44px touch targets
+   Accessibility: WCAG AAA contrast · focus-visible rings · aria-labels
+═══════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#000000;--bg2:#080808;--bg3:#0F0F0F;--bg4:#141414;
+  --glass:rgba(255,255,255,0.038);--glass-h:rgba(255,255,255,0.065);
+  --border:rgba(255,255,255,0.07);--border-b:rgba(255,255,255,0.14);
+  --red:#E24B4A;--red-d:rgba(226,75,74,0.15);--red-g:rgba(226,75,74,0.32);
+  --amber:#F59E0B;--blue:#3B82F6;--green:#22C55E;--purple:#8B5CF6;--cyan:#06B6D4;
+  --t1:#FFFFFF;--t2:rgba(255,255,255,0.78);--t3:rgba(255,255,255,0.45);--t4:rgba(255,255,255,0.22);
+  --mono:'Fira Code','JetBrains Mono',monospace;
+  --sans:'Fira Sans','Inter',system-ui,sans-serif;
+  --blur:blur(16px);
+  --r:10px;--r-lg:16px;--r-xl:22px;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+html{scroll-behavior:smooth;color-scheme:dark}
+body{font-family:var(--sans);background:var(--bg);color:var(--t1);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+/* Skill: prefers-reduced-motion */
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+/* Skill: cursor-pointer on clickable elements */
+button,[onclick],a{cursor:pointer}
+/* Skill: focus-visible for keyboard nav */
+:focus-visible{outline:2px solid var(--red);outline-offset:3px;border-radius:4px}
+/* Scrollbar */
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:rgba(226,75,74,0.35);border-radius:2px}
+
+/* ── PARTICLE CANVAS ── */
+#bg-c{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* ── AMBIENT ORBS ── */
+.orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(90px)}
+.o1{top:-15%;right:-8%;width:650px;height:650px;background:radial-gradient(circle,rgba(226,75,74,0.07),transparent 70%);animation:fa 14s ease-in-out infinite}
+.o2{bottom:-20%;left:-8%;width:750px;height:750px;background:radial-gradient(circle,rgba(59,130,246,0.05),transparent 70%);animation:fa 18s ease-in-out infinite reverse}
+.o3{top:35%;left:42%;width:500px;height:500px;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(139,92,246,0.04),transparent 70%);animation:fb 22s ease-in-out infinite}
+@keyframes fa{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(28px,-28px) scale(1.07)}}
+@keyframes fb{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(calc(-50%+22px),calc(-50%-18px)) scale(1.1)}}
+
+/* ── SCROLL PROGRESS ── */
+#sp{position:fixed;top:0;left:0;width:0%;height:2px;z-index:99;background:linear-gradient(90deg,var(--red),#FF6B8A,var(--amber));box-shadow:0 0 12px var(--red);transition:width .06s linear}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:.8rem 2rem;background:rgba(0,0,0,0.8);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border-bottom:1px solid var(--border)}
+.nb{display:flex;align-items:center;gap:.75rem}
+.nl{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--red),#FF6B6B);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:14px;box-shadow:0 0 20px var(--red-g)}
+.nt{font-weight:700;font-size:.9rem;letter-spacing:-.02em}
+.ns{font-family:var(--mono);font-size:9px;color:var(--t3);letter-spacing:.12em}
+.nc{display:flex;align-items:center;gap:1.5rem}
+.nl2{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);text-decoration:none;transition:color .2s;padding:.3rem 0;border-bottom:1px solid transparent}
+.nl2:hover{color:var(--t1);border-bottom-color:var(--red)}
+.nr{display:flex;align-items:center;gap:.9rem}
+.ab{display:flex;align-items:center;gap:.4rem;padding:.32rem .75rem;background:var(--red-d);border:1px solid rgba(226,75,74,0.3);border-radius:20px;font-family:var(--mono);font-size:10px;color:var(--red);letter-spacing:.08em;min-height:44px}
+.ad{width:6px;height:6px;border-radius:50%;background:var(--red);animation:pd 2s infinite}
+@keyframes pd{0%,100%{opacity:1;box-shadow:0 0 0 0 var(--red-g)}50%{opacity:.5;box-shadow:0 0 0 5px transparent}}
+.nclk{font-family:var(--mono);font-size:11px;color:var(--t3)}
+
+/* ── TICKER ── */
+.ticker{position:fixed;top:calc(44px + 1.6rem);left:0;right:0;z-index:19;background:rgba(226,75,74,0.07);border-bottom:1px solid rgba(226,75,74,0.18);overflow:hidden;padding:.32rem 0}
+.ti{display:flex;align-items:center;gap:3rem;white-space:nowrap;animation:tk 70s linear infinite;width:max-content}
+.tki{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--mono);font-size:10px;color:var(--t2);letter-spacing:.04em}
+@keyframes tk{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ── MAIN ── */
+main{position:relative;z-index:10;padding-top:94px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 2rem}
+
+/* ── HERO ── */
+#hero{min-height:100vh;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:4rem 2rem 3rem;max-width:1200px;margin:0 auto}
+.he{display:inline-flex;align-items:center;gap:.5rem;padding:.28rem .85rem;border-radius:20px;background:var(--red-d);border:1px solid rgba(226,75,74,0.3);font-family:var(--mono);font-size:10px;color:var(--red);letter-spacing:.14em;text-transform:uppercase;margin-bottom:1.5rem;animation:fu .7s var(--ease) both}
+h1.hh{font-size:clamp(2.6rem,5.5vw,5.2rem);font-weight:900;letter-spacing:-.04em;line-height:.92;margin-bottom:1.4rem;animation:fu .75s .08s var(--ease) both}
+h1.hh .cr{color:var(--red);text-shadow:0 0 40px rgba(226,75,74,0.45)}
+h1.hh .cw{background:linear-gradient(135deg,#fff 0%,rgba(255,255,255,0.55) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hsub{font-size:1rem;color:var(--t2);max-width:580px;line-height:1.75;margin-bottom:2.5rem;animation:fu .75s .16s var(--ease) both}
+.hkpis{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--border);border-radius:var(--r-xl);overflow:hidden;width:100%;animation:fu .75s .26s var(--ease) both}
+.hk{background:var(--glass);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);padding:1.2rem .9rem;text-align:center;transition:background .25s;position:relative;overflow:hidden;min-height:44px}
+.hk::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--hc,var(--red)),transparent);opacity:0;transition:opacity .3s}
+.hk:hover{background:var(--glass-h)}.hk:hover::before{opacity:1}
+.hkl{font-family:var(--mono);font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:var(--t3);margin-bottom:.45rem}
+.hkv{font-family:var(--mono);font-size:1.45rem;font-weight:700;letter-spacing:-.03em;line-height:1}
+.hkc{font-family:var(--mono);font-size:9px;margin-top:.22rem;color:var(--t3)}
+.hkv.red{color:var(--red);text-shadow:0 0 18px var(--red-g)}
+.hkv.amb{color:var(--amber);text-shadow:0 0 18px rgba(245,158,11,.3)}
+.hkv.blue{color:var(--blue);text-shadow:0 0 18px rgba(59,130,246,.3)}
+.hkv.grn{color:var(--green);text-shadow:0 0 18px rgba(34,197,94,.3)}
+
+@keyframes fu{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+
+/* ── SECTION ── */
+.section{padding:4rem 0;opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.section.vis{opacity:1;transform:translateY(0)}
+.sh{display:flex;align-items:flex-start;gap:1rem;margin-bottom:2rem}
+.sn{width:28px;height:28px;flex-shrink:0;border-radius:8px;background:linear-gradient(135deg,var(--red),#FF6B6B);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;font-weight:700;box-shadow:0 4px 12px var(--red-g)}
+.st{font-size:1.5rem;font-weight:700;letter-spacing:-.025em;line-height:1.2}
+.sd{font-size:.82rem;color:var(--t3);margin-top:.22rem;font-family:var(--mono)}
+.sl{height:1px;margin-top:.5rem;background:linear-gradient(90deg,var(--red),transparent);width:0;transition:width 1.2s var(--ease) .35s}
+.section.vis .sl{width:220px}
+
+/* ── GLASS CARD ── */
+.card{background:var(--glass);border:1px solid var(--border);border-radius:var(--r-xl);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);transition:border-color .25s,background .25s,box-shadow .25s;overflow:hidden}
+.card:hover{border-color:var(--border-b);background:var(--glass-h);box-shadow:0 8px 40px rgba(0,0,0,.45)}
+.cp{padding:1.5rem}
+.ch{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid var(--border)}
+.ct{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--t3)}
+.ca{width:8px;height:8px;border-radius:50%}
+
+/* ── GRIDS ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+.g52{display:grid;grid-template-columns:5fr 2fr;gap:1rem}
+.g23{display:grid;grid-template-columns:2fr 3fr;gap:1rem}
+.g32{display:grid;grid-template-columns:3fr 2fr;gap:1rem}
+
+/* ── TABS ── */
+.tabs{display:flex;gap:2px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:var(--r);padding:3px;width:fit-content;margin-bottom:1.5rem}
+.tb{background:transparent;border:none;padding:.42rem .9rem;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);border-radius:7px;transition:all .2s;min-height:44px}
+.tb:hover{color:var(--t1);background:rgba(255,255,255,0.05)}
+.tb.on{background:var(--red);color:#fff;box-shadow:0 2px 14px var(--red-g)}
+.tp{display:none;animation:fi .3s ease}.tp.on{display:block}
+
+/* ── BIG NUMBER ── */
+.bn{font-family:var(--mono);font-size:2.8rem;font-weight:700;letter-spacing:-.04em;line-height:1}
+.bu{font-family:var(--mono);font-size:.85rem;color:var(--t3);margin-left:.2rem;vertical-align:super;font-weight:400}
+
+/* ── PILLS ── */
+.pill{display:inline-flex;align-items:center;padding:.18rem .55rem;border-radius:20px;font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.06em}
+.pr{background:rgba(226,75,74,.15);color:var(--red)}
+.pg{background:rgba(34,197,94,.12);color:var(--green)}
+.pa{background:rgba(245,158,11,.12);color:var(--amber)}
+.pb{background:rgba(59,130,246,.12);color:var(--blue)}
+
+/* ── TABLE ── */
+.itbl{width:100%;border-collapse:collapse}
+.itbl th{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);padding:.55rem .9rem;text-align:left;border-bottom:1px solid var(--border)}
+.itbl td{padding:.55rem .9rem;border-bottom:1px solid rgba(255,255,255,0.03);font-size:.82rem;vertical-align:middle;transition:background .2s}
+.itbl tr:hover td{background:rgba(255,255,255,0.025)}
+.itbl tr:last-child td{border-bottom:none}
+
+/* ── SCENARIOS ── */
+.sc{padding:1.4rem;border:1px solid var(--border);border-radius:var(--r-xl);background:var(--glass);backdrop-filter:var(--blur);transition:all .25s;position:relative;overflow:hidden;cursor:pointer}
+.sc::before{content:'';position:absolute;inset:0;border-radius:var(--r-xl);background:radial-gradient(circle at 50% 0%,var(--sc,rgba(226,75,74,0.08)),transparent 60%);opacity:0;transition:opacity .3s}
+.sc:hover{border-color:var(--border-b);box-shadow:0 12px 44px rgba(0,0,0,.5)}.sc:hover::before{opacity:1}
+.sbadge{display:inline-flex;align-items:center;gap:.4rem;padding:.23rem .62rem;border-radius:20px;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border:1px solid currentColor;margin-bottom:.85rem}
+.stitle{font-size:1rem;font-weight:700;margin-bottom:.4rem;letter-spacing:-.02em}
+.sdesc{font-size:.79rem;color:var(--t2);line-height:1.7;margin-bottom:1rem}
+.smg{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+.sm{padding:.48rem .72rem;background:rgba(255,255,255,0.04);border-radius:8px;border:1px solid var(--border)}
+.sml{font-family:var(--mono);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin-bottom:.18rem}
+.smv{font-family:var(--mono);font-size:.9rem;font-weight:600}
+
+/* ── TIMELINE ── */
+.tl{position:relative;padding-left:2rem}
+.tl::before{content:'';position:absolute;left:7px;top:0;bottom:0;width:1px;background:linear-gradient(180deg,var(--red),var(--amber),var(--blue),var(--green))}
+.tle{position:relative;padding:.65rem 0 1.4rem}
+.tld{position:absolute;left:-2rem;top:.8rem;width:14px;height:14px;border-radius:50%;border:2px solid currentColor;background:var(--bg);display:flex;align-items:center;justify-content:center}
+.tldi{width:5px;height:5px;border-radius:50%;background:currentColor}
+.tldate{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin-bottom:.32rem}
+.tltitle{font-weight:700;font-size:.88rem;margin-bottom:.28rem;letter-spacing:-.01em}
+.tldesc{font-size:.79rem;color:var(--t2);line-height:1.65}
+
+/* ── COUNTRY BARS ── */
+.cbar{margin-bottom:.8rem}
+.cbarh{display:flex;justify-content:space-between;align-items:center;margin-bottom:.32rem;font-size:.79rem}
+.cn{font-weight:600}.cs{font-family:var(--mono);font-size:.72rem;color:var(--t3)}
+.crbg{height:8px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden}
+.crfill{height:100%;border-radius:4px;width:0;transition:width 1.3s var(--ease)}
+
+/* ── STAT ROW ── */
+.sr{display:flex;align-items:center;gap:.72rem;padding:.65rem 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+.sr:last-child{border-bottom:none}
+.si{width:32px;height:32px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px}
+.sinf{flex:1}.sn2{font-size:.81rem;font-weight:600;margin-bottom:.1rem}.ss{font-family:var(--mono);font-size:.71rem;color:var(--t3);letter-spacing:.06em}
+.sv{font-family:var(--mono);font-size:.88rem;font-weight:700;text-align:right}
+
+/* ── CALCULATOR ── */
+.cri{display:flex;align-items:center;gap:1rem;padding:.72rem 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+.clb{font-size:.84rem;color:var(--t2);flex:1}
+.cin{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:.42rem .82rem;font-family:var(--mono);font-size:.875rem;color:var(--t1);width:150px;outline:none;transition:border-color .2s;text-align:right;min-height:44px}
+.cin:focus{border-color:var(--red);box-shadow:0 0 0 3px var(--red-d)}
+.cres{padding:1rem 1.4rem;background:rgba(226,75,74,.08);border:1px solid rgba(226,75,74,.25);border-radius:var(--r-lg);margin-top:1rem;display:flex;align-items:center;justify-content:space-between}
+.crl{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--t3)}
+.crv{font-family:var(--mono);font-size:1.55rem;font-weight:700;color:var(--red);text-shadow:0 0 18px var(--red-g)}
+
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--border);padding:2rem;margin-top:4rem;text-align:center;font-family:var(--mono);font-size:10px;color:var(--t4);letter-spacing:.08em}
+
+/* ── RESPONSIVE (skill: 375·768·1024·1440) ── */
+@media(max-width:1024px){.hkpis{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:1fr 1fr}.g52,.g23,.g32{grid-template-columns:1fr}}
+@media(max-width:768px){.nc{display:none}.hkpis{grid-template-columns:repeat(2,1fr)}.g2,.g3{grid-template-columns:1fr}h1.hh{font-size:2.1rem}}
+@media(max-width:375px){.hkpis{grid-template-columns:1fr}.wrap{padding:0 1rem}}
+</style>
+</head>
+<body>
+<canvas id="bg-c"></canvas>
+<div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+<div id="sp"></div>
+
+<!-- ── NAV ── -->
+<nav role="navigation" aria-label="Main navigation">
+  <div class="nb">
+    <div class="nl" aria-label="Nike dashboard">N</div>
+    <div><div class="nt">Nike AF1 · Crisis Command</div><div class="ns">Supply Chain Intelligence</div></div>
+  </div>
+  <div class="nc">
+    <a class="nl2" href="#impact">Impact</a>
+    <a class="nl2" href="#flow">Supply Chain</a>
+    <a class="nl2" href="#scenarios">Scenarios</a>
+    <a class="nl2" href="#timeline">Timeline</a>
+    <a class="nl2" href="#calc">Calculator</a>
+  </div>
+  <div class="nr">
+    <div class="ab" role="status" aria-live="polite"><div class="ad"></div>CRISIS ACTIVE</div>
+    <div class="nclk" id="clk" aria-label="Current time"></div>
+  </div>
+</nav>
+
+<!-- ── TICKER ── -->
+<div class="ticker" role="marquee" aria-label="Live news ticker">
+  <div class="ti" id="ti"></div>
+</div>
+
+<main>
+<!-- ═══════ HERO ═══════ -->
+<div id="hero">
+  <div class="he" role="status">
+    <svg width="7" height="7" viewBox="0 0 7 7" fill="currentColor" aria-hidden="true"><circle cx="3.5" cy="3.5" r="3.5"/></svg>
+    LIVE · Nike Vietnam Tariff Crisis 2025 · 46% Tariff Impact Analysis
+  </div>
+  <h1 class="hh"><span class="cw">Air Force 1</span><br><span class="cr">Supply Chain</span><br><span class="cw">Crisis</span></h1>
+  <p class="hsub">Trump's 46% tariff on Vietnamese goods threatens Nike's core manufacturing base. 50% of all Nike shoes are made in Vietnam. 30 million AF1 pairs annually at risk. Real-time impact analysis across the full supply chain.</p>
+  <div class="hkpis" role="group" aria-label="Key metrics">
+    <div class="hk" style="--hc:var(--red)"><div class="hkl">Tariff Rate</div><div class="hkv red" data-tgt="46" data-suf="%">0%</div><div class="hkc" style="color:var(--red)">↑ +36% from baseline</div></div>
+    <div class="hk" style="--hc:var(--red)"><div class="hkl">NKE Stock Drop</div><div class="hkv red" data-tgt="14" data-pre="-" data-suf="%">0%</div><div class="hkc">1-day tariff impact</div></div>
+    <div class="hk" style="--hc:var(--amber)"><div class="hkl">Vietnam Exposure</div><div class="hkv amb" data-tgt="50" data-suf="%">0%</div><div class="hkc">of total production</div></div>
+    <div class="hk" style="--hc:var(--amber)"><div class="hkl">AF1 Units / Year</div><div class="hkv amb" data-tgt="30" data-suf="M">0M</div><div class="hkc">stable demand curve</div></div>
+    <div class="hk" style="--hc:var(--blue)"><div class="hkl">Annual Revenue</div><div class="hkv blue" data-tgt="51" data-pre="$" data-suf="B">$0B</div><div class="hkc">FY2024 total</div></div>
+    <div class="hk" style="--hc:var(--amber)"><div class="hkl">Tariff Pause</div><div class="hkv amb">90d</div><div class="hkc" style="color:var(--amber)">⏱ Window closing</div></div>
+  </div>
+</div>
+
+<!-- ═══════ S1 — IMPACT ═══════ -->
+<div class="section wrap" id="impact">
+  <div class="sh"><div class="sn">01</div><div><div class="st">Financial Impact Analysis</div><div class="sd">Cost modelling across revenue, margin &amp; unit economics</div><div class="sl"></div></div></div>
+
+  <div class="g4" style="margin-bottom:1rem">
+    <div class="card cp" style="text-align:center"><div class="ct" style="margin-bottom:.65rem">Added Cost / Pair</div><div class="bn" style="color:var(--red)">$<span data-tgt="18" data-dur="1200">0</span><span class="bu">USD</span></div><div style="font-family:var(--mono);font-size:10px;color:var(--t3);margin-top:.4rem">at 46% tariff rate</div></div>
+    <div class="card cp" style="text-align:center"><div class="ct" style="margin-bottom:.65rem">Annual Burden</div><div class="bn" style="color:var(--amber)">$<span data-tgt="1.5" data-dur="1400" data-dec="1">0</span><span class="bu">B</span></div><div style="font-family:var(--mono);font-size:10px;color:var(--t3);margin-top:.4rem">Vietnam exposure</div></div>
+    <div class="card cp" style="text-align:center"><div class="ct" style="margin-bottom:.65rem">Margin Compression</div><div class="bn" style="color:var(--red)"><span data-tgt="4.5" data-dur="1600" data-dec="1">0</span><span class="bu">pts</span></div><div style="font-family:var(--mono);font-size:10px;color:var(--t3);margin-top:.4rem">gross margin hit</div></div>
+    <div class="card cp" style="text-align:center"><div class="ct" style="margin-bottom:.65rem">Relocation Window</div><div class="bn" style="color:var(--blue)"><span data-tgt="18" data-dur="1800">0</span><span class="bu">mo</span></div><div style="font-family:var(--mono);font-size:10px;color:var(--t3);margin-top:.4rem">minimum shift time</div></div>
+  </div>
+
+  <div class="g52">
+    <div class="card">
+      <div class="ch">
+        <span class="ct">Market &amp; Financial Impact</span>
+        <div class="tabs" style="margin:0">
+          <button class="tb on" onclick="swChart('stock',this)" aria-label="Stock price chart">NKE Price</button>
+          <button class="tb" onclick="swChart('rev',this)" aria-label="Revenue chart">Revenue</button>
+          <button class="tb" onclick="swChart('margin',this)" aria-label="Margin chart">Margin %</button>
+        </div>
+      </div>
+      <div style="padding:1rem"><canvas id="mc" height="220" style="width:100%;display:block" role="img" aria-label="Financial impact chart"></canvas></div>
+      <div id="chart-annot" style="padding:.6rem 1.5rem 1rem;font-family:var(--mono);font-size:10px;color:var(--t3)"></div>
+    </div>
+    <div class="card">
+      <div class="ch"><span class="ct">Cost per Pair Breakdown</span><div class="ca" style="background:var(--amber)"></div></div>
+      <div style="padding:1.2rem;display:flex;flex-direction:column;align-items:center;gap:.75rem">
+        <canvas id="dc" width="170" height="170" role="img" aria-label="Cost breakdown donut chart"></canvas>
+        <div id="dl" style="width:100%"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ S2 — SUPPLY CHAIN ═══════ -->
+<div class="section wrap" id="flow">
+  <div class="sh"><div class="sn">02</div><div><div class="st">Supply Chain Network</div><div class="sd">Global manufacturing footprint &amp; tariff risk visualisation</div><div class="sl"></div></div></div>
+  <div class="card" style="margin-bottom:1rem">
+    <div class="ch"><span class="ct">Nike Global Supply Network — Tariff Risk Map</span><span style="font-family:var(--mono);font-size:9px;color:var(--t3)">LIVE MODEL · 2025</span></div>
+    <canvas id="fc" height="360" style="width:100%;display:block" role="img" aria-label="Supply chain flow diagram"></canvas>
+  </div>
+  <div class="g23">
+    <div class="card cp"><div class="ct" style="margin-bottom:1.1rem">Production Distribution by Country</div><div id="pbars"></div></div>
+    <div class="card cp">
+      <div class="ct" style="margin-bottom:1.1rem">Supplier Risk Register</div>
+      <table class="itbl">
+        <thead><tr><th>Country</th><th>Tariff</th><th>Share</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:600">Vietnam</td><td><span class="pill pr">46%</span></td><td>50%</td><td><span class="pill pr">CRISIS</span></td></tr>
+          <tr><td style="font-weight:600">Indonesia</td><td><span class="pill pa">32%</span></td><td>27%</td><td><span class="pill pa">AT RISK</span></td></tr>
+          <tr><td style="font-weight:600">China</td><td><span class="pill pr">54%</span></td><td>18%</td><td><span class="pill pr">SEVERE</span></td></tr>
+          <tr><td style="font-weight:600">India</td><td><span class="pill pg">26%</span></td><td>5%</td><td><span class="pill pg">EXPANDING</span></td></tr>
+          <tr><td style="font-weight:600">Mexico</td><td><span class="pill pb">0–25%</span></td><td>0%</td><td><span class="pill pb">SCOUTING</span></td></tr>
+          <tr><td style="font-weight:600">USA</td><td><span class="pill pg">0%</span></td><td>0%</td><td><span class="pill pb">RESHORING?</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ S3 — RISK ═══════ -->
+<div class="section wrap" id="risk">
+  <div class="sh"><div class="sn">03</div><div><div class="st">Risk Assessment Matrix</div><div class="sd">Probability × Impact scoring · Framework 5 (Roehrich)</div><div class="sl"></div></div></div>
+  <div class="g2">
+    <div class="card cp"><div class="ct" style="margin-bottom:1.1rem">Risk Heat Map (P × I, max 16)</div><canvas id="rc" height="280" style="width:100%;display:block" role="img" aria-label="Risk heat map matrix"></canvas></div>
+    <div class="card cp">
+      <div class="ct" style="margin-bottom:1.1rem">Top Risk Events</div>
+      <div class="sr"><div class="si" style="background:rgba(226,75,74,.12)">⚡</div><div class="sinf"><div class="sn2">Tariff Permanence</div><div class="ss">Policy risk · High probability</div></div><div class="sv" style="color:var(--red)">16/16</div></div>
+      <div class="sr"><div class="si" style="background:rgba(245,158,11,.12)">🏭</div><div class="sinf"><div class="sn2">Factory Relocation Delay</div><div class="ss">Operational · 18–24 month risk</div></div><div class="sv" style="color:var(--amber)">12/16</div></div>
+      <div class="sr"><div class="si" style="background:rgba(245,158,11,.12)">📦</div><div class="sinf"><div class="sn2">Inventory Stockout Q4</div><div class="ss">Demand fulfilment risk</div></div><div class="sv" style="color:var(--amber)">9/16</div></div>
+      <div class="sr"><div class="si" style="background:rgba(59,130,246,.12)">💰</div><div class="sinf"><div class="sn2">Consumer Price Resistance</div><div class="ss">Demand elasticity unknown</div></div><div class="sv" style="color:var(--blue)">8/16</div></div>
+      <div class="sr"><div class="si" style="background:rgba(34,197,94,.12)">🤝</div><div class="sinf"><div class="sn2">New Supplier Quality Risk</div><div class="ss">Factory ramp-up degradation</div></div><div class="sv" style="color:var(--green)">6/16</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ S4 — SCENARIOS ═══════ -->
+<div class="section wrap" id="scenarios">
+  <div class="sh"><div class="sn">04</div><div><div class="st">Strategic Scenarios</div><div class="sd">Three response options across the Make/Buy/Location matrix (Framework 1 · Sako 2006)</div><div class="sl"></div></div></div>
+  <div class="g3">
+    <div class="sc" style="--sc:rgba(226,75,74,0.1)"><div class="sbadge" style="color:var(--red)">Scenario A · Absorb</div><div class="stitle">Hold Vietnam, Absorb Cost</div><div class="sdesc">Maintain current supply chain. Pass partial tariff to consumers via +$15–25/pair. Protect short-term supply continuity at gross margin cost.</div><div class="smg"><div class="sm"><div class="sml">Margin Hit</div><div class="smv" style="color:var(--red)">−4.5pts</div></div><div class="sm"><div class="sml">Timeline</div><div class="smv" style="color:var(--green)">Immediate</div></div><div class="sm"><div class="sml">Revenue Risk</div><div class="smv" style="color:var(--amber)">Medium</div></div><div class="sm"><div class="sml">Complexity</div><div class="smv" style="color:var(--green)">Low</div></div></div></div>
+    <div class="sc" style="--sc:rgba(245,158,11,0.09)"><div class="sbadge" style="color:var(--amber)">Scenario B · Nearshore</div><div class="stitle">Near-Shore: India + Mexico</div><div class="sdesc">Accelerate India capacity (26% tariff) and open Mexico under USMCA. 18–24 month transition. Leagile supply chain hybrid strategy.</div><div class="smg"><div class="sm"><div class="sml">Margin Hit</div><div class="smv" style="color:var(--amber)">−1.5pts</div></div><div class="sm"><div class="sml">Timeline</div><div class="smv" style="color:var(--amber)">18–24mo</div></div><div class="sm"><div class="sml">Revenue Risk</div><div class="smv" style="color:var(--green)">Low</div></div><div class="sm"><div class="sml">Complexity</div><div class="smv" style="color:var(--amber)">High</div></div></div></div>
+    <div class="sc" style="--sc:rgba(59,130,246,0.09)"><div class="sbadge" style="color:var(--blue)">Scenario C · Reshore</div><div class="stitle">US Domestic Manufacturing</div><div class="sdesc">Political-first: invest in US robotics-led manufacturing. Zero tariff, strong brand narrative. 3–5x labour cost increase. Premium repositioning required.</div><div class="smg"><div class="sm"><div class="sml">Margin Hit</div><div class="smv" style="color:var(--red)">−12pts</div></div><div class="sm"><div class="sml">Timeline</div><div class="smv" style="color:var(--red)">3–5 years</div></div><div class="sm"><div class="sml">Revenue Risk</div><div class="smv" style="color:var(--green)">Low</div></div><div class="sm"><div class="sml">Complexity</div><div class="smv" style="color:var(--red)">Very High</div></div></div></div>
+  </div>
+</div>
+
+<!-- ═══════ S5 — TIMELINE ═══════ -->
+<div class="section wrap" id="timeline">
+  <div class="sh"><div class="sn">05</div><div><div class="st">Crisis Timeline</div><div class="sd">Key events from tariff announcement to strategic decision points</div><div class="sl"></div></div></div>
+  <div class="g32">
+    <div class="card cp">
+      <div class="ct" style="margin-bottom:1.25rem">Event Log</div>
+      <div class="tl">
+        <div class="tle"><div class="tld" style="color:var(--red)"><div class="tldi"></div></div><div class="tldate">April 2, 2025</div><div class="tltitle">Tariff Announcement — 46% Vietnam</div><div class="tldesc">Trump announces reciprocal tariffs. NKE drops 14% in single session. Emergency board meeting convened.</div></div>
+        <div class="tle"><div class="tld" style="color:var(--amber)"><div class="tldi"></div></div><div class="tldate">April 9, 2025</div><div class="tltitle">90-Day Pause Announced</div><div class="tldesc">White House announces temporary suspension. Nike gains critical decision window. Stock partially recovers ~6%.</div></div>
+        <div class="tle"><div class="tld" style="color:var(--blue)"><div class="tldi"></div></div><div class="tldate">May 2025 — NOW</div><div class="tltitle">Strategic Review Underway</div><div class="tldesc">Nike evaluating India acceleration, Indonesia expansion. Three-scenario modelling active. Supplier RFQs issued for India, Mexico, Turkey.</div></div>
+        <div class="tle"><div class="tld" style="color:var(--amber)"><div class="tldi"></div></div><div class="tldate">July 9, 2025</div><div class="tltitle">Tariff Pause Expires</div><div class="tldesc">Decision window closes. Nike must confirm Q4 2025 holiday supply chain contingency with board.</div></div>
+        <div class="tle"><div class="tld" style="color:var(--green)"><div class="tldi"></div></div><div class="tldate">Q3–Q4 2025</div><div class="tltitle">Supply Continuity Test</div><div class="tldesc">Holiday season demand meets new supply structure. First real-world test of all contingency decisions made today.</div></div>
+      </div>
+    </div>
+    <div class="card cp">
+      <div class="ct" style="margin-bottom:1rem">Countdown to Tariff Pause Expiry</div>
+      <canvas id="cdc" width="280" height="280" style="display:block;margin:0 auto" role="img" aria-label="Countdown ring"></canvas>
+      <div style="text-align:center;margin-top:1rem">
+        <div style="font-family:var(--mono);font-size:9px;color:var(--t3);letter-spacing:.12em;text-transform:uppercase">Days Remaining</div>
+        <div id="dl2" style="font-family:var(--mono);font-size:3rem;font-weight:700;color:var(--amber);text-shadow:0 0 28px rgba(245,158,11,.4);line-height:1.1">—</div>
+        <div style="font-family:var(--mono);font-size:9px;color:var(--t3)">until July 9, 2025</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ S6 — CALCULATOR ═══════ -->
+<div class="section wrap" id="calc">
+  <div class="sh"><div class="sn">06</div><div><div class="st">Tariff Impact Calculator</div><div class="sd">Framework 4 — TCO Analysis · Adjust inputs to model your scenario in real time</div><div class="sl"></div></div></div>
+  <div class="g2">
+    <div class="card cp">
+      <div class="ct" style="margin-bottom:1.1rem">Input Parameters</div>
+      <div class="cri"><label class="clb" for="cu">Annual Units (millions)</label><input class="cin" id="cu" type="number" value="30" min="1" oninput="ci()" aria-label="Annual units in millions"></div>
+      <div class="cri"><label class="clb" for="cf">FOB Cost per Pair ($)</label><input class="cin" id="cf" type="number" value="39" min="1" oninput="ci()" aria-label="FOB cost per pair"></div>
+      <div class="cri"><label class="clb" for="ctr">Tariff Rate (%)</label><input class="cin" id="ctr" type="number" value="46" min="0" max="200" oninput="ci()" aria-label="Tariff rate percentage"></div>
+      <div class="cri"><label class="clb" for="cp2">Consumer Pass-through (%)</label><input class="cin" id="cp2" type="number" value="60" min="0" max="100" oninput="ci()" aria-label="Consumer pass-through percentage"></div>
+      <div class="cri"><label class="clb" for="cv">Vietnam Exposure (%)</label><input class="cin" id="cv" type="number" value="50" min="0" max="100" oninput="ci()" aria-label="Vietnam exposure percentage"></div>
+      <div class="cres"><div><div class="crl">Nike Absorbs Annually</div><div id="co2" style="font-family:var(--mono);font-size:.82rem;color:var(--t2);margin-top:.18rem"></div></div><div class="crv" id="cov">$0</div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.65rem;margin-top:.65rem">
+        <div style="padding:.7rem;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:var(--r)"><div style="font-family:var(--mono);font-size:9px;color:var(--t3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.25rem">Cost Added / Pair</div><div id="cpp" style="font-family:var(--mono);font-size:1.25rem;font-weight:700;color:var(--amber)">$0</div></div>
+        <div style="padding:.7rem;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:var(--r)"><div style="font-family:var(--mono);font-size:9px;color:var(--t3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.25rem">Revenue at Risk</div><div id="crr" style="font-family:var(--mono);font-size:1.25rem;font-weight:700;color:var(--red)">$0</div></div>
+      </div>
+    </div>
+    <div class="card cp"><div class="ct" style="margin-bottom:1rem">Cost Decomposition (per pair)</div><canvas id="cc" height="280" style="width:100%;display:block" role="img" aria-label="Cost decomposition bar chart"></canvas></div>
+  </div>
+</div>
+
+<!-- ═══════ S7 — SUSTAINABILITY ═══════ -->
+<div class="section wrap">
+  <div class="sh"><div class="sn">07</div><div><div class="st">Sustainability &amp; Stakeholder Impact</div><div class="sd">Framework 7 — SSCM 3-pillar analysis (Economic · Environmental · Social)</div><div class="sl"></div></div></div>
+  <div class="g3">
+    <div class="card cp" style="border-top:2px solid var(--blue)"><div style="font-size:1.4rem;margin-bottom:.4rem">💰</div><div style="font-weight:700;font-size:.92rem;color:var(--blue);margin-bottom:.72rem">Economic Pillar</div><div class="sr"><div class="sinf"><div class="sn2">Shareholder Value at Risk</div><div class="ss">Market cap impact</div></div><div class="sv" style="color:var(--red)">−$6B</div></div><div class="sr"><div class="sinf"><div class="sn2">Annual EBIT Impact</div><div class="ss">At full 46% tariff</div></div><div class="sv" style="color:var(--amber)">−$1.5B</div></div><div class="sr"><div class="sinf"><div class="sn2">Transition Cost Est.</div><div class="ss">Factory relocation</div></div><div class="sv" style="color:var(--blue)">$2–4B</div></div></div>
+    <div class="card cp" style="border-top:2px solid var(--green)"><div style="font-size:1.4rem;margin-bottom:.4rem">🌱</div><div style="font-weight:700;font-size:.92rem;color:var(--green);margin-bottom:.72rem">Environmental Pillar</div><div class="sr"><div class="sinf"><div class="sn2">Carbon Impact of Relocation</div><div class="ss">Scope 3 estimate</div></div><div class="sv" style="color:var(--amber)">+12%</div></div><div class="sr"><div class="sinf"><div class="sn2">India vs Vietnam Miles</div><div class="ss">Supply chain distance</div></div><div class="sv" style="color:var(--green)">Similar</div></div><div class="sr"><div class="sinf"><div class="sn2">Nike 2025 CO₂ Target</div><div class="ss">Reduction vs 2019</div></div><div class="sv" style="color:var(--red)">At Risk</div></div></div>
+    <div class="card cp" style="border-top:2px solid var(--purple)"><div style="font-size:1.4rem;margin-bottom:.4rem">🤝</div><div style="font-weight:700;font-size:.92rem;color:var(--purple);margin-bottom:.72rem">Social Pillar</div><div class="sr"><div class="sinf"><div class="sn2">Vietnam Workers at Risk</div><div class="ss">Displacement threat</div></div><div class="sv" style="color:var(--red)">400K</div></div><div class="sr"><div class="sinf"><div class="sn2">US Jobs (Scenario C)</div><div class="ss">Reshoring potential</div></div><div class="sv" style="color:var(--green)">+25K</div></div><div class="sr"><div class="sinf"><div class="sn2">Community Impact Score</div><div class="ss">Factory town economies</div></div><div class="sv" style="color:var(--amber)">Critical</div></div></div>
+  </div>
+</div>
+</main>
+
+<footer>
+  <div>Nike AF1 Supply Chain Crisis Dashboard · UI/UX Pro Max Skill Applied · Data-Dense Dashboard · OLED Dark + Glassmorphism · Fira Code + Fira Sans</div>
+  <div style="margin-top:.35rem">For educational &amp; analytical purposes · 2025</div>
+</footer>
+
+<script>
+'use strict';
+/* ── PARTICLES ── */
+const bgC=document.getElementById('bg-c'),bgX=bgC.getContext('2d');
+let bW,bH,pts=[];
+function initP(){bW=bgC.width=innerWidth;bH=bgC.height=innerHeight;pts=Array.from({length:80},()=>({x:Math.random()*bW,y:Math.random()*bH,vx:(Math.random()-.5)*.22,vy:(Math.random()-.5)*.22,a:Math.random()*.45+.08}))}
+window.addEventListener('resize',initP);initP();
+let mx=-999,my=-999;
+window.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY},{passive:true});
+(function drawP(){
+  bgX.clearRect(0,0,bW,bH);
+  pts.forEach(p=>{
+    p.x=(p.x+p.vx+bW)%bW;p.y=(p.y+p.vy+bH)%bH;
+    const d=Math.hypot(p.x-mx,p.y-my);
+    bgX.beginPath();bgX.arc(p.x,p.y,1.1,0,Math.PI*2);bgX.fillStyle=`rgba(200,100,100,${p.a*(d<120?1.7:1)})`;bgX.fill();
+  });
+  for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
+    const d=Math.hypot(pts[i].x-pts[j].x,pts[i].y-pts[j].y);
+    if(d<110){bgX.beginPath();bgX.moveTo(pts[i].x,pts[i].y);bgX.lineTo(pts[j].x,pts[j].y);bgX.strokeStyle=`rgba(226,75,74,${.11*(1-d/110)})`;bgX.lineWidth=.65;bgX.stroke()}
+  }
+  requestAnimationFrame(drawP);
+})();
+
+/* ── CLOCK ── */
+(function tick(){const n=new Date();document.getElementById('clk').textContent=n.getHours().toString().padStart(2,'0')+':'+n.getMinutes().toString().padStart(2,'0')+':'+n.getSeconds().toString().padStart(2,'0');setTimeout(tick,1000);})();
+
+/* ── SCROLL PROGRESS ── */
+window.addEventListener('scroll',()=>{const s=document.documentElement;document.getElementById('sp').style.width=(s.scrollTop/(s.scrollHeight-innerHeight)*100||0)+'%';},{passive:true});
+
+/* ── TICKER ── */
+const tkData=['🔴 NKE −14% · April 2, 2025 tariff shock','📦 Vietnam = 50% of all Nike shoe production','⏱ 90-day pause expires July 9, 2025','🏭 India capacity expanding · 26% tariff vs 46%','💰 AF1 retail price increase of $15–25/pair expected','🌏 Indonesia (27% share) at risk · 32% tariff','📊 Annual tariff burden: est. $1.5B Vietnam-only','🔄 Mexico scouting underway · USMCA framework','⚡ Factory relocation minimum 18–24 months','🎯 30M AF1 pairs / year · Functional product · Lean SC'];
+const full=[...tkData,...tkData];
+document.getElementById('ti').innerHTML=full.map(t=>`<span class="tki"><svg width="6" height="6" viewBox="0 0 6 6" fill="#E24B4A" aria-hidden="true"><circle cx="3" cy="3" r="3"/></svg>${t}</span>`).join('<span style="color:var(--red);font-size:8px;opacity:.6">·</span>');
+
+/* ── COUNTER ANIMATION ── */
+function animN(el,tgt,dur,dec=0,pre='',suf=''){
+  const s=performance.now();
+  (function f(now){
+    const p=Math.min((now-s)/dur,1),ease=1-Math.pow(1-p,4),v=tgt*ease;
+    el.textContent=pre+(dec?v.toFixed(dec):Math.floor(v))+suf;
+    if(p<1)requestAnimationFrame(f);
+  })(s);
+}
+
+/* ── INTERSECTION OBSERVER ── */
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting)return;
+    const el=e.target;
+    if(el.classList.contains('section')){el.classList.add('vis');return}
+    if(el.classList.contains('crfill')){setTimeout(()=>{el.style.width=el.dataset.w},150);io.unobserve(el);return}
+    const t=parseFloat(el.dataset.tgt);
+    if(!isNaN(t)){animN(el,t,parseInt(el.dataset.dur||1100),parseInt(el.dataset.dec||0),el.dataset.pre||'',el.dataset.suf||'');io.unobserve(el)}
+  });
+},{threshold:.12});
+document.querySelectorAll('.section,[data-tgt],.crfill').forEach(el=>io.observe(el));
+
+/* ── HERO COUNTERS ── */
+window.addEventListener('load',()=>{
+  document.querySelectorAll('.hk [data-tgt]').forEach(el=>{
+    setTimeout(()=>animN(el,parseFloat(el.dataset.tgt),1300,parseInt(el.dataset.dec||0),el.dataset.pre||'',el.dataset.suf||''),500);
+  });
+});
+
+/* ── CHART HELPERS ── */
+function rr(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.closePath()}
+function hexRGB(h){return[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)]}
+
+/* ── MAIN CHART ── */
+const chartDefs={
+  stock:{label:'NKE Share Price (USD)',color:'#E24B4A',
+    data:[88,90,91,89,92,94,93,95,97,96,98,100,102,98,94,83,80,82,84,87,86,89,91,90,93],
+    labels:['Jan','','','Feb','','','Mar','','','Apr1','','','Apr9','','','Apr15','','','May','','','May15','','','May29'],
+    min:76,max:108,events:[{i:12,lbl:'Tariff\nAnnounce'},{i:14,lbl:'Pause\nGrant'}],
+    annot:'↓ 14% drop on April 2 tariff announcement · Partial recovery after 90-day pause · Still 9% below pre-tariff levels'},
+  rev:{label:'Revenue Trajectory ($B, annualised)',color:'#3B82F6',
+    data:[51,51.2,51,50.8,50.5,50,49.5,49.2,49,48.8,48.5,48.3,48,48.2,48.5,48.3,48,47.8,47.5,47.3,47.1,47,47.2,47.5,47.8],
+    labels:['Jan','','','Feb','','','Mar','','','Apr1','','','Apr9','','','Apr15','','','May','','','May15','','','May29'],
+    min:45,max:53,events:[{i:9,lbl:'Tariff\nImpact'}],
+    annot:'Revenue headwinds from consumer price increases · Holiday season Q4 most at risk · ~$3B annual reduction modelled'},
+  margin:{label:'Gross Margin % (tariff scenario)',color:'#F59E0B',
+    data:[44,44,44.2,44,43.8,44,44.2,44,43.5,43,42,40,39.5,39.8,40,40.2,40,39.8,39.5,39.3,39.1,39,39.2,39.5,39.8],
+    labels:['Jan','','','Feb','','','Mar','','','Apr1','','','Apr9','','','Apr15','','','May','','','May15','','','May29'],
+    min:36,max:46,events:[{i:10,lbl:'Margin\nCollapse'}],
+    annot:'4.5 percentage point gross margin compression at full tariff · Stabilising as pass-through pricing is applied'},
+};
+let activeChart='stock';
+function drawMainChart(type,animate=true){
+  const canvas=document.getElementById('mc');
+  if(!canvas)return;
+  canvas.width=canvas.offsetWidth||800;
+  const ctx=canvas.getContext('2d'),W=canvas.width,H=canvas.height||220;
+  const P={t:22,r:16,b:38,l:52},cW=W-P.l-P.r,cH=H-P.t-P.b;
+  const c=chartDefs[type];
+  const n=c.data.length,range=c.max-c.min;
+  const xp=i=>P.l+i/(n-1)*cW,yp=v=>P.t+cH-(v-c.min)/range*cH;
+  const [cr,cg,cb]=hexRGB(c.color);
+  const gradA=ctx.createLinearGradient(0,P.t,0,P.t+cH);
+  gradA.addColorStop(0,`rgba(${cr},${cg},${cb},0.22)`);gradA.addColorStop(1,`rgba(${cr},${cg},${cb},0)`);
+  document.getElementById('chart-annot').textContent=c.annot;
+  let prog=animate?0:1;
+  function frame(){
+    ctx.clearRect(0,0,W,H);
+    // gridlines
+    for(let i=0;i<=4;i++){
+      const v=c.min+i/4*range,y=yp(v);
+      ctx.beginPath();ctx.moveTo(P.l,y);ctx.lineTo(P.l+cW,y);ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=1;ctx.stroke();
+      ctx.fillStyle='rgba(255,255,255,0.28)';ctx.font='10px Fira Code,monospace';ctx.textAlign='right';
+      ctx.fillText(type==='margin'?v.toFixed(1):v.toFixed(0),P.l-5,y+3.5);
+    }
+    const maxI=Math.min(Math.floor(prog*(n-1)),n-1);
+    // area
+    ctx.beginPath();
+    for(let i=0;i<=maxI;i++){const v=i===maxI&&prog<1?c.data[i]+(c.data[Math.min(i+1,n-1)]-c.data[i])*(prog*(n-1)-Math.floor(prog*(n-1))):c.data[i];i===0?ctx.moveTo(xp(i),yp(v)):ctx.lineTo(xp(i),yp(v));}
+    ctx.lineTo(xp(maxI),P.t+cH);ctx.lineTo(P.l,P.t+cH);ctx.closePath();ctx.fillStyle=gradA;ctx.fill();
+    // line
+    ctx.beginPath();ctx.lineWidth=2;ctx.strokeStyle=c.color;
+    for(let i=0;i<=maxI;i++){const v=i===maxI&&prog<1?c.data[i]+(c.data[Math.min(i+1,n-1)]-c.data[i])*(prog*(n-1)-Math.floor(prog*(n-1))):c.data[i];i===0?ctx.moveTo(xp(i),yp(v)):ctx.lineTo(xp(i),yp(v));}
+    ctx.stroke();
+    // events
+    if(c.events)c.events.forEach(ev=>{
+      if(ev.i>maxI)return;
+      ctx.save();ctx.shadowColor=c.color;ctx.shadowBlur=10;
+      ctx.beginPath();ctx.arc(xp(ev.i),yp(c.data[ev.i]),5,0,Math.PI*2);ctx.fillStyle=c.color;ctx.fill();ctx.restore();
+      ctx.fillStyle='rgba(255,255,255,0.55)';ctx.font='8px Fira Code,monospace';ctx.textAlign='center';
+      ev.lbl.split('\n').forEach((ln,li)=>ctx.fillText(ln,xp(ev.i),yp(c.data[ev.i])-13-li*10));
+    });
+    prog=Math.min(prog+0.045,1);
+    if(prog<1)requestAnimationFrame(frame);
+  }
+  frame();
+}
+function swChart(type,btn){
+  document.querySelectorAll('#impact .tb').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');activeChart=type;drawMainChart(type);
+}
+const coIO=new IntersectionObserver(e=>{if(e[0].isIntersecting){drawMainChart('stock');drawDonut();coIO.disconnect();}},{threshold:.25});
+coIO.observe(document.getElementById('impact'));
+
+/* ── DONUT ── */
+function drawDonut(){
+  const canvas=document.getElementById('dc');if(!canvas)return;
+  const ctx=canvas.getContext('2d'),W=170,H=170,cx=85,cy=85,R=70,ri=44;
+  const segs=[{l:'Manufacturing',v:39,c:'#3B82F6'},{l:'Tariff 46%',v:18,c:'#E24B4A'},{l:'Logistics',v:8,c:'#F59E0B'},{l:'Overhead',v:12,c:'#8B5CF6'},{l:'Net Margin',v:23,c:'#22C55E'}];
+  const tot=segs.reduce((a,s)=>a+s.v,0);
+  let ang=-Math.PI/2;
+  ctx.clearRect(0,0,W,H);
+  segs.forEach(s=>{
+    const sw=s.v/tot*Math.PI*2;
+    ctx.save();ctx.shadowColor=s.c;ctx.shadowBlur=8;
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,R,ang,ang+sw);ctx.closePath();ctx.fillStyle=s.c;ctx.fill();ctx.restore();
+    ang+=sw;
+  });
+  ctx.beginPath();ctx.arc(cx,cy,ri,0,Math.PI*2);ctx.fillStyle='#000';ctx.fill();
+  ctx.fillStyle='#fff';ctx.font='bold 15px Fira Code,monospace';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('$100',cx,cy-7);
+  ctx.font='9px Fira Code,monospace';ctx.fillStyle='rgba(255,255,255,0.4)';ctx.fillText('per pair',cx,cy+8);
+  document.getElementById('dl').innerHTML=segs.map(s=>`<div style="display:flex;align-items:center;gap:.45rem;padding:.28rem 0;font-size:.73rem"><div style="width:7px;height:7px;border-radius:50%;background:${s.c};flex-shrink:0"></div><span style="flex:1;color:rgba(255,255,255,0.65)">${s.l}</span><span style="font-family:Fira Code,monospace;font-weight:600">$${s.v}</span></div>`).join('');
+}
+
+/* ── FLOW DIAGRAM ── */
+const fIO=new IntersectionObserver(e=>{if(e[0].isIntersecting){drawFlow();fIO.disconnect();}},{threshold:.15});
+fIO.observe(document.getElementById('flow'));
+function drawFlow(){
+  const canvas=document.getElementById('fc');if(!canvas)return;
+  canvas.width=canvas.offsetWidth||1100;
+  const ctx=canvas.getContext('2d'),W=canvas.width,H=360;
+  ctx.clearRect(0,0,W,H);
+  const nodes=[
+    {id:'raw',x:.07,y:.3,l:'Raw Materials',s:'Cotton·Rubber·Foam',c:'#8B5CF6'},
+    {id:'viet',x:.28,y:.18,l:'Vietnam',s:'50% · CRISIS',c:'#E24B4A',crisis:true},
+    {id:'indo',x:.28,y:.48,l:'Indonesia',s:'27% · At Risk',c:'#F59E0B'},
+    {id:'china',x:.28,y:.77,l:'China',s:'18% · Severe',c:'#EF4444',crisis:true},
+    {id:'india',x:.5,y:.28,l:'India',s:'5% → Expanding',c:'#22C55E'},
+    {id:'mex',x:.5,y:.6,l:'Mexico',s:'0% → Scouting',c:'#3B82F6'},
+    {id:'dist',x:.7,y:.4,l:'Distribution',s:'Portland HQ',c:'#06B6D4'},
+    {id:'retail',x:.88,y:.26,l:'Retail',s:'Nike Direct',c:'#EC4899'},
+    {id:'ecom',x:.88,y:.6,l:'E-Commerce',s:'Nike.com',c:'#F97316'},
+  ];
+  const edges=[
+    {f:'raw',t:'viet',c:'#E24B4A',w:3,crisis:true},{f:'raw',t:'indo',c:'#F59E0B',w:2},{f:'raw',t:'china',c:'#EF4444',w:1.5,crisis:true},
+    {f:'raw',t:'india',c:'#22C55E',w:1,dash:true},{f:'viet',t:'dist',c:'#E24B4A',w:4,crisis:true},
+    {f:'indo',t:'dist',c:'#F59E0B',w:2.5},{f:'china',t:'dist',c:'#EF4444',w:2,crisis:true},
+    {f:'india',t:'dist',c:'#22C55E',w:1,dash:true},{f:'mex',t:'dist',c:'#3B82F6',w:.8,dash:true},
+    {f:'dist',t:'retail',c:'#06B6D4',w:2.5},{f:'dist',t:'ecom',c:'#06B6D4',w:2},
+  ];
+  const byId=id=>nodes.find(n=>n.id===id);
+  const px=n=>n.x*W,py=n=>n.y*H;
+  edges.forEach(e=>{
+    const a=byId(e.f),b=byId(e.t);if(!a||!b)return;
+    if(e.dash)ctx.setLineDash([5,5]);else ctx.setLineDash([]);
+    const [r,g,bl]=hexRGB(e.c);
+    ctx.beginPath();ctx.moveTo(px(a),py(a));
+    const cpx=(px(a)+px(b))/2;ctx.bezierCurveTo(cpx,py(a),cpx,py(b),px(b),py(b));
+    ctx.strokeStyle=`rgba(${r},${g},${bl},0.5)`;ctx.lineWidth=e.w||1;ctx.stroke();ctx.setLineDash([]);
+    const ang=Math.atan2(py(b)-py(a),px(b)-px(a));
+    const ax=px(b)-22*Math.cos(ang),ay=py(b)-22*Math.sin(ang);
+    ctx.beginPath();ctx.moveTo(px(b),py(b));ctx.lineTo(ax-7*Math.cos(ang-.42),ay-7*Math.sin(ang-.42));ctx.lineTo(ax-7*Math.cos(ang+.42),ay-7*Math.sin(ang+.42));ctx.closePath();ctx.fillStyle=e.c;ctx.fill();
+  });
+  nodes.forEach(n=>{
+    const nx=px(n),ny=py(n),hw=58,hh=28;
+    if(n.crisis){const g=ctx.createRadialGradient(nx,ny,0,nx,ny,55);g.addColorStop(0,'rgba(226,75,74,0.18)');g.addColorStop(1,'rgba(226,75,74,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(nx,ny,55,0,Math.PI*2);ctx.fill();}
+    ctx.save();ctx.shadowColor=n.c;ctx.shadowBlur=n.crisis?18:8;
+    ctx.fillStyle='rgba(8,8,8,0.92)';ctx.strokeStyle=n.c;ctx.lineWidth=n.crisis?2.5:1;
+    rr(ctx,nx-hw,ny-hh,hw*2,hh*2,8);ctx.fill();ctx.stroke();ctx.restore();
+    ctx.fillStyle='#fff';ctx.font='bold 11px Fira Sans,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(n.l,nx,ny-7);
+    ctx.fillStyle=n.c;ctx.font='9px Fira Code,monospace';ctx.fillText(n.s,nx,ny+8);
+  });
+  const vt=byId('viet'),dt=byId('dist');
+  if(vt&&dt){
+    const lx=(px(vt)+px(dt))/2,ly=(py(vt)+py(dt))/2-18;
+    ctx.fillStyle='rgba(0,0,0,0.85)';rr(ctx,lx-24,ly-9,48,18,4);ctx.fill();
+    ctx.strokeStyle='rgba(226,75,74,0.55)';ctx.lineWidth=1;ctx.stroke();
+    ctx.fillStyle='#E24B4A';ctx.font='bold 9px Fira Code,monospace';ctx.textAlign='center';ctx.fillText('46% TARIFF',lx,ly+1);
+  }
+}
+
+/* ── PRODUCTION BARS ── */
+const prods=[
+  {name:'Vietnam',pct:50,c:'#E24B4A',tariff:'46%'},
+  {name:'Indonesia',pct:27,c:'#F59E0B',tariff:'32%'},
+  {name:'China',pct:18,c:'#EF4444',tariff:'54%'},
+  {name:'India',pct:5,c:'#22C55E',tariff:'26%'},
+  {name:'Other',pct:0,c:'#8B5CF6',tariff:'Varies',disp:'<1%'},
+];
+const pb=document.getElementById('pbars');
+if(pb){
+  pb.innerHTML=prods.map(p=>`<div class="cbar"><div class="cbarh"><span class="cn">${p.name}</span><span class="cs">Tariff: ${p.tariff} · Share: ${p.disp||p.pct+'%'}</span></div><div class="crbg"><div class="crfill" style="background:${p.c}" data-w="${p.pct||0.4}%"></div></div></div>`).join('');
+  pb.querySelectorAll('.crfill').forEach(el=>io.observe(el));
+}
+
+/* ── RISK MATRIX ── */
+const rIO=new IntersectionObserver(e=>{if(e[0].isIntersecting){drawRisk();rIO.disconnect();}},{threshold:.2});
+rIO.observe(document.getElementById('risk'));
+function drawRisk(){
+  const canvas=document.getElementById('rc');if(!canvas)return;
+  canvas.width=canvas.offsetWidth||400;
+  const ctx=canvas.getContext('2d'),W=canvas.width,H=280;
+  const P={t:28,r:16,b:38,l:48},cW=W-P.l-P.r,cH=H-P.t-P.b;
+  ctx.clearRect(0,0,W,H);
+  const qW=cW/2,qH=cH/2;
+  [{x:P.l,y:P.t+qH,c:'rgba(16,185,129,0.09)',l:'ACCEPT'},{x:P.l+qW,y:P.t+qH,c:'rgba(245,158,11,0.1)',l:'TRANSFER'},{x:P.l,y:P.t,c:'rgba(245,158,11,0.1)',l:'REDUCE'},{x:P.l+qW,y:P.t,c:'rgba(239,68,68,0.16)',l:'AVOID'}].forEach(q=>{
+    ctx.fillStyle=q.c;ctx.fillRect(q.x,q.y,qW,qH);
+    ctx.fillStyle='rgba(255,255,255,0.2)';ctx.font='9px Fira Code,monospace';ctx.textAlign='left';ctx.fillText(q.l,q.x+5,q.y+13);
+  });
+  ctx.strokeStyle='rgba(255,255,255,0.06)';ctx.lineWidth=1;
+  [1,2,3].forEach(i=>{
+    ctx.beginPath();ctx.moveTo(P.l+i/4*cW,P.t);ctx.lineTo(P.l+i/4*cW,P.t+cH);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(P.l,P.t+i/4*cH);ctx.lineTo(P.l+cW,P.t+i/4*cH);ctx.stroke();
+  });
+  ctx.fillStyle='rgba(255,255,255,0.28)';ctx.font='9px Fira Code,monospace';ctx.textAlign='center';
+  ctx.fillText('Low Impact',P.l+qW/2,H-6);ctx.fillText('High Impact',P.l+qW+qW/2,H-6);
+  ctx.save();ctx.translate(13,P.t+qH/2);ctx.rotate(-Math.PI/2);ctx.fillText('High Prob',0,0);ctx.restore();
+  ctx.save();ctx.translate(13,P.t+qH+qH/2);ctx.rotate(-Math.PI/2);ctx.fillText('Low Prob',0,0);ctx.restore();
+  [{l:'Tariff',p:4,i:4,c:'#E24B4A'},{l:'Delay',p:3,i:4,c:'#F59E0B'},{l:'Stockout',p:3,i:3,c:'#F59E0B'},{l:'Demand',p:2,i:4,c:'#3B82F6'},{l:'Quality',p:2,i:3,c:'#22C55E'},{l:'ESG',p:2,i:2,c:'#8B5CF6'}].forEach(rk=>{
+    const rx=P.l+(rk.i-1)/3*cW,ry=P.t+cH-(rk.p-1)/3*cH;
+    ctx.save();ctx.shadowColor=rk.c;ctx.shadowBlur=14;
+    ctx.beginPath();ctx.arc(rx,ry,10,0,Math.PI*2);const [r,g,b]=hexRGB(rk.c);ctx.fillStyle=`rgba(${r},${g},${b},0.25)`;ctx.fill();
+    ctx.beginPath();ctx.arc(rx,ry,6,0,Math.PI*2);ctx.fillStyle=rk.c;ctx.fill();ctx.restore();
+    ctx.fillStyle='rgba(255,255,255,0.55)';ctx.font='8px Fira Code,monospace';ctx.textAlign='center';ctx.textBaseline='alphabetic';ctx.fillText(rk.l,rx,ry+20);
+  });
+}
+
+/* ── COUNTDOWN ── */
+function drawCD(){
+  const canvas=document.getElementById('cdc');if(!canvas)return;
+  const ctx=canvas.getContext('2d'),W=280,H=280,cx=140,cy=135;
+  const target=new Date('2025-07-09T00:00:00');
+  const diff=Math.max(0,target-new Date());
+  const days=Math.floor(diff/(864e5));
+  const frac=Math.max(0,Math.min(1,(90-days)/90));
+  document.getElementById('dl2').textContent=days>0?days:'EXPIRED';
+  ctx.clearRect(0,0,W,H);
+  ctx.beginPath();ctx.arc(cx,cy,108,0,Math.PI*2);ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=14;ctx.stroke();
+  const s=-Math.PI/2;
+  const grad=ctx.createLinearGradient(cx-108,cy,cx+108,cy);
+  grad.addColorStop(0,'#22C55E');grad.addColorStop(0.5,'#F59E0B');grad.addColorStop(1,'#E24B4A');
+  ctx.beginPath();ctx.arc(cx,cy,108,s,s+frac*Math.PI*2);ctx.strokeStyle=grad;ctx.lineWidth=14;ctx.lineCap='round';ctx.stroke();
+  for(let i=0;i<90;i++){
+    const a=s+i/90*Math.PI*2,r1=88,r2=i%10===0?80:84;
+    ctx.beginPath();ctx.moveTo(cx+r1*Math.cos(a),cy+r1*Math.sin(a));ctx.lineTo(cx+r2*Math.cos(a),cy+r2*Math.sin(a));
+    ctx.strokeStyle=i<(90-days)?'rgba(245,158,11,0.35)':'rgba(255,255,255,0.05)';ctx.lineWidth=1;ctx.stroke();
+  }
+  const da=s+frac*Math.PI*2;
+  ctx.save();ctx.shadowColor='#E24B4A';ctx.shadowBlur=22;
+  ctx.beginPath();ctx.arc(cx+108*Math.cos(da),cy+108*Math.sin(da),7,0,Math.PI*2);ctx.fillStyle='#E24B4A';ctx.fill();ctx.restore();
+}
+drawCD();setInterval(drawCD,60000);
+
+/* ── CALCULATOR ── */
+function fmt(n){return n>=1e9?'$'+(n/1e9).toFixed(1)+'B':n>=1e6?'$'+(n/1e6).toFixed(0)+'M':'$'+n.toFixed(0)}
+function ci(){
+  const u=parseFloat(document.getElementById('cu').value)||0;
+  const f=parseFloat(document.getElementById('cf').value)||0;
+  const t=parseFloat(document.getElementById('ctr').value)||0;
+  const pt=parseFloat(document.getElementById('cp2').value)||0;
+  const ve=parseFloat(document.getElementById('cv').value)||0;
+  const tpp=f*(t/100),app=tpp*(1-pt/100),ppp=tpp*(pt/100);
+  const eu=u*(ve/100)*1e6;
+  document.getElementById('cov').textContent=fmt(app*eu);
+  document.getElementById('cpp').textContent='$'+app.toFixed(2);
+  document.getElementById('crr').textContent=fmt(ppp*eu);
+  document.getElementById('co2').textContent=`Nike absorbs $${app.toFixed(2)}/pair; consumer pays $${ppp.toFixed(2)} extra`;
+  drawCalc(f,tpp,app,ppp);
+}
+ci();
+function drawCalc(fob,tpp,app,ppp){
+  const canvas=document.getElementById('cc');if(!canvas)return;
+  canvas.width=canvas.offsetWidth||400;
+  const ctx=canvas.getContext('2d'),W=canvas.width,H=280;
+  const P={t:20,r:16,b:58,l:50},cW=W-P.l-P.r,cH=H-P.t-P.b;
+  ctx.clearRect(0,0,W,H);
+  const bars=[{l:'FOB\nCost',v:fob,c:'#3B82F6'},{l:'Total\nTariff',v:tpp,c:'#E24B4A'},{l:'Nike\nAbsorbs',v:app,c:'#F59E0B'},{l:'Passed\nTo Consumer',v:ppp,c:'#8B5CF6'}];
+  const maxV=Math.max(...bars.map(b=>b.v),1);
+  const bW=(cW-bars.length*10)/bars.length;
+  bars.forEach((b,i)=>{
+    const bH=b.v/maxV*cH,bx=P.l+i*(bW+10),by=P.t+cH-bH;
+    const [r,g,bl]=hexRGB(b.c);
+    const grad=ctx.createLinearGradient(bx,by,bx,by+bH);
+    grad.addColorStop(0,b.c);grad.addColorStop(1,`rgba(${r},${g},${bl},0.3)`);
+    ctx.save();ctx.shadowColor=b.c;ctx.shadowBlur=12;
+    ctx.fillStyle=grad;rr(ctx,bx,by,bW,bH,5);ctx.fill();ctx.restore();
+    ctx.fillStyle='rgba(255,255,255,0.82)';ctx.font='bold 10px Fira Code,monospace';ctx.textAlign='center';ctx.fillText('$'+b.v.toFixed(1),bx+bW/2,by-6);
+    ctx.fillStyle='rgba(255,255,255,0.38)';ctx.font='9px Fira Sans,sans-serif';
+    b.l.split('\n').forEach((ln,li)=>ctx.fillText(ln,bx+bW/2,P.t+cH+16+li*13));
+  });
+  for(let i=0;i<=4;i++){
+    const v=maxV*i/4,yp=P.t+cH-v/maxV*cH;
+    ctx.beginPath();ctx.moveTo(P.l,yp);ctx.lineTo(P.l+cW,yp);ctx.strokeStyle='rgba(255,255,255,0.04)';ctx.lineWidth=1;ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,0.22)';ctx.font='9px Fira Code,monospace';ctx.textAlign='right';ctx.fillText('$'+v.toFixed(0),P.l-4,yp+3);
+  }
+}
+
+</script>
+</body>
+</html>

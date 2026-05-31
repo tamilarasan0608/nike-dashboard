@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ROEHRICH — Supply Chain Framework Engine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#06090F;--bg2:#0C1018;--bg3:#121820;
+  --surface:rgba(255,255,255,0.03);--surface-h:rgba(255,255,255,0.06);
+  --border:rgba(255,255,255,0.08);--border-b:rgba(255,255,255,0.15);
+  --text:#E8EBF0;--t2:rgba(232,235,240,0.65);--t3:rgba(232,235,240,0.38);
+  --sans:'Space Grotesk',system-ui,sans-serif;
+  --mono:'JetBrains Mono',monospace;
+  --body:'Inter',system-ui,sans-serif;
+  --f1:#3B82F6;--f2:#8B5CF6;--f3:#06B6D4;--f4:#10B981;
+  --f5:#F59E0B;--f6:#EF4444;--f7:#059669;--f8:#EC4899;
+  --accent:var(--f1);--r:12px;--r-lg:18px;
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:var(--border-b);border-radius:3px}
+
+/* ── CANVAS ── */
+#canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* ── HERO ── */
+#hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;text-align:center}
+.hero-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--t3);margin-bottom:1.5rem;animation:fadeUp .8s ease both}
+.hero-title{font-family:var(--sans);font-size:clamp(2.8rem,7vw,6.5rem);font-weight:700;line-height:.92;letter-spacing:-.03em;margin-bottom:1.25rem;animation:fadeUp .8s ease .1s both}
+.hero-title .grad{background:linear-gradient(135deg,#3B82F6 0%,#8B5CF6 40%,#06B6D4 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:1.05rem;color:var(--t2);max-width:540px;line-height:1.75;margin-bottom:3rem;animation:fadeUp .8s ease .2s both}
+
+/* orbit */
+.orbit-wrap{position:relative;width:260px;height:260px;margin:0 auto 3rem;animation:fadeIn 1s ease .3s both}
+.orbit-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:72px;height:72px;border-radius:50%;background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.4);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:9px;color:#3B82F6;letter-spacing:.08em;text-align:center;z-index:2;line-height:1.4}
+.orbit-ring{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);border-radius:50%;border:1px dashed rgba(255,255,255,.07)}
+.orbit-node{position:absolute;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:8px;font-weight:600;border:1px solid currentColor;transform-origin:center;transition:transform .2s}
+.orbit-node:hover{transform:scale(1.2)}
+
+/* problem input */
+.problem-wrap{width:100%;max-width:680px;animation:fadeUp .8s ease .4s both}
+.problem-label{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--t3);margin-bottom:.6rem;display:block;text-align:left}
+.problem-box{position:relative;border:1px solid var(--border-b);border-radius:var(--r-lg);background:rgba(255,255,255,.02);transition:border-color .3s,box-shadow .3s}
+.problem-box:focus-within{border-color:rgba(59,130,246,.6);box-shadow:0 0 0 3px rgba(59,130,246,.1),0 0 40px rgba(59,130,246,.07)}
+.problem-ta{width:100%;background:transparent;border:none;outline:none;resize:none;padding:1.1rem 1.4rem;font-family:var(--body);font-size:.95rem;color:var(--text);line-height:1.75;min-height:110px}
+.problem-ta::placeholder{color:var(--t3)}
+.problem-foot{display:flex;align-items:center;justify-content:space-between;padding:.65rem 1.1rem;border-top:1px solid var(--border)}
+.problem-hint{font-family:var(--mono);font-size:10px;color:var(--t3)}
+.btn-go{display:inline-flex;align-items:center;gap:.5rem;padding:.6rem 1.4rem;background:linear-gradient(135deg,#3B82F6,#6366F1);border:none;border-radius:8px;color:#fff;font-family:var(--sans);font-size:.85rem;font-weight:600;cursor:pointer;transition:transform .2s,box-shadow .2s}
+.btn-go:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(59,130,246,.4)}
+
+/* ── DASHBOARD ── */
+#dash{display:none;min-height:100vh;position:relative;z-index:1}
+#dash.on{display:flex}
+
+/* sidebar */
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:252px;background:rgba(8,11,18,.96);border-right:1px solid var(--border);backdrop-filter:blur(20px);padding:1.5rem 0;z-index:100;display:flex;flex-direction:column;overflow-y:auto}
+.sb-logo{padding:0 1.25rem 1.25rem;border-bottom:1px solid var(--border);margin-bottom:1.25rem}
+.sb-logo-name{font-family:var(--sans);font-weight:700;font-size:.95rem;letter-spacing:-.01em}
+.sb-logo-sub{font-family:var(--mono);font-size:9px;color:var(--t3);letter-spacing:.12em;margin-top:.2rem}
+.sb-prob{padding:0 1.25rem;margin-bottom:1.25rem}
+.sb-prob-lbl{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-bottom:.4rem}
+.sb-prob-txt{font-size:.75rem;color:var(--t2);line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.sb-nav{flex:1;padding:0 .5rem}
+.sb-sec-lbl{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);padding:.25rem .75rem;margin-bottom:.35rem}
+.nav-item{display:flex;align-items:center;gap:.6rem;padding:.55rem .75rem;border-radius:8px;cursor:pointer;transition:background .2s,color .2s;font-size:.8rem;color:var(--t2);margin-bottom:2px;border:1px solid transparent;user-select:none}
+.nav-item:hover{background:var(--surface-h);color:var(--text)}
+.nav-item.active{background:var(--surface-h);color:var(--text);border-color:var(--border)}
+.nav-dot{width:7px;height:7px;border-radius:50%;background:var(--border-b);flex-shrink:0;transition:background .3s,box-shadow .3s}
+.nav-item.active .nav-dot{background:var(--accent);box-shadow:0 0 8px var(--accent)}
+.nav-item.done .nav-dot{background:#10B981}
+.nav-num{font-family:var(--mono);font-size:9px;color:var(--t3);min-width:14px}
+.nav-lbl{flex:1}
+.nav-check{color:#10B981;display:none;font-size:12px}
+.nav-item.done .nav-check{display:block}
+.nav-item.done .nav-num{display:none}
+
+/* top progress */
+.top-prog{position:fixed;top:0;left:252px;right:0;height:2px;background:var(--border);z-index:200}
+.top-prog-fill{height:100%;background:linear-gradient(90deg,var(--f1),var(--f2),var(--f3),var(--f4));transition:width .4s ease;width:0%}
+
+/* main */
+.main{margin-left:252px;flex:1;padding:2rem;min-height:100vh}
+
+/* problem banner */
+.prob-banner{display:flex;align-items:flex-start;gap:.9rem;padding:.9rem 1.1rem;background:rgba(59,130,246,.04);border:1px solid rgba(59,130,246,.2);border-radius:var(--r);margin-bottom:2rem}
+.pb-icon{width:30px;height:30px;border-radius:8px;background:rgba(59,130,246,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px}
+.pb-lbl{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-bottom:.2rem}
+.pb-txt{font-size:.875rem;color:var(--text);line-height:1.5}
+
+/* framework sections */
+.fw{display:none;animation:slideIn .35s ease both}
+.fw.on{display:block}
+@keyframes slideIn{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:translateX(0)}}
+
+/* framework header */
+.fw-badge{display:inline-flex;align-items:center;gap:.4rem;padding:.28rem .7rem;border-radius:20px;font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;border:1px solid currentColor;margin-bottom:.9rem}
+.fw-title{font-family:var(--sans);font-size:clamp(1.5rem,3vw,2.2rem);font-weight:700;letter-spacing:-.025em;line-height:1.1;margin-bottom:.65rem}
+.fw-q{font-size:.95rem;color:var(--t2);line-height:1.7;max-width:580px;margin-bottom:2rem}
+
+/* cards */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.4rem;transition:border-color .25s}
+.card:hover{border-color:var(--border-b)}
+.card-title{font-family:var(--sans);font-weight:600;font-size:.875rem;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
+.card-title .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* grids */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+
+/* 2x2 matrix */
+.matrix{display:grid;grid-template-columns:1fr 1fr;gap:3px;border-radius:var(--r);overflow:hidden;background:var(--border)}
+.mx-cell{padding:1.2rem;background:var(--bg2);cursor:pointer;transition:background .2s;border:2px solid transparent;border-radius:2px;position:relative}
+.mx-cell:hover{background:var(--bg3)}
+.mx-cell.sel{background:rgba(59,130,246,.1);border-color:rgba(59,130,246,.5)}
+.mx-cell-num{font-family:var(--mono);font-size:9px;color:var(--t3);margin-bottom:.4rem}
+.mx-cell-name{font-family:var(--sans);font-weight:600;font-size:.875rem;margin-bottom:.5rem}
+.mx-pros,.mx-cons{font-size:.74rem;line-height:1.65;color:var(--t2)}
+.mx-sel-badge{position:absolute;top:.6rem;right:.6rem;width:18px;height:18px;border-radius:50%;background:#3B82F6;display:none;align-items:center;justify-content:center;font-size:10px;color:#fff}
+.mx-cell.sel .mx-sel-badge{display:flex}
+.mx-axis{display:flex;justify-content:space-between;padding:.4rem 0;font-family:var(--mono);font-size:9px;color:var(--t3);letter-spacing:.1em;text-transform:uppercase}
+
+/* fields */
+.field-lbl{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin-bottom:.4rem;display:block}
+.f-in,.f-ta,.f-sel{width:100%;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;padding:.6rem .875rem;font-family:var(--body);font-size:.875rem;color:var(--text);outline:none;transition:border-color .2s}
+.f-in:focus,.f-ta:focus,.f-sel:focus{border-color:var(--accent)}
+.f-ta{resize:vertical;min-height:72px;line-height:1.65}
+.f-sel{appearance:none;cursor:pointer}
+.fg{margin-bottom:1rem}
+
+/* toggle buttons */
+.tog-g{display:flex;gap:.4rem;flex-wrap:wrap}
+.tog{padding:.45rem .9rem;border:1px solid var(--border);border-radius:6px;font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;background:transparent;color:var(--t2);transition:all .2s}
+.tog:hover{border-color:var(--border-b);color:var(--text)}
+.tog.on{background:color-mix(in srgb,var(--accent) 15%,transparent);border-color:var(--accent);color:var(--accent)}
+
+/* TCO table */
+.tco-tbl{width:100%;border-collapse:collapse}
+.tco-tbl th{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);padding:.55rem .75rem;text-align:left;border-bottom:1px solid var(--border)}
+.tco-tbl td{padding:.45rem .75rem;border-bottom:1px solid rgba(255,255,255,.03);font-size:.82rem;vertical-align:middle}
+.tco-tbl .total-row td{font-family:var(--mono);font-weight:600;border-top:1px solid var(--border-b);border-bottom:none;font-size:.9rem}
+.tco-in{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:5px;padding:.3rem .55rem;font-family:var(--mono);font-size:.78rem;color:var(--text);width:115px;outline:none;transition:border-color .2s}
+.tco-in:focus{border-color:var(--accent)}
+.tco-total{font-family:var(--mono);font-weight:600;font-size:.95rem}
+
+/* risk table */
+.risk-tbl{width:100%;border-collapse:collapse}
+.risk-tbl th{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);padding:.5rem .65rem;text-align:left;border-bottom:1px solid var(--border)}
+.risk-tbl td{padding:.4rem .65rem;border-bottom:1px solid rgba(255,255,255,.03);font-size:.8rem;vertical-align:middle}
+.r-in{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:4px;padding:.25rem .45rem;font-family:var(--mono);font-size:.75rem;color:var(--text);outline:none;width:100%;transition:border-color .2s}
+.r-in:focus{border-color:var(--accent)}
+.r-score{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;font-family:var(--mono);font-size:.72rem;font-weight:600}
+.score-low{background:rgba(16,185,129,.15);color:#10B981}
+.score-med{background:rgba(245,158,11,.15);color:#F59E0B}
+.score-high{background:rgba(239,68,68,.15);color:#EF4444}
+.score-crit{background:rgba(239,68,68,.3);color:#EF4444;box-shadow:0 0 8px rgba(239,68,68,.4)}
+
+/* range slider */
+.range-wrap{display:flex;align-items:center;gap:.65rem}
+.risk-slider{flex:1;-webkit-appearance:none;height:4px;border-radius:2px;background:var(--border-b);outline:none}
+.risk-slider::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;border-radius:50%;background:var(--accent);cursor:pointer;box-shadow:0 0 7px var(--accent)}
+.rv{font-family:var(--mono);font-size:.875rem;font-weight:600;min-width:22px;text-align:center;color:var(--accent)}
+
+/* strategy cards */
+.strat-card{padding:1.1rem;border:2px solid var(--border);border-radius:var(--r);cursor:pointer;transition:all .2s;position:relative}
+.strat-card:hover{border-color:var(--border-b);background:var(--surface-h)}
+.strat-card.on{background:rgba(59,130,246,.08);border-color:var(--accent)}
+.strat-icon{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;margin-bottom:.7rem}
+.strat-name{font-family:var(--sans);font-weight:600;font-size:.875rem;margin-bottom:.35rem}
+.strat-desc{font-size:.74rem;color:var(--t2);line-height:1.6}
+
+/* percent bar */
+.pct-row{display:flex;align-items:center;gap:.9rem;padding:.6rem 0;border-bottom:1px solid var(--border)}
+.pct-lbl{font-size:.8rem;min-width:110px;color:var(--t2)}
+.pct-bar{flex:1;height:7px;background:var(--border);border-radius:3px;overflow:hidden}
+.pct-fill{height:100%;border-radius:3px;transition:width .3s ease}
+.pct-val{font-family:var(--mono);font-size:.8rem;font-weight:600;min-width:38px;text-align:right}
+
+/* pillars */
+.pillars{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem}
+.pillar{padding:1.2rem;border-radius:var(--r);border:1px solid var(--border);transition:border-color .2s}
+.pillar:hover{border-color:var(--border-b)}
+.pillar-icon{font-size:1.4rem;margin-bottom:.5rem}
+.pillar-name{font-family:var(--sans);font-weight:600;font-size:.875rem;margin-bottom:.75rem}
+
+/* timeline */
+.tl{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative}
+.tl::before{content:'';position:absolute;top:24px;left:12%;right:12%;height:2px;background:linear-gradient(90deg,#3B82F6,#8B5CF6,#059669,#10B981);z-index:0}
+.tl-phase{position:relative;z-index:1;text-align:center;padding:0 .4rem}
+.tl-dot{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto .65rem;font-family:var(--mono);font-size:.72rem;font-weight:600;border:2px solid currentColor}
+.tl-name{font-family:var(--sans);font-weight:600;font-size:.8rem;margin-bottom:.25rem}
+.tl-dur{font-family:var(--mono);font-size:.72rem;color:var(--t3);margin-bottom:.65rem}
+.tl-items{font-size:.72rem;color:var(--t2);line-height:1.85;text-align:left}
+
+/* action buttons */
+.btn{display:inline-flex;align-items:center;gap:.45rem;padding:.65rem 1.3rem;border-radius:8px;font-family:var(--sans);font-weight:600;font-size:.85rem;cursor:pointer;transition:all .2s;border:none}
+.btn-primary{background:linear-gradient(135deg,var(--accent),color-mix(in srgb,var(--accent) 70%,#fff 30%));color:#fff}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 8px 20px color-mix(in srgb,var(--accent) 40%,transparent)}
+.btn-outline{background:transparent;border:1px solid var(--border-b);color:var(--t2)}
+.btn-outline:hover{background:var(--surface-h);color:var(--text)}
+.btn-row{display:flex;align-items:center;justify-content:space-between;margin-top:2rem;padding-top:1.4rem;border-top:1px solid var(--border)}
+
+/* scoring display */
+.score-big-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.75rem}
+.score-big{font-family:var(--sans);font-size:3.5rem;font-weight:700;letter-spacing:-.04em;line-height:1}
+.score-lbl{font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--t3);margin-top:.4rem}
+.rec-box{padding:1.1rem;border-radius:var(--r);text-align:center;font-family:var(--sans);font-weight:600;font-size:.95rem;margin-top:.75rem}
+
+/* radar chart */
+#radar-canvas{display:block;margin:0 auto}
+
+/* summary cards */
+.sum-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem}
+.sum-item{padding:.9rem 1.1rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);border-left:3px solid var(--accent)}
+.sum-f-lbl{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-bottom:.3rem}
+.sum-f-val{font-size:.875rem;color:var(--text);line-height:1.5}
+
+/* sep */
+.sep{height:1px;background:var(--border);margin:1.4rem 0}
+.div-lbl{display:flex;align-items:center;gap:.75rem;margin:1.4rem 0;font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--t3)}
+.div-lbl::before,.div-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* checkbox row */
+.cb-row{display:flex;align-items:flex-start;gap:.65rem;padding:.65rem;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:8px;margin-bottom:.4rem;cursor:pointer;transition:background .2s}
+.cb-row:hover{background:var(--surface-h)}
+.cb-box{width:16px;height:16px;border-radius:4px;border:1px solid var(--border-b);flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all .2s;font-size:10px}
+.cb-box.on{background:var(--accent);border-color:var(--accent)}
+.cb-text{font-size:.8rem;color:var(--t2);line-height:1.5}
+
+/* animations */
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* responsive */
+@media(max-width:860px){
+  .sidebar{width:200px}.main{margin-left:200px;max-width:calc(100% - 200px)}
+  .top-prog{left:200px}.g2,.g3,.g4,.pillars,.tl,.sum-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+
+<!-- ══════════════════════════════════════════
+     HERO
+══════════════════════════════════════════ -->
+<div id="hero">
+  <div class="hero-eyebrow">Roehrich's 8-Framework Engine &nbsp;·&nbsp; Supply Chain Decision Tool</div>
+  <h1 class="hero-title">Solve Any<br><span class="grad">Supply Chain</span><br>Challenge</h1>
+  <p class="hero-sub">Type your situation. Walk through all 8 academic frameworks. Get a structured, integrated decision — for any SCM problem.</p>
+
+  <!-- orbit -->
+  <div class="orbit-wrap" id="orbit">
+    <div class="orbit-ring" style="width:250px;height:250px"></div>
+    <div class="orbit-ring" style="width:170px;height:170px"></div>
+    <div class="orbit-center">8<br>FRAMEWORKS</div>
+  </div>
+
+  <!-- problem input -->
+  <div class="problem-wrap">
+    <label class="problem-label">Describe your supply chain situation or challenge</label>
+    <div class="problem-box">
+      <textarea class="problem-ta" id="prob-ta" rows="4" placeholder="e.g. Nike faces 46% tariffs on Vietnam-made shoes. We need to decide whether to shift production, absorb costs, or find alternative suppliers within 6 months..."></textarea>
+      <div class="problem-foot">
+        <span class="problem-hint">Examples: tariff crisis · supplier selection · new product launch · risk mitigation · cost reduction</span>
+        <button class="btn-go" onclick="startDash()">
+          <svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="6"/><path d="M6 8h4M9 6l2 2-2 2"/></svg>
+          Analyze →
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     DASHBOARD
+══════════════════════════════════════════ -->
+<div id="dash">
+  <!-- top progress -->
+  <div class="top-prog"><div class="top-prog-fill" id="top-fill"></div></div>
+
+  <!-- sidebar -->
+  <aside class="sidebar">
+    <div class="sb-logo">
+      <div class="sb-logo-name">ROEHRICH ENGINE</div>
+      <div class="sb-logo-sub">SCM FRAMEWORK TOOL</div>
+    </div>
+    <div class="sb-prob">
+      <div class="sb-prob-lbl">Your Situation</div>
+      <div class="sb-prob-txt" id="sb-prob-txt"></div>
+    </div>
+    <nav class="sb-nav">
+      <div class="sb-sec-lbl">Frameworks</div>
+      <div class="nav-item active" onclick="goto(1)" id="nav-1">
+        <div class="nav-dot"></div><span class="nav-num">01</span><span class="nav-check">✓</span><span class="nav-lbl">Make / Buy / Location</span>
+      </div>
+      <div class="nav-item" onclick="goto(2)" id="nav-2">
+        <div class="nav-dot"></div><span class="nav-num">02</span><span class="nav-check">✓</span><span class="nav-lbl">Product Type (Lean/Agile)</span>
+      </div>
+      <div class="nav-item" onclick="goto(3)" id="nav-3">
+        <div class="nav-dot"></div><span class="nav-num">03</span><span class="nav-check">✓</span><span class="nav-lbl">Supplier Selection (TCE)</span>
+      </div>
+      <div class="nav-item" onclick="goto(4)" id="nav-4">
+        <div class="nav-dot"></div><span class="nav-num">04</span><span class="nav-check">✓</span><span class="nav-lbl">Total Cost of Ownership</span>
+      </div>
+      <div class="nav-item" onclick="goto(5)" id="nav-5">
+        <div class="nav-dot"></div><span class="nav-num">05</span><span class="nav-check">✓</span><span class="nav-lbl">Risk Assessment</span>
+      </div>
+      <div class="nav-item" onclick="goto(6)" id="nav-6">
+        <div class="nav-dot"></div><span class="nav-num">06</span><span class="nav-check">✓</span><span class="nav-lbl">Risk Mitigation (4 Powers)</span>
+      </div>
+      <div class="nav-item" onclick="goto(7)" id="nav-7">
+        <div class="nav-dot"></div><span class="nav-num">07</span><span class="nav-check">✓</span><span class="nav-lbl">Sustainability (SSCM)</span>
+      </div>
+      <div class="nav-item" onclick="goto(8)" id="nav-8">
+        <div class="nav-dot"></div><span class="nav-num">08</span><span class="nav-check">✓</span><span class="nav-lbl">Learning & Capability</span>
+      </div>
+      <div style="margin-top:.5rem;height:1px;background:var(--border);margin:1rem .75rem"></div>
+      <div class="nav-item" onclick="goto(9)" id="nav-9">
+        <div class="nav-dot" style="background:#F97316"></div><span class="nav-num" style="color:#F97316">★</span><span class="nav-check">✓</span><span class="nav-lbl" style="font-weight:600">Final Decision</span>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- main -->
+  <main class="main">
+    <!-- problem banner -->
+    <div class="prob-banner">
+      <div class="pb-icon">💡</div>
+      <div>
+        <div class="pb-lbl">Your Supply Chain Challenge</div>
+        <div class="pb-txt" id="main-prob-txt"></div>
+      </div>
+    </div>
+
+    <!-- ══ FRAMEWORK 1 ══ -->
+    <div class="fw on" id="fw-1">
+      <div class="fw-badge" style="color:var(--f1);border-color:var(--f1)">Framework 01 · Sako 2006</div>
+      <h2 class="fw-title">Make / Buy / Location Matrix</h2>
+      <p class="fw-q">Should you <strong>MAKE</strong> it internally, <strong>BUY</strong> locally, or <strong>BUY</strong> globally? Choose your quadrant(s) and explain your reasoning.</p>
+
+      <div style="margin-bottom:.75rem">
+        <div class="mx-axis"><span>← CLOSE BY</span><span>FAR AWAY →</span></div>
+        <div class="matrix" id="matrix-1">
+          <div class="mx-cell" onclick="toggleMatrix(this,'I')" data-q="I">
+            <div class="mx-sel-badge">✓</div>
+            <div class="mx-cell-num">Quadrant I · MAKE (Close)</div>
+            <div class="mx-cell-name">Own Factory — Local</div>
+            <div class="mx-pros">✓ Full control &nbsp; ✓ Own assets<br>✓ Immediate oversight</div>
+            <div class="mx-cons" style="margin-top:.4rem">✗ High capital cost &nbsp; ✗ Needs expertise<br>✗ Inflexible to change</div>
+          </div>
+          <div class="mx-cell" onclick="toggleMatrix(this,'II')" data-q="II">
+            <div class="mx-sel-badge">✓</div>
+            <div class="mx-cell-num">Quadrant II · CAPTIVE (Far)</div>
+            <div class="mx-cell-name">Own Offshore Factory</div>
+            <div class="mx-pros">✓ Control + cheap labour<br>✓ Economies of scale</div>
+            <div class="mx-cons" style="margin-top:.4rem">✗ Long supply lines<br>✗ Tariff &amp; geopolitical risk</div>
+          </div>
+          <div class="mx-cell" onclick="toggleMatrix(this,'IV')" data-q="IV">
+            <div class="mx-sel-badge">✓</div>
+            <div class="mx-cell-num">Quadrant IV · BUY LOCAL</div>
+            <div class="mx-cell-name">Local Suppliers</div>
+            <div class="mx-pros">✓ Speed &amp; relationships<br>✓ Community value</div>
+            <div class="mx-cons" style="margin-top:.4rem">✗ May lack scale<br>✗ Limited capacity</div>
+          </div>
+          <div class="mx-cell" onclick="toggleMatrix(this,'III')" data-q="III">
+            <div class="mx-sel-badge">✓</div>
+            <div class="mx-cell-num">Quadrant III · BUY GLOBAL</div>
+            <div class="mx-cell-name">Global Suppliers</div>
+            <div class="mx-pros">✓ Lowest cost<br>✓ Proven expertise</div>
+            <div class="mx-cons" style="margin-top:.4rem">✗ Slow, coordination risk<br>✗ Information gaps</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fg" style="margin-top:1rem">
+        <label class="field-lbl">Your Decision — which quadrant(s) and why?</label>
+        <textarea class="f-ta" id="f1-decision" placeholder="e.g. Quadrant III (Buy Global) short-term while building Quadrant IV (Buy Local) capacity in Mexico and India to reduce tariff exposure..."></textarea>
+      </div>
+      <div class="fg">
+        <label class="field-lbl">Key Strategic Rationale</label>
+        <textarea class="f-ta" id="f1-rationale" placeholder="What specific factors in your situation drive this choice?"></textarea>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-outline" onclick="goto(9)">Skip to Final →</button>
+        <button class="btn btn-primary" style="--accent:var(--f1)" onclick="nextFW(1)">Next: Product Type →</button>
+      </div>
+    </div>
+
+    <!-- ══ FRAMEWORK 2 ══ -->
+    <div class="fw" id="fw-2">
+      <div class="fw-badge" style="color:var(--f2);border-color:var(--f2)">Framework 02 · Fisher 1997</div>
+      <h2 class="fw-title">Product / Service Type</h2>
+      <p class="fw-q">Is what you're supplying <strong>FUNCTIONAL</strong> (stable, predictable) or <strong>INNOVATIVE</strong> (trendy, unpredictable)? This determines Lean vs Agile strategy.</p>
+
+      <div class="g2" style="margin-bottom:1.5rem">
+        <div class="strat-card" id="type-func" onclick="selectType('functional')">
+          <div class="strat-icon" style="background:rgba(59,130,246,.15);color:#3B82F6">📦</div>
+          <div class="strat-name">Type 1 — Functional</div>
+          <div class="strat-desc">Stable, predictable demand. Consistent year-round. Price competition intense. Low margin, high volume.<br><br><strong style="color:var(--text)">→ Use LEAN Supply Chain</strong> (focus: cost, efficiency, standardisation)</div>
+        </div>
+        <div class="strat-card" id="type-inno" onclick="selectType('innovative')">
+          <div class="strat-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6">🚀</div>
+          <div class="strat-name">Type 2 — Innovative</div>
+          <div class="strat-desc">Trendy, unpredictable demand. Seasonal spikes. First-mover advantage critical. High margin, low volume.<br><br><strong style="color:var(--text)">→ Use AGILE Supply Chain</strong> (focus: speed, flexibility, responsiveness)</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:1rem">
+        <div class="card-title"><span class="dot" style="background:var(--f2)"></span>Supply Chain Strategy Implications</div>
+        <div class="g2">
+          <div>
+            <label class="field-lbl">Your Product Type</label>
+            <div class="tog-g" style="margin-bottom:1rem">
+              <button class="tog" id="tog-lean" onclick="setStrategy('lean')">LEAN</button>
+              <button class="tog" id="tog-agile" onclick="setStrategy('agile')">AGILE</button>
+              <button class="tog" id="tog-hybrid" onclick="setStrategy('hybrid')">HYBRID (Leagile)</button>
+            </div>
+            <div class="fg">
+              <label class="field-lbl">Demand Predictability (1=unpredictable, 5=very predictable)</label>
+              <div class="range-wrap">
+                <input type="range" class="risk-slider" min="1" max="5" value="3" id="demand-pred" oninput="this.nextElementSibling.textContent=this.value" style="--accent:var(--f2)">
+                <span class="rv" style="color:var(--f2)">3</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <label class="field-lbl">Margin Level</label>
+            <div class="tog-g" style="margin-bottom:1rem">
+              <button class="tog" id="mg-low" onclick="togSingle('mg',this)">Low</button>
+              <button class="tog" id="mg-med" onclick="togSingle('mg',this)">Medium</button>
+              <button class="tog" id="mg-high" onclick="togSingle('mg',this)">High</button>
+            </div>
+            <div class="fg">
+              <label class="field-lbl">Product Lifecycle</label>
+              <div class="tog-g">
+                <button class="tog" onclick="togSingle('plc',this)">Mature</button>
+                <button class="tog" onclick="togSingle('plc',this)">Growing</button>
+                <button class="tog" onclick="togSingle('plc',this)">New</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fg">
+        <label class="field-lbl">How does this shape your F1 Make/Buy decision?</label>
+        <textarea class="f-ta" id="f2-implication" placeholder="e.g. Functional product → prioritise cost efficiency → lean towards global suppliers. But tariff risk pushes toward some near-shoring..."></textarea>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-outline" onclick="goto(1)">← Back</button>
+        <button class="btn btn-primary" style="--accent:var(--f2)" onclick="nextFW(2)">Next: Supplier Selection →</button>
+      </div>
+    </div>
+
+    <!-- ══ FRAMEWORK 3 ══ -->
+    <div class="fw" id="fw-3">
+      <div class="fw-badge" style="color:var(--f3);border-color:var(--f3)">Framework 03 · TCE + RBV</div>
+      <h2 class="fw-title">Supplier Selection</h2>
+      <p class="fw-q">Should you use a large <strong>MNC</strong> or a trusted <strong>SME</strong>? Answer the 3 TCE questions to get your recommendation.</p>
+
+      <div class="g2" style="margin-bottom:1.5rem">
+        <div>
+          <!-- Q1 -->
+          <div class="card" style="margin-bottom:1rem">
+            <div class="card-title"><span class="dot" style="background:var(--f3)"></span>Q1 — Is this work special / unique?</div>
+            <p style="font-size:.82rem;color:var(--t2);margin-bottom:.75rem">Only one or few companies can do it well?</p>
+            <div class="tog-g" id="q1-tog">
+              <button class="tog" onclick="scoreQ(1,'yes',this)">YES → Expert needed</button>
+              <button class="tog" onclick="scoreQ(1,'no',this)">NO → Many can do it</button>
+            </div>
+          </div>
+          <!-- Q2 -->
+          <div class="card" style="margin-bottom:1rem">
+            <div class="card-title"><span class="dot" style="background:var(--f3)"></span>Q2 — Will surprises / uncertainty occur?</div>
+            <p style="font-size:.82rem;color:var(--t2);margin-bottom:.75rem">High environmental or behavioural uncertainty?</p>
+            <div class="tog-g" id="q2-tog">
+              <button class="tog" onclick="scoreQ(2,'yes',this)">YES → Trust &amp; control needed</button>
+              <button class="tog" onclick="scoreQ(2,'no',this)">NO → Simple transaction ok</button>
+            </div>
+          </div>
+          <!-- Q3 -->
+          <div class="card">
+            <div class="card-title"><span class="dot" style="background:var(--f3)"></span>Q3 — Is this a long-term relationship?</div>
+            <p style="font-size:.82rem;color:var(--t2);margin-bottom:.75rem">Multi-year commitment vs one-off purchase?</p>
+            <div class="tog-g" id="q3-tog">
+              <button class="tog" onclick="scoreQ(3,'yes',this)">YES → Build partnership</button>
+              <button class="tog" onclick="scoreQ(3,'no',this)">NO → Price is key</button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="card" style="height:100%">
+            <div class="card-title"><span class="dot" style="background:var(--f3)"></span>TCE Score &amp; Recommendation</div>
+            <div class="score-big-wrap">
+              <div class="score-big" id="tce-score" style="color:var(--f3)">0</div>
+              <div class="score-lbl">Score out of 6</div>
+              <div class="rec-box" id="tce-rec" style="background:rgba(6,182,212,.1);color:var(--f3);width:100%">Answer questions to see recommendation</div>
+            </div>
+            <div class="sep"></div>
+            <table style="width:100%;font-size:.75rem;border-collapse:collapse">
+              <tr><td style="padding:.3rem .5rem;color:var(--t3);font-family:var(--mono);font-size:9px">Score 5-6</td><td style="padding:.3rem .5rem;color:var(--t2)">→ MNC (Large, experienced partner)</td></tr>
+              <tr><td style="padding:.3rem .5rem;color:var(--t3);font-family:var(--mono);font-size:9px">Score 3-4</td><td style="padding:.3rem .5rem;color:var(--t2)">→ Hybrid (MNC prime + SME subs)</td></tr>
+              <tr><td style="padding:.3rem .5rem;color:var(--t3);font-family:var(--mono);font-size:9px">Score 0-2</td><td style="padding:.3rem .5rem;color:var(--t2)">→ SME (Local, competitive price)</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="g2">
+        <div class="fg">
+          <label class="field-lbl">Top supplier options being considered</label>
+          <textarea class="f-ta" id="f3-suppliers" placeholder="List 2-3 candidate suppliers with key info..."></textarea>
+        </div>
+        <div class="fg">
+          <label class="field-lbl">Key selection rationale</label>
+          <textarea class="f-ta" id="f3-rationale" placeholder="Why does your TCE score point to this type of supplier for your situation?"></textarea>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-outline" onclick="goto(2)">← Back</button>
+        <button class="btn btn-primary" style="--accent:var(--f3)" onclick="nextFW(3)">Next: Total Cost →</button>
+      </div>
+    </div>
+
+    <!-- ══ FRAMEWORK 4 ══ -->
+    <div class="fw" id="fw-4">
+      <div class="fw-badge" style="color:var(--f4);border-color:var(--f4)">Framework 04 · TCO Analysis</div>
+      <h2 class="fw-title">Total Cost of Ownership</h2>
+      <p class="fw-q">What is the <strong>REAL total cost</strong> — not just sticker price? Enter all cost components for each option. The lowest TCO wins.</p>
+
+      <div class="card" style="margin-bottom:1rem;overflow-x:auto">
+        <table class="tco-tbl">
+          <thead>
+            <tr>
+              <th style="width:40%">Cost Component</th>
+              <th>Option A <input class="tco-in" id="optA-name" placeholder="Name option A" style="width:130px;margin-left:.5rem"></th>
+              <th>Option B <input class="tco-in" id="optB-name" placeholder="Name option B" style="width:130px;margin-left:.5rem"></th>
+            </tr>
+          </thead>
+          <tbody id="tco-body">
+            <tr><td>1. Unit / Purchase Price</td><td><input class="tco-in" type="number" placeholder="$0" data-col="a" data-row="0" oninput="calcTCO()"></td><td><input class="tco-in" type="number" placeholder="$0" data-col="b" data-row="0" oninput="calcTCO()"></td></tr>
+            <tr><td>2. Shipping &amp; Logistics</td><td><input class="tco-in" type="number" placeholder="$0" data-col="a" data-row="1" oninput="calcTCO()"></td><td><input class="tco-in" type="number" placeholder="$0" data-col="b" data-row="1" oninput="calcTCO()"></td></tr>
+            <tr><td>3. Tariffs / Import Duties / Tax</td><td><input class="tco-in" type="number" placeholder="$0" data-col="a" data-row="2" oninput="calcTCO()"></td><td><input class="tco-in" type="number" placeholder="$0" data-col="b" data-row="2" oninput="calcTCO()"></td></tr>
+            <tr><td>4. Quality / Defect / Rework Cost</td><td><input class="tco-in" type="number" placeholder="$0" data-col="a" data-row="3" oninput="calcTCO()"></td><td><input class="tco-in" type="number" placeholder="$0" data-col="b" data-row="3" oninput="calcTCO()"></td></tr>
+            <tr><td>5. Coordination &amp; Management Time</td><td><input class="tco-in" type="number" placeholder="$0" data-col="a" data-row="4" oninput="calcTCO()"></td><td><input class="tco-in" type="number" placeholder="$0" data-col="b" data-row="4" oninput="calcTCO()"></td></tr>
+            <tr><td>6. Risk / Insurance Cost</td><td><input class="tco-in" type="number" placeholder="$0" data-col="a" data-row="5" oninput="calcTCO()"></td><td><input class="tco-in" type="number" placeholder="$0" data-col="b" data-row="5" oninput="calcTCO()"></td></tr>
+            <tr><td>7. Switching Cost (if needed later)</td><td><input class="tco-in" type="number" placeholder="$0" data-col="a" data-row="6" oninput="calcTCO()"></td><td><input class="tco-in" type="number" placeholder="$0" data-col="b" data-row="6" oninput="calcTCO()"></td></tr>
+            <tr><td>8. Other Hidden Costs</td><td><input class="tco-in" type="number" placeholder="$0" data-col="a" data-row="7" oninput="calcTCO()"></td><td><input class="tco-in" type="number" placeholder="$0" data-col="b" data-row="7" oninput="calcTCO()"></td></tr>
+          </tbody>
+          <tfoot>
+            <tr class="total-row">
+              <td>TOTAL COST OF OWNERSHIP</td>
+              <td><span class="tco-total" id="tco-a" style="color:var(--f4)">$0</span></td>
+              <td><span class="tco-total" id="tco-b" style="color:var(--f4)">$0</span></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div class="card" style="margin-bottom:1rem">
+        <div id="tco-winner" style="font-family:var(--sans);font-weight:600;font-size:1rem;color:var(--t3)">Enter costs above to see winner</div>
+        <div id="tco-bar-wrap" style="margin-top:1rem;display:none">
+          <div style="margin-bottom:.5rem">
+            <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;color:var(--t3);margin-bottom:.3rem"><span id="bar-a-lbl">Option A</span><span id="bar-a-val">$0</span></div>
+            <div style="height:12px;background:var(--border);border-radius:4px;overflow:hidden"><div id="bar-a" style="height:100%;background:var(--f4);border-radius:4px;transition:width .5s ease;width:0%"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;color:var(--t3);margin-bottom:.3rem"><span id="bar-b-lbl">Option B</span><span id="bar-b-val">$0</span></div>
+            <div style="height:12px;background:var(--border);border-radius:4px;overflow:hidden"><div id="bar-b" style="height:100%;background:var(--f2);border-radius:4px;transition:width .5s ease;width:0%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fg">
+        <label class="field-lbl">Key insight — what surprised you about the true cost?</label>
+        <textarea class="f-ta" id="f4-insight" placeholder="e.g. Option A looks cheaper at unit price but tariff costs make Option B 23% lower TCO overall..."></textarea>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-outline" onclick="goto(3)">← Back</button>
+        <button class="btn btn-primary" style="--accent:var(--f4)" onclick="nextFW(4)">Next: Risk Assessment →</button>
+      </div>
+    </div>
+
+    <!-- ══ FRAMEWORK 5 ══ -->
+    <div class="fw" id="fw-5">
+      <div class="fw-badge" style="color:var(--f5);border-color:var(--f5)">Framework 05 · Risk Assessment</div>
+      <h2 class="fw-title">Risk Assessment &amp; Measurement</h2>
+      <p class="fw-q">What bad things might happen? Score each risk on <strong>Probability × Impact</strong> to prioritise your response.</p>
+
+      <div class="g2" style="margin-bottom:1.5rem;align-items:start">
+        <div class="card">
+          <div class="card-title"><span class="dot" style="background:var(--f5)"></span>Risk Register (up to 5 risks)</div>
+          <table class="risk-tbl">
+            <thead>
+              <tr>
+                <th>Risk Description</th>
+                <th>Prob (1-4)</th>
+                <th>Impact (1-4)</th>
+                <th>Score</th>
+              </tr>
+            </thead>
+            <tbody id="risk-body">
+            </tbody>
+          </table>
+          <button onclick="addRisk()" style="margin-top:.75rem;padding:.4rem .9rem;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:6px;color:#F59E0B;font-family:var(--mono);font-size:10px;cursor:pointer;letter-spacing:.1em">+ ADD RISK</button>
+        </div>
+        <div>
+          <div class="card" style="margin-bottom:1rem">
+            <div class="card-title"><span class="dot" style="background:var(--f5)"></span>Risk Matrix</div>
+            <canvas id="risk-canvas" width="280" height="240"></canvas>
+          </div>
+          <div class="card">
+            <div class="card-title"><span class="dot" style="background:var(--f5)"></span>Response Guide</div>
+            <div style="font-size:.75rem;line-height:1.8;color:var(--t2)">
+              <div style="margin-bottom:.3rem"><span style="color:#10B981;font-weight:600">Score 1-4 (LOW×LOW)</span> → ACCEPT / Monitor</div>
+              <div style="margin-bottom:.3rem"><span style="color:#F59E0B;font-weight:600">Score 3-8 (mixed)</span> → TRANSFER / Insure</div>
+              <div style="margin-bottom:.3rem"><span style="color:#EF4444;font-weight:600">Score 9-16 (HIGH×HIGH)</span> → AVOID / Mitigate</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fg">
+        <label class="field-lbl">Top 3 risks to manage &amp; initial response</label>
+        <textarea class="f-ta" id="f5-top3" placeholder="1. [Risk] (Score: X) → Action: ...&#10;2. [Risk] (Score: X) → Action: ...&#10;3. [Risk] (Score: X) → Action: ..."></textarea>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-outline" onclick="goto(4)">← Back</button>
+        <button class="btn btn-primary" style="--accent:var(--f5)" onclick="nextFW(5)">Next: Risk Mitigation →</button>
+      </div>
+    </div>
+
+    <!-- ══ FRAMEWORK 6 ══ -->
+    <div class="fw" id="fw-6">
+      <div class="fw-badge" style="color:var(--f6);border-color:var(--f6)">Framework 06 · 4 Powers</div>
+      <h2 class="fw-title">Risk Mitigation — The 4 Powers</h2>
+      <p class="fw-q">For each top risk, choose your mitigation strategy from the 4 Powers. Then set your <strong>overall portfolio mix</strong>.</p>
+
+      <div class="g4" style="margin-bottom:1.5rem">
+        <div class="strat-card" onclick="toggleStrat(this,'robust')" id="s-robust">
+          <div class="strat-icon" style="background:rgba(59,130,246,.15);color:#3B82F6">🛡️</div>
+          <div class="strat-name">Robustness</div>
+          <div class="strat-desc">Be so strong disruptions don't hurt. Buffer stock, quality systems, staff training.</div>
+        </div>
+        <div class="strat-card" onclick="toggleStrat(this,'redund')" id="s-redund">
+          <div class="strat-icon" style="background:rgba(139,92,246,.15);color:#8B5CF6">🔁</div>
+          <div class="strat-name">Redundancy</div>
+          <div class="strat-desc">Have backup options. Dual sourcing, multiple sites, safety stock.</div>
+        </div>
+        <div class="strat-card" onclick="toggleStrat(this,'flex')" id="s-flex">
+          <div class="strat-icon" style="background:rgba(16,185,129,.15);color:#10B981">⚡</div>
+          <div class="strat-name">Flexibility</div>
+          <div class="strat-desc">Adapt quickly. Modular design, flexible contracts, cross-trained staff.</div>
+        </div>
+        <div class="strat-card" onclick="toggleStrat(this,'transfer')" id="s-transfer">
+          <div class="strat-icon" style="background:rgba(239,68,68,.15);color:#EF4444">📋</div>
+          <div class="strat-name">Transfer</div>
+          <div class="strat-desc">Pay someone else to carry the risk. Insurance, contracts, price hedging.</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:1.5rem">
+        <div class="card-title"><span class="dot" style="background:var(--f6)"></span>Strategy Mix (adjust to total 100%)</div>
+        <div id="pct-rows">
+          <div class="pct-row">
+            <div class="pct-lbl">🛡️ Robustness</div>
+            <div class="pct-bar"><div class="pct-fill" id="pf-robust" style="background:var(--f1);width:25%"></div></div>
+            <input type="range" class="risk-slider" min="0" max="100" value="25" id="pr-robust" oninput="syncPct()" style="width:120px;--accent:var(--f1)">
+            <div class="pct-val" id="pv-robust">25%</div>
+          </div>
+          <div class="pct-row">
+            <div class="pct-lbl">🔁 Redundancy</div>
+            <div class="pct-bar"><div class="pct-fill" id="pf-redund" style="background:var(--f2);width:25%"></div></div>
+            <input type="range" class="risk-slider" min="0" max="100" value="25" id="pr-redund" oninput="syncPct()" style="width:120px;--accent:var(--f2)">
+            <div class="pct-val" id="pv-redund">25%</div>
+          </div>
+          <div class="pct-row">
+            <div class="pct-lbl">⚡ Flexibility</div>
+            <div class="pct-bar"><div class="pct-fill" id="pf-flex" style="background:var(--f4);width:25%"></div></div>
+            <input type="range" class="risk-slider" min="0" max="100" value="25" id="pr-flex" oninput="syncPct()" style="width:120px;--accent:var(--f4)">
+            <div class="pct-val" id="pv-flex">25%</div>
+          </div>
+          <div class="pct-row">
+            <div class="pct-lbl">📋 Transfer</div>
+            <div class="pct-bar"><div class="pct-fill" id="pf-transfer" style="background:var(--f6);width:25%"></div></div>
+            <input type="range" class="risk-slider" min="0" max="100" value="25" id="pr-transfer" oninput="syncPct()" style="width:120px;--accent:var(--f6)">
+            <div class="pct-val" id="pv-transfer">25%</div>
+          </div>
+        </div>
+        <div style="margin-top:.75rem;font-family:var(--mono);font-size:11px;color:var(--t3)" id="pct-total">Total: 100%</div>
+      </div>
+
+      <div class="fg">
+        <label class="field-lbl">Mitigation plan — how will you apply these strategies?</label>
+        <textarea class="f-ta" id="f6-plan" placeholder="For Risk 1 (Tariff Hike): 60% Flexibility — negotiate contract clauses to reroute orders within 60 days. 40% Redundancy — pre-qualify Indian supplier..."></textarea>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-outline" onclick="goto(5)">← Back</button>
+        <button class="btn btn-primary" style="--accent:var(--f6)" onclick="nextFW(6)">Next: Sustainability →</button>
+      </div>
+    </div>
+
+    <!-- ══ FRAMEWORK 7 ══ -->
+    <div class="fw" id="fw-7">
+      <div class="fw-badge" style="color:var(--f7);border-color:var(--f7)">Framework 07 · SSCM</div>
+      <h2 class="fw-title">Sustainability &amp; Stakeholders</h2>
+      <p class="fw-q">Who cares about ethics, environment and fairness? Map pressures, identify barriers, build your 3-pillar SSCM strategy.</p>
+
+      <div class="g2" style="margin-bottom:1.5rem">
+        <div>
+          <div class="card" style="margin-bottom:1rem">
+            <div class="card-title"><span class="dot" style="background:var(--f7)"></span>Internal Pressures</div>
+            <div id="int-pres">
+              <div class="cb-row" onclick="toggleCB(this)"><div class="cb-box">✓</div><div><div class="cb-text">CEO / Board — ESG commitments &amp; reputation</div></div></div>
+              <div class="cb-row" onclick="toggleCB(this)"><div class="cb-box">✓</div><div><div class="cb-text">Finance — cost of compliance vs. penalty</div></div></div>
+              <div class="cb-row" onclick="toggleCB(this)"><div class="cb-box">✓</div><div><div class="cb-text">Employees — ethical workplace culture</div></div></div>
+              <div class="cb-row" onclick="toggleCB(this)"><div class="cb-box">✓</div><div><div class="cb-text">Operations — process efficiency + waste reduction</div></div></div>
+            </div>
+            <input class="f-in" id="int-other" placeholder="Add other internal pressure..." style="margin-top:.5rem">
+          </div>
+        </div>
+        <div>
+          <div class="card" style="margin-bottom:1rem">
+            <div class="card-title"><span class="dot" style="background:var(--f7)"></span>External Pressures</div>
+            <div id="ext-pres">
+              <div class="cb-row" onclick="toggleCB(this)"><div class="cb-box">✓</div><div><div class="cb-text">Government regulation &amp; compliance</div></div></div>
+              <div class="cb-row" onclick="toggleCB(this)"><div class="cb-box">✓</div><div><div class="cb-text">Customer demand for ethical sourcing</div></div></div>
+              <div class="cb-row" onclick="toggleCB(this)"><div class="cb-box">✓</div><div><div class="cb-text">NGOs / media scrutiny</div></div></div>
+              <div class="cb-row" onclick="toggleCB(this)"><div class="cb-box">✓</div><div><div class="cb-text">Competitor sustainability moves</div></div></div>
+              <div class="cb-row" onclick="toggleCB(this)"><div class="cb-box">✓</div><div><div class="cb-text">Worker / community rights</div></div></div>
+            </div>
+            <input class="f-in" id="ext-other" placeholder="Add other external pressure..." style="margin-top:.5rem">
+          </div>
+        </div>
+      </div>
+
+      <div class="pillars" style="margin-bottom:1.5rem">
+        <div class="pillar" style="border-color:rgba(59,130,246,.3)">
+          <div class="pillar-icon">💰</div>
+          <div class="pillar-name" style="color:#3B82F6">Economic Pillar</div>
+          <div class="fg"><label class="field-lbl">Target</label><input class="f-in" placeholder="e.g. Maintain ≥12% EBIT margin"></div>
+          <div class="fg"><label class="field-lbl">How to Measure</label><input class="f-in" placeholder="e.g. Quarterly P&L review"></div>
+        </div>
+        <div class="pillar" style="border-color:rgba(5,150,105,.3)">
+          <div class="pillar-icon">🌱</div>
+          <div class="pillar-name" style="color:#059669">Environmental Pillar</div>
+          <div class="fg"><label class="field-lbl">Target</label><input class="f-in" placeholder="e.g. 30% CO2 reduction by 2027"></div>
+          <div class="fg"><label class="field-lbl">How to Measure</label><input class="f-in" placeholder="e.g. Scope 3 emissions audit"></div>
+        </div>
+        <div class="pillar" style="border-color:rgba(236,72,153,.3)">
+          <div class="pillar-icon">🤝</div>
+          <div class="pillar-name" style="color:#EC4899">Social Pillar</div>
+          <div class="fg"><label class="field-lbl">Target</label><input class="f-in" placeholder="e.g. Living wage for all T1 workers"></div>
+          <div class="fg"><label class="field-lbl">How to Measure</label><input class="f-in" placeholder="e.g. Annual supplier audit"></div>
+        </div>
+      </div>
+
+      <div class="fg">
+        <label class="field-lbl">How do you balance all three pillars simultaneously?</label>
+        <textarea class="f-ta" id="f7-strategy" placeholder="Describe your integrated SSCM strategy — how economic, environmental and social goals reinforce rather than conflict with each other..."></textarea>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-outline" onclick="goto(6)">← Back</button>
+        <button class="btn btn-primary" style="--accent:var(--f7)" onclick="nextFW(7)">Next: Learning →</button>
+      </div>
+    </div>
+
+    <!-- ══ FRAMEWORK 8 ══ -->
+    <div class="fw" id="fw-8">
+      <div class="fw-badge" style="color:var(--f8);border-color:var(--f8)">Framework 08 · PCB Model</div>
+      <h2 class="fw-title">Learning &amp; Capability Development</h2>
+      <p class="fw-q">How do you learn from this problem and make the solution permanent? Run a <strong>Vanguard</strong>, spread knowledge, then institutionalise.</p>
+
+      <!-- timeline -->
+      <div class="tl" style="margin-bottom:2rem">
+        <div class="tl-phase">
+          <div class="tl-dot" style="color:var(--f1);background:rgba(59,130,246,.1)">M 1-3</div>
+          <div class="tl-name">VANGUARD</div>
+          <div class="tl-dur">Months 1–3</div>
+          <div class="tl-items">□ Small test<br>□ Explore safely<br>□ Fail fast<br>□ Learn lessons</div>
+        </div>
+        <div class="tl-phase">
+          <div class="tl-dot" style="color:var(--f2);background:rgba(139,92,246,.1)">M 4-9</div>
+          <div class="tl-name">SCALE-UP</div>
+          <div class="tl-dur">Months 4–9</div>
+          <div class="tl-items">□ Refine model<br>□ Train others<br>□ Spread success<br>□ Fix problems</div>
+        </div>
+        <div class="tl-phase">
+          <div class="tl-dot" style="color:var(--f7);background:rgba(5,150,105,.1)">M 10-18</div>
+          <div class="tl-name">STANDARDISE</div>
+          <div class="tl-dur">Months 10–18</div>
+          <div class="tl-items">□ New processes<br>□ New KPIs<br>□ Documentation<br>□ Measure</div>
+        </div>
+        <div class="tl-phase">
+          <div class="tl-dot" style="color:var(--f4);background:rgba(16,185,129,.1)">M 18+</div>
+          <div class="tl-name">OPTIMISE</div>
+          <div class="tl-dur">Month 18+</div>
+          <div class="tl-items">□ Continuous<br>□ Improvement<br>□ Innovation<br>□ New problems</div>
+        </div>
+      </div>
+
+      <div class="g2" style="margin-bottom:1.5rem">
+        <div class="card">
+          <div class="card-title"><span class="dot" style="background:var(--f8)"></span>Phase 1 — Vanguard Project</div>
+          <div class="fg"><label class="field-lbl">Project Name</label><input class="f-in" id="v-name" placeholder="e.g. Vietnam Exit Pilot — India Sourcing Test"></div>
+          <div class="fg"><label class="field-lbl">Location / Scope</label><input class="f-in" id="v-scope" placeholder="e.g. 2 product lines, Chennai factory"></div>
+          <div class="fg"><label class="field-lbl">Timeline &amp; Budget</label><input class="f-in" id="v-timeline" placeholder="e.g. Q3 2025, budget $500K"></div>
+          <div class="fg"><label class="field-lbl">Success Metrics</label><textarea class="f-ta" id="v-metrics" style="min-height:60px" placeholder="e.g. Unit cost within 8% of Vietnam, lead time ≤ 45 days, defect rate ≤ 2%"></textarea></div>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="dot" style="background:var(--f8)"></span>Phase 2 — Knowledge Transfer</div>
+          <div style="margin-bottom:.75rem">
+            <label class="field-lbl">Transfer Methods (select all that apply)</label>
+            <div class="tog-g">
+              <button class="tog" onclick="this.classList.toggle('on')">Case Studies</button>
+              <button class="tog" onclick="this.classList.toggle('on')">Workshops</button>
+              <button class="tog" onclick="this.classList.toggle('on')">Playbooks</button>
+              <button class="tog" onclick="this.classList.toggle('on')">Site Visits</button>
+              <button class="tog" onclick="this.classList.toggle('on')">Mentoring</button>
+              <button class="tog" onclick="this.classList.toggle('on')">Intranet</button>
+            </div>
+          </div>
+          <div class="fg"><label class="field-lbl">Who needs to know?</label><textarea class="f-ta" id="v-who" style="min-height:56px" placeholder="e.g. All regional sourcing teams, finance, product design leads"></textarea></div>
+          <div class="fg"><label class="field-lbl">Scale-up to _____ locations / _____ units by when?</label><input class="f-in" id="v-scale" placeholder="e.g. 5 factories, all product lines by Q1 2027"></div>
+          <div class="fg">
+            <div class="card-title" style="margin-bottom:.5rem"><span class="dot" style="background:var(--f8)"></span>Phase 3 — Institutionalise</div>
+            <label class="field-lbl">New Standard / Process / KPI</label>
+            <textarea class="f-ta" id="v-standard" style="min-height:56px" placeholder="e.g. New sourcing playbook v1.0 published, dual-source KPI added to annual supplier reviews"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-outline" onclick="goto(7)">← Back</button>
+        <button class="btn btn-primary" style="--accent:var(--f8)" onclick="nextFW(8)">Build Final Decision →</button>
+      </div>
+    </div>
+
+    <!-- ══ FRAMEWORK FINAL ══ -->
+    <div class="fw" id="fw-9">
+      <div class="fw-badge" style="color:#F97316;border-color:#F97316">Final Synthesis · All 8 Frameworks</div>
+      <h2 class="fw-title">Integrated Decision</h2>
+      <p class="fw-q">Your complete supply chain strategy, synthesised across all 8 frameworks into one actionable decision.</p>
+
+      <div class="g2" style="align-items:start;margin-bottom:1.5rem">
+        <div>
+          <div class="sum-grid" id="sum-grid">
+            <div class="sum-item" style="--accent:var(--f1)"><div class="sum-f-lbl">F1 · Make/Buy/Location</div><div class="sum-f-val" id="sum-f1">—</div></div>
+            <div class="sum-item" style="--accent:var(--f2)"><div class="sum-f-lbl">F2 · Supply Chain Type</div><div class="sum-f-val" id="sum-f2">—</div></div>
+            <div class="sum-item" style="--accent:var(--f3)"><div class="sum-f-lbl">F3 · Supplier Type (TCE)</div><div class="sum-f-val" id="sum-f3">—</div></div>
+            <div class="sum-item" style="--accent:var(--f4)"><div class="sum-f-lbl">F4 · Lowest TCO</div><div class="sum-f-val" id="sum-f4">—</div></div>
+            <div class="sum-item" style="--accent:var(--f5)"><div class="sum-f-lbl">F5 · Highest Risk</div><div class="sum-f-val" id="sum-f5">—</div></div>
+            <div class="sum-item" style="--accent:var(--f6)"><div class="sum-f-lbl">F6 · Mitigation Mix</div><div class="sum-f-val" id="sum-f6">—</div></div>
+            <div class="sum-item" style="--accent:var(--f7)"><div class="sum-f-lbl">F7 · SSCM Pillars</div><div class="sum-f-val" id="sum-f7">Economic + Environmental + Social</div></div>
+            <div class="sum-item" style="--accent:var(--f8)"><div class="sum-f-lbl">F8 · Vanguard Project</div><div class="sum-f-val" id="sum-f8">—</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="dot" style="background:#F97316"></span>Framework Balance Radar</div>
+          <canvas id="radar-canvas" width="300" height="280"></canvas>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:1.5rem">
+        <div class="card-title"><span class="dot" style="background:#F97316"></span>Final Integrated Strategy</div>
+        <div class="g2" style="margin-bottom:1rem">
+          <div class="fg"><label class="field-lbl">1. Make/Buy/Location Strategy</label><textarea class="f-ta" id="fin-1" placeholder="Which quadrant(s)? Why?"></textarea></div>
+          <div class="fg"><label class="field-lbl">2. Supply Chain Type (Lean/Agile)</label><textarea class="f-ta" id="fin-2" placeholder="Lean, Agile, or Hybrid? How?"></textarea></div>
+          <div class="fg"><label class="field-lbl">3. Supplier Strategy</label><textarea class="f-ta" id="fin-3" placeholder="MNC, SME, or Hybrid? Who?"></textarea></div>
+          <div class="fg"><label class="field-lbl">4. Cost Strategy</label><textarea class="f-ta" id="fin-4" placeholder="TCO winner? Key cost levers?"></textarea></div>
+          <div class="fg"><label class="field-lbl">5. Risk Mitigation Priority</label><textarea class="f-ta" id="fin-5" placeholder="Top 2 risks + mitigation approach"></textarea></div>
+          <div class="fg"><label class="field-lbl">6. Sustainability Approach</label><textarea class="f-ta" id="fin-6" placeholder="How do 3 pillars align with decision?"></textarea></div>
+        </div>
+        <div class="g3">
+          <div class="fg"><label class="field-lbl">Investment Required</label><input class="f-in" id="fin-invest" placeholder="$0"></div>
+          <div class="fg"><label class="field-lbl">Timeline</label><input class="f-in" id="fin-timeline" placeholder="e.g. 18 months"></div>
+          <div class="fg"><label class="field-lbl">Expected Benefit / ROI</label><input class="f-in" id="fin-benefit" placeholder="e.g. 15% cost reduction"></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:1.5rem">
+        <div class="card-title"><span class="dot" style="background:#F97316"></span>Key Success Factors &amp; Risks to Success</div>
+        <div class="g2">
+          <div>
+            <label class="field-lbl">Key Success Factors</label>
+            <textarea class="f-ta" id="fin-ksf" placeholder="1. Board alignment on nearshoring&#10;2. Qualified T1 supplier in India&#10;3. Customer acceptance of 3-week extra lead time&#10;4. Regulatory compliance in new market"></textarea>
+          </div>
+          <div>
+            <label class="field-lbl">Risks to This Decision</label>
+            <textarea class="f-ta" id="fin-risks" placeholder="1. Trade policy reversal (Mitigation: flexible contracts)&#10;2. Quality shortfall (Mitigation: 6-month pilot)&#10;3. Cost overrun (Mitigation: stage-gated budget)"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="dot" style="background:#F97316"></span>Approval &amp; Next Steps</div>
+        <div class="g3">
+          <div class="fg"><label class="field-lbl">Recommended by</label><input class="f-in" placeholder="Name &amp; date"></div>
+          <div class="fg"><label class="field-lbl">Approved by</label><input class="f-in" placeholder="Name &amp; date"></div>
+          <div class="fg"><label class="field-lbl">Implementation Owner</label><input class="f-in" placeholder="Name &amp; start date"></div>
+        </div>
+        <div style="margin-top:1rem;display:flex;gap:.75rem">
+          <button class="btn btn-outline" onclick="window.print()">🖨 Print / Export</button>
+          <button class="btn btn-outline" onclick="goto(1)">↩ Start Again</button>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-outline" onclick="goto(8)">← Back</button>
+        <div></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════
+   PARTICLES
+═══════════════════════════════════════════ */
+const cvs = document.getElementById('canvas');
+const ctx = cvs.getContext('2d');
+let W, H, pts = [], mouse = {x:-999,y:-999};
+const NUM = 90;
+
+function resize(){ W=cvs.width=innerWidth; H=cvs.height=innerHeight; }
+resize();
+window.addEventListener('resize',resize);
+window.addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY});
+
+function mkPt(){
+  return { x:Math.random()*W, y:Math.random()*H,
+    vx:(Math.random()-.5)*.35, vy:(Math.random()-.5)*.35,
+    r:Math.random()*1.5+.5,
+    a:Math.random() };
+}
+for(let i=0;i<NUM;i++) pts.push(mkPt());
+
+function drawParticles(){
+  ctx.clearRect(0,0,W,H);
+  pts.forEach(p=>{
+    p.x+=p.vx; p.y+=p.vy;
+    if(p.x<0)p.x=W; if(p.x>W)p.x=0;
+    if(p.y<0)p.y=H; if(p.y>H)p.y=0;
+    const dx=p.x-mouse.x, dy=p.y-mouse.y;
+    const dist=Math.sqrt(dx*dx+dy*dy);
+    const alpha = Math.min(.55, p.a * (dist<120 ? 1.6:1));
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(139,183,255,${alpha})`;
+    ctx.fill();
+  });
+  for(let i=0;i<pts.length;i++){
+    for(let j=i+1;j<pts.length;j++){
+      const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y;
+      const d=Math.sqrt(dx*dx+dy*dy);
+      if(d<120){
+        ctx.beginPath();
+        ctx.moveTo(pts[i].x,pts[i].y);
+        ctx.lineTo(pts[j].x,pts[j].y);
+        ctx.strokeStyle=`rgba(99,150,255,${.18*(1-d/120)})`;
+        ctx.lineWidth=.8;
+        ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(drawParticles);
+}
+drawParticles();
+
+/* ═══════════════════════════════════════════
+   ORBIT ANIMATION
+═══════════════════════════════════════════ */
+(function buildOrbit(){
+  const wrap = document.getElementById('orbit');
+  const colors=['#3B82F6','#8B5CF6','#06B6D4','#10B981','#F59E0B','#EF4444','#059669','#EC4899'];
+  const labels=['M/B/L','LEAN','TCE','TCO','RISK','4PWR','SSCM','PCB'];
+  const R=[125,85];
+  colors.forEach((c,i)=>{
+    const ring = i<4 ? 0:1;
+    const r = R[ring];
+    const node = document.createElement('div');
+    node.className='orbit-node';
+    const idx = ring===0?i:i-4;
+    const total = ring===0?4:4;
+    const ang = (idx/total)*Math.PI*2 - Math.PI/2;
+    node.style.cssText=`color:${c};left:${130+r*Math.cos(ang)-17}px;top:${130+r*Math.sin(ang)-17}px`;
+    node.textContent=labels[i];
+    wrap.appendChild(node);
+    // animate
+    let t=(idx/total)*Math.PI*2;
+    const spd=(ring===0?.004:.006)*(i%2===0?1:-1);
+    function animate(){
+      t+=spd;
+      const x=130+r*Math.cos(t)-17;
+      const y=130+r*Math.sin(t)-17;
+      node.style.left=x+'px';
+      node.style.top=y+'px';
+      requestAnimationFrame(animate);
+    }
+    animate();
+  });
+})();
+
+/* ═══════════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════════ */
+let current=1;
+const done=new Set();
+
+function goto(n){
+  document.querySelectorAll('.fw').forEach(f=>f.classList.remove('on'));
+  document.querySelectorAll('.nav-item').forEach(ni=>ni.classList.remove('active'));
+  const fw=document.getElementById('fw-'+n);
+  if(fw){ fw.classList.add('on'); fw.scrollIntoView({behavior:'smooth',block:'start'}); }
+  const ni=document.getElementById('nav-'+n);
+  if(ni) ni.classList.add('active');
+  current=n;
+  updateProgress();
+  if(n===9) buildFinal();
+}
+
+function nextFW(n){
+  done.add(n);
+  const ni=document.getElementById('nav-'+n);
+  if(ni) ni.classList.add('done');
+  goto(n+1);
+}
+
+function updateProgress(){
+  const fill=document.getElementById('top-fill');
+  const pct=Math.round((done.size/8)*100);
+  if(fill) fill.style.width=pct+'%';
+}
+
+/* ═══════════════════════════════════════════
+   START DASHBOARD
+═══════════════════════════════════════════ */
+function startDash(){
+  const prob=document.getElementById('prob-ta').value.trim();
+  if(!prob){ document.getElementById('prob-ta').focus(); return; }
+  document.getElementById('hero').style.display='none';
+  const dash=document.getElementById('dash');
+  dash.classList.add('on');
+  document.getElementById('sb-prob-txt').textContent=prob;
+  document.getElementById('main-prob-txt').textContent=prob;
+  goto(1);
+}
+document.getElementById('prob-ta').addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&e.ctrlKey) startDash();
+});
+
+/* ═══════════════════════════════════════════
+   F1 — MATRIX
+═══════════════════════════════════════════ */
+function toggleMatrix(el){
+  el.classList.toggle('sel');
+}
+
+/* ═══════════════════════════════════════════
+   F2 — TYPE
+═══════════════════════════════════════════ */
+function selectType(t){
+  document.getElementById('type-func').classList.toggle('on',t==='functional');
+  document.getElementById('type-inno').classList.toggle('on',t==='innovative');
+}
+function setStrategy(s){
+  ['lean','agile','hybrid'].forEach(x=>document.getElementById('tog-'+x).classList.toggle('on',x===s));
+}
+function togSingle(grp,el){
+  document.querySelectorAll(`#fw-2 .tog[data-grp="${grp}"]`).forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+}
+// patch toggle buttons in fw2 to carry grp attr
+document.querySelectorAll('#fw-2 .tog').forEach(b=>{
+  // use parent card to group them — simpler: just toggle individually
+});
+
+/* ═══════════════════════════════════════════
+   F3 — TCE SCORING
+═══════════════════════════════════════════ */
+const tceScores={1:0,2:0,3:0};
+function scoreQ(q,ans,el){
+  const parent=document.getElementById('q'+q+'-tog');
+  parent.querySelectorAll('.tog').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  tceScores[q]=ans==='yes'?2:0;
+  const total=tceScores[1]+tceScores[2]+tceScores[3];
+  const sc=document.getElementById('tce-score');
+  const rec=document.getElementById('tce-rec');
+  sc.textContent=total;
+  if(total>=5){ rec.textContent='MNC — Large experienced partner recommended'; rec.style.background='rgba(59,130,246,.1)'; rec.style.color='#3B82F6'; }
+  else if(total>=3){ rec.textContent='Hybrid — MNC prime with SME sub-contractors'; rec.style.background='rgba(245,158,11,.1)'; rec.style.color='#F59E0B'; }
+  else{ rec.textContent='SME — Local suppliers, competitive pricing'; rec.style.background='rgba(16,185,129,.1)'; rec.style.color='#10B981'; }
+}
+
+/* ═══════════════════════════════════════════
+   F4 — TCO
+═══════════════════════════════════════════ */
+function calcTCO(){
+  let sumA=0,sumB=0;
+  document.querySelectorAll('[data-col="a"]').forEach(i=>sumA+=parseFloat(i.value)||0);
+  document.querySelectorAll('[data-col="b"]').forEach(i=>sumB+=parseFloat(i.value)||0);
+  const fmt=n=>'$'+n.toLocaleString();
+  document.getElementById('tco-a').textContent=fmt(sumA);
+  document.getElementById('tco-b').textContent=fmt(sumB);
+  const w=document.getElementById('tco-winner');
+  const barWrap=document.getElementById('tco-bar-wrap');
+  if(sumA>0||sumB>0){
+    barWrap.style.display='block';
+    const max=Math.max(sumA,sumB,1);
+    document.getElementById('bar-a').style.width=(sumA/max*100)+'%';
+    document.getElementById('bar-b').style.width=(sumB/max*100)+'%';
+    const aName=document.getElementById('optA-name').value||'Option A';
+    const bName=document.getElementById('optB-name').value||'Option B';
+    document.getElementById('bar-a-lbl').textContent=aName;
+    document.getElementById('bar-b-lbl').textContent=bName;
+    document.getElementById('bar-a-val').textContent=fmt(sumA);
+    document.getElementById('bar-b-val').textContent=fmt(sumB);
+    if(sumA<sumB) w.innerHTML=`✅ <strong>${aName}</strong> has lower TCO (saves ${fmt(sumB-sumA)})`;
+    else if(sumB<sumA) w.innerHTML=`✅ <strong>${bName}</strong> has lower TCO (saves ${fmt(sumA-sumB)})`;
+    else w.innerHTML='⚖️ Equal TCO — consider qualitative factors';
+    w.style.color=sumA<sumB?'#10B981':sumB<sumA?'#10B981':'#F59E0B';
+  } else {
+    w.textContent='Enter costs above to see winner'; w.style.color='var(--t3)';
+  }
+}
+
+/* ═══════════════════════════════════════════
+   F5 — RISK
+═══════════════════════════════════════════ */
+let riskRows=[];
+function addRisk(){
+  if(riskRows.length>=5)return;
+  const idx=riskRows.length;
+  const id='risk-'+idx;
+  const tr=document.createElement('tr');
+  tr.innerHTML=`
+    <td><input class="r-in" id="${id}-desc" placeholder="Describe risk..."></td>
+    <td>
+      <div class="range-wrap">
+        <input type="range" class="risk-slider" min="1" max="4" value="2" style="--accent:#F59E0B" oninput="updateRiskScore(${idx})">
+        <span class="rv" style="color:#F59E0B" id="${id}-p">2</span>
+      </div>
+    </td>
+    <td>
+      <div class="range-wrap">
+        <input type="range" class="risk-slider" min="1" max="4" value="2" style="--accent:#F59E0B" oninput="updateRiskScore(${idx})">
+        <span class="rv" style="color:#F59E0B" id="${id}-i">2</span>
+      </div>
+    </td>
+    <td><span class="r-score score-low" id="${id}-s">4</span></td>`;
+  document.getElementById('risk-body').appendChild(tr);
+  riskRows.push(idx);
+  const sliders=tr.querySelectorAll('.risk-slider');
+  tr._pSlider=sliders[0]; tr._iSlider=sliders[1];
+  updateRiskScore(idx);
+}
+function updateRiskScore(idx){
+  const id='risk-'+idx;
+  const rows=document.getElementById('risk-body').querySelectorAll('tr');
+  const row=rows[idx];
+  if(!row)return;
+  const sliders=row.querySelectorAll('.risk-slider');
+  const p=parseInt(sliders[0].value), i=parseInt(sliders[1].value);
+  const s=p*i;
+  document.getElementById(id+'-p').textContent=p;
+  document.getElementById(id+'-i').textContent=i;
+  const sc=document.getElementById(id+'-s');
+  sc.textContent=s;
+  sc.className='r-score '+(s<=4?'score-low':s<=8?'score-med':s<=12?'score-high':'score-crit');
+  drawRiskMatrix();
+}
+function drawRiskMatrix(){
+  const c=document.getElementById('risk-canvas');
+  if(!c)return;
+  const cx=c.getContext('2d');
+  const W=280,H=240;
+  cx.clearRect(0,0,W,H);
+  // background quadrants
+  const qW=W/2,qH=H/2;
+  const quads=[
+    {x:0,y:qH,color:'rgba(16,185,129,.12)',label:'ACCEPT'},
+    {x:qW,y:qH,color:'rgba(245,158,11,.12)',label:'TRANSFER'},
+    {x:0,y:0,color:'rgba(245,158,11,.12)',label:'REDUCE'},
+    {x:qW,y:0,color:'rgba(239,68,68,.18)',label:'AVOID'},
+  ];
+  quads.forEach(q=>{
+    cx.fillStyle=q.color;
+    cx.fillRect(q.x,q.y,qW,qH);
+    cx.fillStyle='rgba(255,255,255,.2)';
+    cx.font='9px JetBrains Mono,monospace';
+    cx.fillText(q.label,q.x+6,q.y+14);
+  });
+  // grid
+  cx.strokeStyle='rgba(255,255,255,.07)';
+  cx.lineWidth=1;
+  cx.beginPath();cx.moveTo(qW,0);cx.lineTo(qW,H);cx.stroke();
+  cx.beginPath();cx.moveTo(0,qH);cx.lineTo(W,qH);cx.stroke();
+  // axes
+  cx.fillStyle='rgba(255,255,255,.35)';
+  cx.font='9px JetBrains Mono,monospace';
+  cx.fillText('Low Impact',4,H-4);
+  cx.fillText('High Impact',W/2+4,H-4);
+  cx.save();cx.translate(10,H/2);cx.rotate(-Math.PI/2);cx.fillText('Low Prob',-(H/4-10),0);cx.restore();
+  cx.save();cx.translate(10,H/4);cx.rotate(-Math.PI/2);cx.fillText('High Prob',-(H/4-10),0);cx.restore();
+  // plot risks
+  const rows=document.getElementById('risk-body').querySelectorAll('tr');
+  const rColors=['#3B82F6','#8B5CF6','#06B6D4','#10B981','#F97316'];
+  rows.forEach((row,idx)=>{
+    const sliders=row.querySelectorAll('.risk-slider');
+    if(sliders.length<2)return;
+    const p=parseInt(sliders[0].value),i=parseInt(sliders[1].value);
+    const px=(i-1)/3*qW*1.8+qW*.1;
+    const py=H-(p-1)/3*qH*1.8-qH*.1;
+    cx.beginPath();
+    cx.arc(px,py,8,0,Math.PI*2);
+    cx.fillStyle=rColors[idx]||'#fff';
+    cx.fill();
+    cx.fillStyle='#fff';
+    cx.font='bold 9px monospace';
+    cx.textAlign='center';cx.textBaseline='middle';
+    cx.fillText(idx+1,px,py);
+    cx.textAlign='left';cx.textBaseline='alphabetic';
+  });
+}
+// init 3 risks
+addRisk();addRisk();addRisk();
+
+/* ═══════════════════════════════════════════
+   F6 — MITIGATION
+═══════════════════════════════════════════ */
+function toggleStrat(el,key){
+  el.classList.toggle('on');
+}
+function syncPct(){
+  const keys=['robust','redund','flex','transfer'];
+  let total=0;
+  keys.forEach(k=>{
+    const v=parseInt(document.getElementById('pr-'+k).value);
+    document.getElementById('pf-'+k).style.width=v+'%';
+    document.getElementById('pv-'+k).textContent=v+'%';
+    total+=v;
+  });
+  const tot=document.getElementById('pct-total');
+  tot.textContent='Total: '+total+'%';
+  tot.style.color=total===100?'#10B981':total>100?'#EF4444':'#F59E0B';
+}
+
+/* ═══════════════════════════════════════════
+   F7 — CHECKBOXES
+═══════════════════════════════════════════ */
+function toggleCB(row){
+  const box=row.querySelector('.cb-box');
+  box.classList.toggle('on');
+}
+
+/* ═══════════════════════════════════════════
+   FINAL SYNTHESIS
+═══════════════════════════════════════════ */
+function buildFinal(){
+  // F1 summary
+  const sel=[...document.querySelectorAll('.mx-cell.sel')].map(c=>c.dataset.q).join(', ');
+  const f1d=document.getElementById('f1-decision').value;
+  document.getElementById('sum-f1').textContent=sel?`Quadrant(s): ${sel}. ${f1d.slice(0,80)}`:'—';
+
+  // F2 summary
+  const lean=document.getElementById('tog-lean').classList.contains('on');
+  const agile=document.getElementById('tog-agile').classList.contains('on');
+  const hybrid=document.getElementById('tog-hybrid').classList.contains('on');
+  const strat=lean?'Lean':agile?'Agile':hybrid?'Hybrid (Leagile)':'—';
+  document.getElementById('sum-f2').textContent=strat;
+
+  // F3 summary
+  const tceTotal=tceScores[1]+tceScores[2]+tceScores[3];
+  const rec=tceTotal>=5?'MNC':tceTotal>=3?'Hybrid':'SME';
+  document.getElementById('sum-f3').textContent=`Score ${tceTotal}/6 → ${rec}`;
+
+  // F4 summary
+  const a=parseFloat(document.getElementById('tco-a').textContent.replace(/[$,]/g,''))||0;
+  const b=parseFloat(document.getElementById('tco-b').textContent.replace(/[$,]/g,''))||0;
+  const aName=document.getElementById('optA-name').value||'Option A';
+  const bName=document.getElementById('optB-name').value||'Option B';
+  if(a>0||b>0) document.getElementById('sum-f4').textContent=a<=b?`${aName} wins (${document.getElementById('tco-a').textContent})`:`${bName} wins (${document.getElementById('tco-b').textContent})`;
+
+  // F5 highest risk
+  const rows=document.getElementById('risk-body').querySelectorAll('tr');
+  let maxS=0,maxDesc='—';
+  rows.forEach((row,i)=>{
+    const sliders=row.querySelectorAll('.risk-slider');
+    if(sliders.length<2)return;
+    const s=parseInt(sliders[0].value)*parseInt(sliders[1].value);
+    const d=row.querySelector('.r-in')?.value||('Risk '+(i+1));
+    if(s>maxS){maxS=s;maxDesc=d||('Risk '+(i+1));}
+  });
+  document.getElementById('sum-f5').textContent=`"${maxDesc}" (score: ${maxS}/16)`;
+
+  // F6 mix
+  const r=document.getElementById('pv-robust').textContent;
+  const rd=document.getElementById('pv-redund').textContent;
+  const fl=document.getElementById('pv-flex').textContent;
+  const tr=document.getElementById('pv-transfer').textContent;
+  document.getElementById('sum-f6').textContent=`Robust ${r} · Redund ${rd} · Flex ${fl} · Transfer ${tr}`;
+
+  // F8
+  const vn=document.getElementById('v-name').value;
+  document.getElementById('sum-f8').textContent=vn||'—';
+
+  drawRadar();
+}
+
+function drawRadar(){
+  const c=document.getElementById('radar-canvas');
+  if(!c)return;
+  const cx=c.getContext('2d');
+  const W=300,H=280;
+  cx.clearRect(0,0,W,H);
+  const CX=W/2,CY=H/2+10,R=100;
+  const labels=['Make/Buy','Lean/Agile','Supplier','TCO','Risk','Mitigate','SSCM','Learning'];
+  const colors=['#3B82F6','#8B5CF6','#06B6D4','#10B981','#F59E0B','#EF4444','#059669','#EC4899'];
+  const N=8;
+  // compute scores
+  const sel=document.querySelectorAll('.mx-cell.sel').length;
+  const hasLean=document.getElementById('tog-lean').classList.contains('on')||document.getElementById('tog-agile').classList.contains('on')||document.getElementById('tog-hybrid').classList.contains('on');
+  const tce=tceScores[1]+tceScores[2]+tceScores[3];
+  const tcoA=parseFloat(document.getElementById('tco-a').textContent.replace(/[$,]/g,''))||0;
+  const tcoB=parseFloat(document.getElementById('tco-b').textContent.replace(/[$,]/g,''))||0;
+  const riskCount=document.getElementById('risk-body').querySelectorAll('tr').length;
+  const pct=parseInt(document.getElementById('pv-robust').textContent)||0;
+  const cbChecked=document.querySelectorAll('.cb-box.on').length;
+  const vName=document.getElementById('v-name').value;
+  const scores=[
+    Math.min(1,sel/2),
+    hasLean?0.85:0.2,
+    Math.min(1,tce/6),
+    (tcoA>0||tcoB>0)?0.9:0.2,
+    Math.min(1,riskCount/3),
+    pct>0?0.85:0.2,
+    Math.min(1,cbChecked/6),
+    vName?0.9:0.2
+  ];
+  // draw grid
+  for(let ring=1;ring<=4;ring++){
+    cx.beginPath();
+    for(let i=0;i<N;i++){
+      const ang=(i/N)*Math.PI*2-Math.PI/2;
+      const r=R*(ring/4);
+      if(i===0)cx.moveTo(CX+r*Math.cos(ang),CY+r*Math.sin(ang));
+      else cx.lineTo(CX+r*Math.cos(ang),CY+r*Math.sin(ang));
+    }
+    cx.closePath();
+    cx.strokeStyle='rgba(255,255,255,.07)';
+    cx.lineWidth=1;
+    cx.stroke();
+  }
+  // draw spokes
+  for(let i=0;i<N;i++){
+    const ang=(i/N)*Math.PI*2-Math.PI/2;
+    cx.beginPath();
+    cx.moveTo(CX,CY);
+    cx.lineTo(CX+R*Math.cos(ang),CY+R*Math.sin(ang));
+    cx.strokeStyle='rgba(255,255,255,.07)';
+    cx.stroke();
+  }
+  // draw data polygon
+  cx.beginPath();
+  scores.forEach((s,i)=>{
+    const ang=(i/N)*Math.PI*2-Math.PI/2;
+    const r=R*s;
+    if(i===0)cx.moveTo(CX+r*Math.cos(ang),CY+r*Math.sin(ang));
+    else cx.lineTo(CX+r*Math.cos(ang),CY+r*Math.sin(ang));
+  });
+  cx.closePath();
+  cx.fillStyle='rgba(99,150,255,.18)';
+  cx.fill();
+  cx.strokeStyle='rgba(99,150,255,.7)';
+  cx.lineWidth=2;
+  cx.stroke();
+  // draw dots + labels
+  scores.forEach((s,i)=>{
+    const ang=(i/N)*Math.PI*2-Math.PI/2;
+    const r=R*s;
+    cx.beginPath();
+    cx.arc(CX+r*Math.cos(ang),CY+r*Math.sin(ang),5,0,Math.PI*2);
+    cx.fillStyle=colors[i];
+    cx.fill();
+    // labels
+    const lr=R+22;
+    const lx=CX+lr*Math.cos(ang),ly=CY+lr*Math.sin(ang);
+    cx.fillStyle='rgba(232,235,240,.65)';
+    cx.font='9px Inter,sans-serif';
+    cx.textAlign=lx>CX+5?'left':lx<CX-5?'right':'center';
+    cx.textBaseline=ly>CY+5?'top':ly<CY-5?'bottom':'middle';
+    cx.fillText(labels[i],lx,ly);
+  });
+}
+</script>
+</body>
+</html>
