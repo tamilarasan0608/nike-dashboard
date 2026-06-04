@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nike AF1 — Supply Chain Crisis: Complete Intelligence Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Fira+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Fira+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -49,20 +49,13 @@ button,[onclick],a{cursor:pointer}
 @keyframes iFade{from{opacity:0}to{opacity:1}}
 @keyframes iSlide{from{opacity:0;transform:translateY(38px)}to{opacity:1;transform:translateY(0)}}
 
-/* CANVAS + ORBS */
-#bg-c{position:fixed;inset:0;z-index:0;pointer-events:none}
-.orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(88px)}
-.o1{top:-14%;right:-8%;width:640px;height:640px;background:radial-gradient(circle,rgba(226,75,74,0.07),transparent 70%);animation:fa 14s ease-in-out infinite}
-.o2{bottom:-18%;left:-8%;width:740px;height:740px;background:radial-gradient(circle,rgba(59,130,246,0.05),transparent 70%);animation:fa 18s ease-in-out infinite reverse}
-.o3{top:38%;left:44%;width:480px;height:480px;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(139,92,246,0.04),transparent 70%);animation:fb 22s ease-in-out infinite}
-@keyframes fa{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(26px,-26px) scale(1.07)}}
-@keyframes fb{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(calc(-50%+20px),calc(-50%-16px)) scale(1.1)}}
+/* CANVAS + ORBS — defined in motion graphics block below */
 
 /* SCROLL BAR */
 #sp{position:fixed;top:0;left:0;width:0%;height:2px;z-index:99;background:linear-gradient(90deg,var(--red),#FF6B8A,var(--amber));box-shadow:0 0 12px var(--red);transition:width .06s linear}
 
 /* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:.8rem 2rem;background:rgba(0,0,0,0.82);backdrop-filter:var(--blur);border-bottom:1px solid var(--border)}
+nav:not(#sidenav){position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:.8rem 2rem;background:rgba(0,0,0,0.82);backdrop-filter:var(--blur);border-bottom:1px solid var(--border)}
 .nb{display:flex;align-items:center;gap:.75rem}
 .nl{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--red),#FF6B6B);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:14px;box-shadow:0 0 20px var(--red-g)}
 .nt{font-weight:700;font-size:.9rem;letter-spacing:-.02em}
@@ -83,7 +76,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:cent
 @keyframes tk{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
 /* MAIN */
-main{position:relative;z-index:10;padding-top:94px}
+main{position:relative;z-index:10;padding-top:96px}
 .wrap{max-width:1200px;margin:0 auto;padding:0 2rem}
 
 /* HERO */
@@ -255,7 +248,8 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:4rem;text-alig
 
 /* RESPONSIVE */
 @media(max-width:1024px){.hkpis{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:1fr 1fr}.g52,.g23,.g32{grid-template-columns:1fr}}
-@media(max-width:768px){.nc{display:none}.hkpis{grid-template-columns:repeat(2,1fr)}.g2,.g3{grid-template-columns:1fr}h1.hh{font-size:2rem}}
+@media(max-width:768px){.nc{display:none}.hkpis{grid-template-columns:repeat(2,1fr)}.g2,.g3,.g4,.g52,.g23,.g32{grid-template-columns:1fr}h1.hh{font-size:2rem}.kpi-rings{grid-template-columns:1fr}.flow{padding:.75rem 0}.wrap{padding:0 1rem}.section{padding:2.5rem 0}}
+@media(max-width:480px){.hkpis{grid-template-columns:repeat(1,1fr)}.nr{gap:.5rem}.ab{display:none}}
 
 /* ── MOTION GRAPHICS LAYER ── */
 #bg-c{position:fixed;inset:0;z-index:0;pointer-events:none}
@@ -264,7 +258,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:4rem;text-alig
 .o2{bottom:-18%;left:-8%;width:740px;height:740px;background:radial-gradient(circle,rgba(59,130,246,.05),transparent 70%);animation:fa 18s ease-in-out infinite reverse}
 .o3{top:38%;left:44%;width:480px;height:480px;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(139,92,246,.04),transparent 70%);animation:fb 22s ease-in-out infinite}
 @keyframes fa{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(26px,-26px) scale(1.07)}}
-@keyframes fb{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(calc(-50% + 20px),calc(-50% - 16px)) scale(1.1)}}
+@keyframes fb{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(calc(-50% + 22px),calc(-50% - 18px)) scale(1.1)}}
 #noise-overlay{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.022;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px 200px}
 #grid-overlay{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.22;background-image:radial-gradient(circle,rgba(255,255,255,.1) 1px,transparent 1px);background-size:48px 48px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black,transparent);-webkit-mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black,transparent)}
 
@@ -279,7 +273,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:4rem;text-alig
 @media(max-width:960px){#sidenav{display:none}}
 
 /* ── MULTI-PHASE INTRO ADDITIONS ── */
-.intro-phase{position:absolute;width:100%;padding:0 2rem;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;transition:opacity .55s cubic-bezier(.16,1,.3,1);pointer-events:none}
+.intro-phase{position:absolute;inset:0;width:100%;height:100%;padding:0 2rem;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;transition:opacity .55s cubic-bezier(.16,1,.3,1);pointer-events:none}
 .intro-phase.ip-show{opacity:1}
 .intro-factory-headline{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:1.25rem;text-align:center}
 .intro-factory-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;max-width:640px;margin:0 auto 1.25rem}
@@ -681,7 +675,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:4rem;text-alig
   <div class="sh"><div class="sn">03</div><div><div class="st">The Three Strategic Frameworks</div><div class="sd">Why Nike's approach was fundamentally flawed — and what should have happened</div><div class="sl"></div></div></div>
 
   <div class="fbox">
-    <div class="fbox-title">🔷 Framework 1: Kraljic Matrix — Supply Risk × Profit Impact</div>
+    <div class="fbox-title">[ 01 ] Framework 1: Kraljic Matrix — Supply Risk × Profit Impact</div>
     <div class="fbox-body">
       <p><strong>What is it?</strong> 2×2 matrix classifying products by profit impact (low/high) and supply risk (low/high). Four categories: Non-Critical (buy cheapest), Leverage (negotiate hard), Bottleneck (secure supply), Strategic (invest in relationships).</p>
       <p><strong>Nike's Fatal Mistake:</strong> AF1 is STRATEGIC ($2.8B revenue + 60% Vietnam concentration = high profit impact + high supply risk). But Nike treated it as LEVERAGE — pure commodity sourcing, aggressive cost cutting, zero relationship investment.</p>
@@ -692,7 +686,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:4rem;text-alig
   </div>
 
   <div class="fbox">
-    <div class="fbox-title">💰 Framework 2: Total Cost of Ownership (TCO)</div>
+    <div class="fbox-title">[ 02 ] Framework 2: Total Cost of Ownership (TCO)</div>
     <div class="fbox-body">
       <p><strong>What is it?</strong> Calculates FULL cost, not just purchase price. Includes: base price, quality control, logistics, supply chain risk, geopolitical exposure, opportunity costs.</p>
       <p><strong>Nike's Mistake:</strong> Only counted direct price ($14.20/pair). Ignored tariff scenarios, geopolitical risk premium, demand elasticity, and concentration risk.</p>
@@ -710,7 +704,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:4rem;text-alig
   </div>
 
   <div class="fbox">
-    <div class="fbox-title">⚠️ Framework 3: Supply Chain Risk Management (SCRM)</div>
+    <div class="fbox-title">[ 03 ] Framework 3: Supply Chain Risk Management (SCRM)</div>
     <div class="fbox-body">
       <p><strong>What is it?</strong> Risk = Probability × Impact × Detectability. Identifies vulnerabilities and probability-weights expected losses to prioritise mitigation.</p>
       <p><strong>Nike's Mistake:</strong> Assigned ~10% probability to Vietnam tariff scenario. Evidence by 2023 suggested 35-50% was correct.</p>
@@ -736,11 +730,11 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:4rem;text-alig
     <div class="card cp"><div class="ct" style="margin-bottom:1.1rem">Risk Heat Map (Probability × Impact, max 16)</div><canvas id="rc" height="280" style="width:100%;display:block"></canvas></div>
     <div class="card cp">
       <div class="ct" style="margin-bottom:1.1rem">Top Risk Events</div>
-      <div class="sr"><div class="si" style="background:rgba(226,75,74,.12)">⚡</div><div class="sinf"><div class="sn2">Tariff Permanence</div><div class="ss">Policy risk · High probability</div></div><div class="sv" style="color:var(--red)">16/16</div></div>
-      <div class="sr"><div class="si" style="background:rgba(245,158,11,.12)">🏭</div><div class="sinf"><div class="sn2">Factory Relocation Delay</div><div class="ss">Operational · 18–24 month risk</div></div><div class="sv" style="color:var(--amber)">12/16</div></div>
-      <div class="sr"><div class="si" style="background:rgba(245,158,11,.12)">📦</div><div class="sinf"><div class="sn2">Inventory Stockout Q4</div><div class="ss">Demand fulfilment risk</div></div><div class="sv" style="color:var(--amber)">9/16</div></div>
-      <div class="sr"><div class="si" style="background:rgba(59,130,246,.12)">💰</div><div class="sinf"><div class="sn2">Consumer Price Resistance</div><div class="ss">Demand elasticity unknown</div></div><div class="sv" style="color:var(--blue)">8/16</div></div>
-      <div class="sr"><div class="si" style="background:rgba(34,197,94,.12)">🤝</div><div class="sinf"><div class="sn2">New Supplier Quality Risk</div><div class="ss">Factory ramp-up degradation</div></div><div class="sv" style="color:var(--green)">6/16</div></div>
+      <div class="sr"><div class="si" style="background:rgba(226,75,74,.12)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div class="sinf"><div class="sn2">Tariff Permanence</div><div class="ss">Policy risk · High probability</div></div><div class="sv" style="color:var(--red)">16/16</div></div>
+      <div class="sr"><div class="si" style="background:rgba(245,158,11,.12)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2"/><line x1="12" y1="12" x2="12" y2="16"/></svg></div><div class="sinf"><div class="sn2">Factory Relocation Delay</div><div class="ss">Operational · 18–24 month risk</div></div><div class="sv" style="color:var(--amber)">12/16</div></div>
+      <div class="sr"><div class="si" style="background:rgba(245,158,11,.12)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div class="sinf"><div class="sn2">Inventory Stockout Q4</div><div class="ss">Demand fulfilment risk</div></div><div class="sv" style="color:var(--amber)">9/16</div></div>
+      <div class="sr"><div class="si" style="background:rgba(59,130,246,.12)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><div class="sinf"><div class="sn2">Consumer Price Resistance</div><div class="ss">Demand elasticity unknown</div></div><div class="sv" style="color:var(--blue)">8/16</div></div>
+      <div class="sr"><div class="si" style="background:rgba(34,197,94,.12)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="sinf"><div class="sn2">New Supplier Quality Risk</div><div class="ss">Factory ramp-up degradation</div></div><div class="sv" style="color:var(--green)">6/16</div></div>
     </div>
   </div>
 </div>
@@ -757,7 +751,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:4rem;text-alig
   </div>
 
   <div class="fbox">
-    <div class="fbox-title">❓ WHY — Four Strategic Drivers</div>
+    <div class="fbox-title">WHY — Four Strategic Drivers</div>
     <div class="fbox-body">
       <ul>
         <li><strong>Eliminate tariff exposure:</strong> Reducing Vietnam to 30% cuts annual tariff from $117.5M → ~$35M (70% reduction)</li>
@@ -770,7 +764,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:4rem;text-alig
 
   <div class="g3">
     <div class="fbox" style="margin-bottom:0">
-      <div class="fbox-title">🇻🇳 Vietnam — $420M (70%)</div>
+      <div class="fbox-title">VN · Vietnam — $420M (70%)</div>
       <div class="fbox-body">
         <p><strong>Strategy:</strong> Consolidate + Automate. Close 32 of 142 factories, keep 110 operating.</p>
         <ul>
@@ -783,7 +777,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:4rem;text-alig
       </div>
     </div>
     <div class="fbox" style="margin-bottom:0">
-      <div class="fbox-title">🇮🇩 Indonesia — $120M (20%) | Live Jun 2026</div>
+      <div class="fbox-title">ID · Indonesia — $120M (20%) | Live Jun 2026</div>
       <div class="fbox-body">
         <p><strong>Strategy:</strong> Expand Pou Chen facility in Tangerang (50km west Jakarta).</p>
         <ul>
@@ -796,7 +790,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:4rem;text-alig
       </div>
     </div>
     <div class="fbox" style="margin-bottom:0">
-      <div class="fbox-title">🇮🇳 India — $60M (10%) | Live Sep 2026</div>
+      <div class="fbox-title">IN · India — $60M (10%) | Live Sep 2026</div>
       <div class="fbox-body">
         <p><strong>Strategy:</strong> Expand Yue Yuen in Chennai SEZ (Special Economic Zone).</p>
         <ul>
@@ -811,7 +805,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:4rem;text-alig
   </div>
 
   <div class="fbox" style="margin-top:1.25rem">
-    <div class="fbox-title">⏱️ WHEN — 9-Month Execution Timeline</div>
+    <div class="fbox-title">WHEN — 9-Month Execution Timeline</div>
     <div class="fbox-body">
       <p><strong>Months 1-2 (Apr-May 2025):</strong> Emergency finance secured. Sign agreements with Pou Chen &amp; Yue Yuen. Begin Vietnam consolidation planning. Severance plan activated.</p>
       <p><strong>Months 3-4 (Jun-Jul 2025):</strong> Vietnam severance payouts begin. Factory closures start. Indonesia: equipment procurement, facility renovation.</p>
@@ -857,9 +851,9 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:4rem;text-alig
       </div>
       <div style="margin-top:1.5rem">
         <div class="ct" style="margin-bottom:1rem">Sustainability Impact (SSCM 3-Pillar)</div>
-        <div class="sr"><div class="si" style="background:rgba(59,130,246,.12)">💰</div><div class="sinf"><div class="sn2">Market Cap Impact</div><div class="ss">Economic pillar</div></div><div class="sv" style="color:var(--red)">−$6B</div></div>
-        <div class="sr"><div class="si" style="background:rgba(34,197,94,.12)">🌱</div><div class="sinf"><div class="sn2">Scope 3 Carbon</div><div class="ss">Environmental pillar</div></div><div class="sv" style="color:var(--amber)">+12%</div></div>
-        <div class="sr"><div class="si" style="background:rgba(139,92,246,.12)">🤝</div><div class="sinf"><div class="sn2">Workers Displaced</div><div class="ss">Social pillar</div></div><div class="sv" style="color:var(--red)">22,500</div></div>
+        <div class="sr"><div class="si" style="background:rgba(59,130,246,.12)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div><div class="sinf"><div class="sn2">Market Cap Impact</div><div class="ss">Economic pillar</div></div><div class="sv" style="color:var(--red)">−$6B</div></div>
+        <div class="sr"><div class="si" style="background:rgba(34,197,94,.12)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round"><path d="M12 22V12"/><path d="M12 12C12 12 7 9 7 5a5 5 0 0 1 10 0c0 4-5 7-5 7z"/></svg></div><div class="sinf"><div class="sn2">Scope 3 Carbon</div><div class="ss">Environmental pillar</div></div><div class="sv" style="color:var(--amber)">+12%</div></div>
+        <div class="sr"><div class="si" style="background:rgba(139,92,246,.12)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg></div><div class="sinf"><div class="sn2">Workers Displaced</div><div class="ss">Social pillar</div></div><div class="sv" style="color:var(--red)">22,500</div></div>
       </div>
     </div>
   </div>
@@ -926,7 +920,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:4rem;text-alig
   <div class="sh"><div class="sn">09</div><div><div class="st">Key Strategic Insights</div><div class="sd">Three lessons for supply chain resilience design</div><div class="sl"></div></div></div>
 
   <div class="fbox">
-    <div class="fbox-title">💡 Insight 1: Alignment ≠ Resilience (Hau Lee's Triple-A Framework)</div>
+    <div class="fbox-title">→ Insight 1: Alignment ≠ Resilience (Hau Lee's Triple-A Framework)</div>
     <div class="fbox-body">
       <p>Nike is world-class at ALIGNMENT (all suppliers follow Nike standards) and EFFICIENCY (optimising cost per pair). But alignment + efficiency concentrated in a single location = BRITTLENESS. Resilience requires ADAPTABILITY: the ability to reconfigure production when the environment changes.</p>
       <p>AF1 failed on adaptability — needed 9 months and $600M to shift just 50% of volume. A resilient supply chain shifts 20% in 30 days with pre-agreed contingency suppliers.</p>
@@ -936,7 +930,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:4rem;text-alig
   </div>
 
   <div class="fbox">
-    <div class="fbox-title">💡 Insight 2: Frameworks Work — Execution Doesn't</div>
+    <div class="fbox-title">→ Insight 2: Frameworks Work — Execution Doesn't</div>
     <div class="fbox-body">
       <p>Nike's supply chain team knew Kraljic, TCO, and SCRM. The frameworks were available. The problem wasn't framework knowledge — it was EXECUTION. Executive incentives were misaligned: bonuses tied to cost reduction, not risk management.</p>
       <p>When SCRM assessments flagged Vietnam tariff risk, executives celebrated lower costs instead of investigating probability assumptions. A 10% tariff probability was accepted because action would have cost $50M upfront to diversify.</p>
@@ -945,7 +939,7 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:4rem;text-alig
   </div>
 
   <div class="fbox">
-    <div class="fbox-title">💡 Insight 3: Efficiency Must Include Resilience Slack</div>
+    <div class="fbox-title">→ Insight 3: Efficiency Must Include Resilience Slack</div>
     <div class="fbox-body">
       <p>A truly efficient supply chain accepts 15% slack: 85% utilisation instead of 95-100%. This 10% capacity buffer costs approximately 1-2% per pair extra but buys rapid rebalancing capability. Nike's model was 100% utilisation in a single location — lowest possible cost, zero resilience.</p>
       <p><strong>The Math:</strong> Resilience slack over 10 years costs ~$150M. Crisis cost avoided: $357M in Year 1 alone. Net value of resilience: +$207M. A portfolio manager would never invest 100% in one asset. A supply chain manager shouldn't either.</p>
@@ -961,24 +955,24 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:4rem;text-alig
   <div class="g2">
     <div>
       <div style="font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:1rem">Nike &amp; Company Data</div>
-      <div class="li"><div class="li-icon">📊</div><div><div class="li-title">Nike 10-K Annual Reports (FY2023–2025)</div><div class="li-desc">Revenue $46.7B, AF1 revenue $2.8B, Vietnam 142 factories, 45,000 workers, 30M pairs/year</div><a href="https://investor.nike.com/news-events/financial-reports/" class="slink">Nike IR</a></div></div>
-      <div class="li"><div class="li-icon">📊</div><div><div class="li-title">Nike Q4 FY2025 Earnings Report</div><div class="li-desc">AF1 concentration, tariff impact on margins, demand drops, strategic guidance</div><a href="https://investor.nike.com/" class="slink">Nike IR</a></div></div>
+      <div class="li"><div class="li-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div><div><div class="li-title">Nike 10-K Annual Reports (FY2023–2025)</div><div class="li-desc">Revenue $46.7B, AF1 revenue $2.8B, Vietnam 142 factories, 45,000 workers, 30M pairs/year</div><a href="https://investor.nike.com/news-events/financial-reports/" class="slink">Nike IR</a></div></div>
+      <div class="li"><div class="li-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div><div><div class="li-title">Nike Q4 FY2025 Earnings Report</div><div class="li-desc">AF1 concentration, tariff impact on margins, demand drops, strategic guidance</div><a href="https://investor.nike.com/" class="slink">Nike IR</a></div></div>
 
       <div style="font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:.12em;text-transform:uppercase;margin:1.5rem 0 1rem">Academic Frameworks</div>
-      <div class="li"><div class="li-icon">📚</div><div><div class="li-title">Kraljic, P. (1983) — "Purchasing Must Become Supply Management"</div><div class="li-desc">Harvard Business Review. Foundational Kraljic Matrix framework for supply classification</div><a href="https://hbr.org/1983/09/purchasing-must-become-supply-management" class="slink">HBR</a></div></div>
-      <div class="li"><div class="li-icon">📚</div><div><div class="li-title">Lee, H. (2004) — "The Triple-A Supply Chain"</div><div class="li-desc">Harvard Business Review. Agility, Adaptability, Alignment framework</div><a href="https://hbr.org/2004/10/the-triple-a-supply-chain" class="slink">HBR</a></div></div>
-      <div class="li"><div class="li-icon">📚</div><div><div class="li-title">Christopher &amp; Peck (2004) — "Building the Resilient Supply Chain"</div><div class="li-desc">International Journal of Logistics Management. SCRM framework and risk assessment methodology</div></div></div>
+      <div class="li"><div class="li-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><div><div class="li-title">Kraljic, P. (1983) — "Purchasing Must Become Supply Management"</div><div class="li-desc">Harvard Business Review. Foundational Kraljic Matrix framework for supply classification</div><a href="https://hbr.org/1983/09/purchasing-must-become-supply-management" class="slink">HBR</a></div></div>
+      <div class="li"><div class="li-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><div><div class="li-title">Lee, H. (2004) — "The Triple-A Supply Chain"</div><div class="li-desc">Harvard Business Review. Agility, Adaptability, Alignment framework</div><a href="https://hbr.org/2004/10/the-triple-a-supply-chain" class="slink">HBR</a></div></div>
+      <div class="li"><div class="li-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><div><div class="li-title">Christopher &amp; Peck (2004) — "Building the Resilient Supply Chain"</div><div class="li-desc">International Journal of Logistics Management. SCRM framework and risk assessment methodology</div></div></div>
     </div>
     <div>
       <div style="font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:1rem">Government &amp; Trade Data</div>
-      <div class="li"><div class="li-icon">🏛️</div><div><div class="li-title">USITC — HTS 6404.11 (Athletic Footwear)</div><div class="li-desc">April 2025: 46% tariff on Vietnamese footwear. HTS Code 6404.11.90</div><a href="https://www.usitc.gov/" class="slink">USITC</a></div></div>
-      <div class="li"><div class="li-icon">🏛️</div><div><div class="li-title">USTR Tariff Notices — April 3, 2025</div><div class="li-desc">Official announcement of Vietnam reciprocal tariff rates and effective dates</div><a href="https://ustr.gov/" class="slink">USTR</a></div></div>
-      <div class="li"><div class="li-icon">🏛️</div><div><div class="li-title">India DPIIT — PLI Scheme Documentation</div><div class="li-desc">Government of India footwear manufacturing incentives. 4-6% subsidies for qualifying SEZ facilities</div><a href="https://dpiit.gov.in/" class="slink">DPIIT</a></div></div>
+      <div class="li"><div class="li-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg></div><div><div class="li-title">USITC — HTS 6404.11 (Athletic Footwear)</div><div class="li-desc">April 2025: 46% tariff on Vietnamese footwear. HTS Code 6404.11.90</div><a href="https://www.usitc.gov/" class="slink">USITC</a></div></div>
+      <div class="li"><div class="li-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg></div><div><div class="li-title">USTR Tariff Notices — April 3, 2025</div><div class="li-desc">Official announcement of Vietnam reciprocal tariff rates and effective dates</div><a href="https://ustr.gov/" class="slink">USTR</a></div></div>
+      <div class="li"><div class="li-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg></div><div><div class="li-title">India DPIIT — PLI Scheme Documentation</div><div class="li-desc">Government of India footwear manufacturing incentives. 4-6% subsidies for qualifying SEZ facilities</div><a href="https://dpiit.gov.in/" class="slink">DPIIT</a></div></div>
 
       <div style="font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:.12em;text-transform:uppercase;margin:1.5rem 0 1rem">Suppliers &amp; Course</div>
-      <div class="li"><div class="li-icon">🏭</div><div><div class="li-title">Pou Chen Group — Company Reports</div><div class="li-desc">Vietnam's #1 footwear manufacturer. Capacity, Indonesia operations, Nike partnerships</div><a href="https://www.pouchen.com/" class="slink">Pou Chen</a></div></div>
-      <div class="li"><div class="li-icon">🏭</div><div><div class="li-title">Yue Yuen Industrial Holdings — Investor Reports</div><div class="li-desc">World's #1 footwear OEM. India operations, capacity, Nike partnerships, ESG</div><a href="https://www.yueyuen.com/" class="slink">Yue Yuen</a></div></div>
-      <div class="li"><div class="li-icon">🎓</div><div><div class="li-title">MN52245 Supply Chain Management — University of Bath</div><div class="li-desc">MBA course materials, frameworks. Instructor: Prof. Jens Roehrich</div><a href="https://www.bath.ac.uk/" class="slink">Bath</a></div></div>
+      <div class="li"><div class="li-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="8" y1="12" x2="8" y2="16"/><line x1="16" y1="12" x2="16" y2="16"/></svg></div><div><div class="li-title">Pou Chen Group — Company Reports</div><div class="li-desc">Vietnam's #1 footwear manufacturer. Capacity, Indonesia operations, Nike partnerships</div><a href="https://www.pouchen.com/" class="slink">Pou Chen</a></div></div>
+      <div class="li"><div class="li-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="8" y1="12" x2="8" y2="16"/><line x1="16" y1="12" x2="16" y2="16"/></svg></div><div><div class="li-title">Yue Yuen Industrial Holdings — Investor Reports</div><div class="li-desc">World's #1 footwear OEM. India operations, capacity, Nike partnerships, ESG</div><a href="https://www.yueyuen.com/" class="slink">Yue Yuen</a></div></div>
+      <div class="li"><div class="li-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="2" stroke-linecap="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div><div><div class="li-title">MN52245 Supply Chain Management — University of Bath</div><div class="li-desc">MBA course materials, frameworks. Instructor: Prof. Jens Roehrich</div><a href="https://www.bath.ac.uk/" class="slink">Bath</a></div></div>
     </div>
   </div>
 </div>
