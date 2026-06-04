@@ -522,7 +522,7 @@ function SalesScreen(){
                 <div className="m-big-num m-num" style={{fontSize:40,marginTop:10}}>{s.val}</div>
                 <div style={{display:"flex",gap:10,marginTop:8,alignItems:"baseline"}}>
                   <span className="m-mono" style={{fontSize:10,color:"var(--ink-2)",letterSpacing:".06em"}}>{s.sub}</span>
-                  <span className="m-mono" style={{fontSize:10,letterSpacing:".08em",color:s.delta.startsWith("+")??"var(--good)":s.delta==="RECORD"?"var(--accent)":"var(--bad)"}}>{s.delta}</span>
+                  <span className="m-mono" style={{fontSize:10,letterSpacing:".08em",color:s.delta.startsWith("+")?"var(--good)":s.delta==="RECORD"?"var(--accent)":"var(--bad)"}}>{s.delta}</span>
                 </div>
               </div>
             ))}
