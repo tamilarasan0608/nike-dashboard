@@ -542,48 +542,133 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:4rem;text-alig
       <div class="f-arr">→</div>
       <div class="f-box">Consumer<small>$110→$125+ at retail</small></div>
     </div>
-    <!-- WORLD SUPPLY MAP -->
-    <div class="map-wrap">
-      <div class="map-label">Global Supply Network</div>
-      <div class="map-live"><div class="map-live-dot"></div>LIVE LANES</div>
-      <svg id="worldMap" viewBox="0 0 100 70" width="100%" style="display:block;padding-top:1.8rem">
-        <!-- Continent blobs -->
-        <g opacity=".18" fill="rgba(255,255,255,.55)">
-          <ellipse cx="22" cy="36" rx="10" ry="12"/><ellipse cx="28" cy="60" rx="5" ry="10"/>
-          <ellipse cx="49" cy="32" rx="5" ry="6"/><ellipse cx="51" cy="50" rx="7" ry="11"/>
-          <ellipse cx="58" cy="32" rx="8" ry="5"/><ellipse cx="68" cy="44" rx="5" ry="5"/>
-          <ellipse cx="78" cy="42" rx="7" ry="7"/><ellipse cx="84" cy="64" rx="5" ry="4"/>
+    <!-- WORLD SUPPLY MAP — FULL DETAIL -->
+    <div class="map-wrap" style="padding:0">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:.75rem 1.25rem;border-bottom:1px solid var(--border)">
+        <span style="font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.35)">Global Supply Network</span>
+        <span style="font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--red);display:flex;align-items:center;gap:5px"><span style="width:5px;height:5px;background:var(--red);border-radius:50%;animation:pd 1.6s infinite;display:inline-block"></span>9 Active Lanes</span>
+      </div>
+      <svg id="worldMap" viewBox="0 0 1000 480" width="100%" style="display:block;background:#030610">
+        <defs>
+          <filter id="glow-r"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="glow-a"><feGaussianBlur stdDeviation="2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="glow-b"><feGaussianBlur stdDeviation="2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <!-- Lat/lon grid -->
+        </defs>
+        <!-- Ocean -->
+        <rect width="1000" height="480" fill="#030610"/>
+        <!-- Latitude lines -->
+        <g stroke="rgba(255,255,255,.04)" stroke-width=".5" fill="none">
+          <line x1="0" y1="80" x2="1000" y2="80"/><line x1="0" y1="160" x2="1000" y2="160"/>
+          <line x1="0" y1="240" x2="1000" y2="240"/><line x1="0" y1="320" x2="1000" y2="320"/>
+          <line x1="0" y1="400" x2="1000" y2="400"/>
+          <line x1="100" y1="0" x2="100" y2="480"/><line x1="200" y1="0" x2="200" y2="480"/>
+          <line x1="300" y1="0" x2="300" y2="480"/><line x1="400" y1="0" x2="400" y2="480"/>
+          <line x1="500" y1="0" x2="500" y2="480"/><line x1="600" y1="0" x2="600" y2="480"/>
+          <line x1="700" y1="0" x2="700" y2="480"/><line x1="800" y1="0" x2="800" y2="480"/>
+          <line x1="900" y1="0" x2="900" y2="480"/>
         </g>
-        <!-- Supply lanes -->
-        <path id="rl1" class="route-line" d="M78,44 Q50,20 22,38" fill="none" stroke="var(--red)" stroke-width=".9" opacity=".85"/>
-        <path id="rl2" class="route-line" d="M78,44 Q62,28 50,32" fill="none" stroke="var(--red)" stroke-width=".7" opacity=".75"/>
-        <path id="rl3" class="route-line" d="M82,46 Q84,54 86,50" fill="none" stroke="var(--amber)" stroke-width=".8" opacity=".8"/>
-        <path id="rl4" class="route-line" d="M70,46 Q60,50 56,50" fill="none" stroke="var(--blue)" stroke-width=".6" opacity=".7"/>
-        <path id="rl5" class="route-line" d="M48,30 Q44,34 46,40" fill="none" stroke="rgba(255,255,255,.4)" stroke-width=".5"/>
-        <!-- Factory nodes -->
-        <circle class="origin-node" cx="78" cy="44" r="4" fill="var(--red)" opacity=".9"/>
-        <text x="78" y="41" text-anchor="middle" font-family="monospace" font-size="2.5" fill="rgba(255,255,255,.6)">VN</text>
-        <circle cx="82" cy="46" r="3" fill="var(--amber)" opacity=".85"/>
-        <text x="82" y="43" text-anchor="middle" font-family="monospace" font-size="2.5" fill="rgba(255,255,255,.6)">ID</text>
-        <circle cx="70" cy="46" r="2.5" fill="var(--blue)" opacity=".8"/>
-        <text x="70" y="43" text-anchor="middle" font-family="monospace" font-size="2.5" fill="rgba(255,255,255,.6)">IN</text>
-        <circle cx="48" cy="30" r="2" fill="rgba(255,255,255,.5)" opacity=".7"/>
-        <text x="48" y="27" text-anchor="middle" font-family="monospace" font-size="2.5" fill="rgba(255,255,255,.5)">PT</text>
-        <!-- Destination nodes -->
-        <circle cx="22" cy="38" r="2.5" fill="rgba(255,255,255,.4)"/>
-        <text x="22" y="35" text-anchor="middle" font-family="monospace" font-size="2.5" fill="rgba(255,255,255,.4)">USA</text>
-        <circle cx="50" cy="32" r="2" fill="rgba(255,255,255,.35)"/>
-        <text x="50" y="29" text-anchor="middle" font-family="monospace" font-size="2.5" fill="rgba(255,255,255,.35)">EU</text>
-        <!-- Traveling dots -->
-        <circle r="1.2" fill="var(--red)" opacity=".9"><animateMotion dur="5s" repeatCount="indefinite"><mpath href="#rl1"/></animateMotion></circle>
-        <circle r="1" fill="var(--amber)" opacity=".85"><animateMotion dur="4s" repeatCount="indefinite" begin="1s"><mpath href="#rl2"/></animateMotion></circle>
-        <circle r=".9" fill="var(--blue)" opacity=".8"><animateMotion dur="6s" repeatCount="indefinite" begin="2s"><mpath href="#rl4"/></animateMotion></circle>
+        <!-- Equator highlight -->
+        <line x1="0" y1="265" x2="1000" y2="265" stroke="rgba(255,255,255,.08)" stroke-width=".8" stroke-dasharray="4 4"/>
+        <!-- ── CONTINENTS ── -->
+        <!-- North America -->
+        <path d="M95,75 L185,68 L225,78 L255,100 L268,128 L262,168 L248,210 L232,248 L215,270 L202,285 L190,278 L178,262 L162,245 L148,220 L138,196 L122,178 L106,168 L92,150 L82,124 L88,98 Z" fill="rgba(255,255,255,.07)" stroke="rgba(255,255,255,.14)" stroke-width=".6"/>
+        <!-- South America -->
+        <path d="M188,300 L245,292 L282,305 L298,332 L294,372 L282,412 L262,448 L232,460 L205,446 L188,416 L180,375 L178,336 Z" fill="rgba(255,255,255,.07)" stroke="rgba(255,255,255,.12)" stroke-width=".6"/>
+        <!-- Europe -->
+        <path d="M408,72 L472,68 L518,80 L524,98 L514,128 L494,148 L472,158 L448,160 L428,148 L412,128 L406,104 Z" fill="rgba(255,255,255,.07)" stroke="rgba(255,255,255,.14)" stroke-width=".6"/>
+        <!-- Africa -->
+        <path d="M408,178 L558,178 L565,232 L555,302 L536,370 L510,422 L480,442 L452,432 L432,408 L416,364 L410,298 L406,235 Z" fill="rgba(255,255,255,.07)" stroke="rgba(255,255,255,.12)" stroke-width=".6"/>
+        <!-- Middle East -->
+        <path d="M524,172 L598,162 L626,182 L632,208 L612,232 L586,242 L558,238 L532,222 L518,205 L520,185 Z" fill="rgba(255,255,255,.055)" stroke="rgba(255,255,255,.1)" stroke-width=".5"/>
+        <!-- Asia (main) -->
+        <path d="M528,68 L692,58 L798,65 L878,75 L918,108 L916,175 L888,228 L842,265 L790,278 L738,268 L678,252 L628,228 L578,208 L538,188 L518,158 L516,112 L522,82 Z" fill="rgba(255,255,255,.07)" stroke="rgba(255,255,255,.14)" stroke-width=".6"/>
+        <!-- SE Asia peninsula (Vietnam area) -->
+        <path d="M788,270 L810,262 L822,285 L818,318 L802,335 L786,325 L775,305 Z" fill="rgba(255,255,255,.09)" stroke="rgba(255,255,255,.16)" stroke-width=".6"/>
+        <!-- Indonesia islands -->
+        <ellipse cx="806" cy="352" rx="28" ry="12" fill="rgba(255,255,255,.08)" stroke="rgba(255,255,255,.14)" stroke-width=".5"/>
+        <ellipse cx="848" cy="345" rx="18" ry="9" fill="rgba(255,255,255,.07)" stroke="rgba(255,255,255,.12)" stroke-width=".5"/>
+        <!-- India subcontinent -->
+        <path d="M638,168 L695,162 L718,185 L720,228 L704,268 L680,285 L655,275 L638,248 L630,208 L632,180 Z" fill="rgba(255,255,255,.09)" stroke="rgba(255,255,255,.15)" stroke-width=".5"/>
+        <!-- Australia -->
+        <path d="M762,330 L878,325 L892,358 L882,398 L852,422 L800,428 L760,405 L748,372 Z" fill="rgba(255,255,255,.07)" stroke="rgba(255,255,255,.12)" stroke-width=".6"/>
+        <!-- Japan -->
+        <ellipse cx="888" cy="175" rx="12" ry="22" fill="rgba(255,255,255,.07)" stroke="rgba(255,255,255,.12)" stroke-width=".5"/>
+
+        <!-- ── SUPPLY ROUTE PATHS ── -->
+        <!-- VN → USA West (via Pacific) -->
+        <path id="rl1" class="route-line" d="M800,295 Q950,180 1000,200 Q1020,220 130,215" fill="none" stroke="#E24B4A" stroke-width="1.2" opacity=".8"/>
+        <!-- VN → USA East (via Pacific) -->
+        <path id="rl2" class="route-line" d="M800,295 Q900,160 920,150 Q940,140 220,195" fill="none" stroke="#E24B4A" stroke-width=".9" opacity=".65"/>
+        <!-- VN → Europe (via Indian Ocean/Suez) -->
+        <path id="rl3" class="route-line" d="M800,295 Q720,340 620,310 Q530,280 480,240 Q450,215 460,150" fill="none" stroke="#E24B4A" stroke-width="1" opacity=".75"/>
+        <!-- ID → APAC -->
+        <path id="rl4" class="route-line" d="M810,348 Q860,300 888,185" fill="none" stroke="#F59E0B" stroke-width=".9" opacity=".8"/>
+        <!-- ID → USA (via Pacific) -->
+        <path id="rl5" class="route-line" d="M810,348 Q920,300 960,260 Q980,240 160,210" fill="none" stroke="#F59E0B" stroke-width=".8" opacity=".6"/>
+        <!-- IN → Europe -->
+        <path id="rl6" class="route-line" d="M672,268 Q600,310 520,285 Q490,260 460,150" fill="none" stroke="#3B82F6" stroke-width=".8" opacity=".7"/>
+        <!-- IN → USA -->
+        <path id="rl7" class="route-line" d="M672,268 Q600,340 530,310 Q450,280 370,265 Q270,250 220,210" fill="none" stroke="#3B82F6" stroke-width=".7" opacity=".55"/>
+
+        <!-- ── FACTORY ORIGIN NODES ── -->
+        <!-- Vietnam — critical, red glow -->
+        <circle cx="800" cy="295" r="10" fill="rgba(226,75,74,.18)" filter="url(#glow-r)"/>
+        <circle cx="800" cy="295" r="6" fill="#E24B4A" filter="url(#glow-r)">
+          <animate attributeName="r" values="6;8;6" dur="2s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="1;.6;1" dur="2s" repeatCount="indefinite"/>
+        </circle>
+        <text x="800" y="280" text-anchor="middle" font-family="Fira Code,monospace" font-size="10" fill="rgba(255,255,255,.85)" font-weight="600">VN</text>
+        <text x="800" y="315" text-anchor="middle" font-family="Fira Code,monospace" font-size="8" fill="rgba(226,75,74,.9)">46% TARIFF</text>
+
+        <!-- Indonesia -->
+        <circle cx="810" cy="348" r="8" fill="rgba(245,158,11,.18)" filter="url(#glow-a)"/>
+        <circle cx="810" cy="348" r="5" fill="#F59E0B" filter="url(#glow-a)">
+          <animate attributeName="r" values="5;7;5" dur="2.4s" repeatCount="indefinite"/>
+        </circle>
+        <text x="810" y="335" text-anchor="middle" font-family="Fira Code,monospace" font-size="10" fill="rgba(255,255,255,.8)" font-weight="600">ID</text>
+        <text x="810" y="363" text-anchor="middle" font-family="Fira Code,monospace" font-size="8" fill="rgba(245,158,11,.9)">32% TARIFF</text>
+
+        <!-- India -->
+        <circle cx="672" cy="268" r="7" fill="rgba(59,130,246,.18)" filter="url(#glow-b)"/>
+        <circle cx="672" cy="268" r="4.5" fill="#3B82F6" filter="url(#glow-b)">
+          <animate attributeName="r" values="4.5;6.5;4.5" dur="2.8s" repeatCount="indefinite"/>
+        </circle>
+        <text x="672" y="255" text-anchor="middle" font-family="Fira Code,monospace" font-size="10" fill="rgba(255,255,255,.8)" font-weight="600">IN</text>
+        <text x="672" y="282" text-anchor="middle" font-family="Fira Code,monospace" font-size="8" fill="rgba(59,130,246,.9)">26% TARIFF</text>
+
+        <!-- ── DESTINATION NODES ── -->
+        <!-- USA West -->
+        <circle cx="130" cy="215" r="5" fill="rgba(255,255,255,.5)"><animate attributeName="opacity" values="1;.4;1" dur="3s" repeatCount="indefinite"/></circle>
+        <text x="130" y="235" text-anchor="middle" font-family="Fira Code,monospace" font-size="9" fill="rgba(255,255,255,.55)">USA-W</text>
+        <!-- USA East -->
+        <circle cx="220" cy="195" r="4.5" fill="rgba(255,255,255,.45)"><animate attributeName="opacity" values="1;.4;1" dur="3.4s" repeatCount="indefinite"/></circle>
+        <text x="220" y="215" text-anchor="middle" font-family="Fira Code,monospace" font-size="9" fill="rgba(255,255,255,.5)">USA-E</text>
+        <!-- Europe -->
+        <circle cx="460" cy="150" r="5" fill="rgba(255,255,255,.5)"><animate attributeName="opacity" values="1;.4;1" dur="2.8s" repeatCount="indefinite"/></circle>
+        <text x="460" y="138" text-anchor="middle" font-family="Fira Code,monospace" font-size="9" fill="rgba(255,255,255,.55)">EUR</text>
+        <!-- Japan/APAC -->
+        <circle cx="888" cy="185" r="4" fill="rgba(255,255,255,.4)"><animate attributeName="opacity" values="1;.4;1" dur="2.5s" repeatCount="indefinite"/></circle>
+        <text x="888" y="205" text-anchor="middle" font-family="Fira Code,monospace" font-size="9" fill="rgba(255,255,255,.45)">APAC</text>
+
+        <!-- ── ANIMATED CARGO DOTS ── -->
+        <circle r="3" fill="#E24B4A" filter="url(#glow-r)"><animateMotion dur="7s" repeatCount="indefinite" rotate="auto"><mpath href="#rl1"/></animateMotion></circle>
+        <circle r="2.5" fill="#E24B4A" opacity=".8"><animateMotion dur="9s" repeatCount="indefinite" begin="2s" rotate="auto"><mpath href="#rl2"/></animateMotion></circle>
+        <circle r="2.5" fill="#E24B4A" opacity=".85" filter="url(#glow-r)"><animateMotion dur="8s" repeatCount="indefinite" begin="1s" rotate="auto"><mpath href="#rl3"/></animateMotion></circle>
+        <circle r="2.5" fill="#F59E0B" filter="url(#glow-a)"><animateMotion dur="5s" repeatCount="indefinite" begin=".5s" rotate="auto"><mpath href="#rl4"/></animateMotion></circle>
+        <circle r="2" fill="#F59E0B" opacity=".75"><animateMotion dur="8s" repeatCount="indefinite" begin="3s" rotate="auto"><mpath href="#rl5"/></animateMotion></circle>
+        <circle r="2" fill="#3B82F6" filter="url(#glow-b)"><animateMotion dur="7s" repeatCount="indefinite" begin="1.5s" rotate="auto"><mpath href="#rl6"/></animateMotion></circle>
+        <circle r="1.8" fill="#3B82F6" opacity=".7"><animateMotion dur="9s" repeatCount="indefinite" begin="4s" rotate="auto"><mpath href="#rl7"/></animateMotion></circle>
+
+        <!-- ── TARIFF ZONE HIGHLIGHT (South China Sea / shipping chokepoint) ── -->
+        <ellipse cx="840" cy="300" rx="55" ry="35" fill="none" stroke="rgba(226,75,74,.12)" stroke-width="1" stroke-dasharray="4 3"/>
+        <text x="840" y="300" text-anchor="middle" font-family="Fira Code,monospace" font-size="7.5" fill="rgba(226,75,74,.4)">TARIFF ZONE</text>
       </svg>
-      <div style="display:flex;gap:1rem;padding:.75rem 1.25rem;border-top:1px solid var(--border);font-family:var(--mono);font-size:10px;flex-wrap:wrap">
-        <span style="display:flex;align-items:center;gap:.35rem"><span style="width:8px;height:8px;border-radius:50%;background:var(--red);display:inline-block"></span>Vietnam · 60% AF1</span>
-        <span style="display:flex;align-items:center;gap:.35rem"><span style="width:8px;height:8px;border-radius:50%;background:var(--amber);display:inline-block"></span>Indonesia · 27%</span>
-        <span style="display:flex;align-items:center;gap:.35rem"><span style="width:8px;height:8px;border-radius:50%;background:var(--blue);display:inline-block"></span>India · 5%</span>
-        <span style="margin-left:auto;color:var(--t3)">9 active shipping lanes</span>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--border)">
+        <div style="padding:.65rem 1rem;border-right:1px solid var(--border)"><div style="font-family:var(--mono);font-size:8px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Vietnam</div><div style="font-family:var(--mono);font-size:13px;font-weight:700;color:#E24B4A">60%</div><div style="font-family:var(--mono);font-size:9px;color:var(--t3)">Tariff: 46%</div></div>
+        <div style="padding:.65rem 1rem;border-right:1px solid var(--border)"><div style="font-family:var(--mono);font-size:8px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Indonesia</div><div style="font-family:var(--mono);font-size:13px;font-weight:700;color:#F59E0B">27%</div><div style="font-family:var(--mono);font-size:9px;color:var(--t3)">Tariff: 32%</div></div>
+        <div style="padding:.65rem 1rem;border-right:1px solid var(--border)"><div style="font-family:var(--mono);font-size:8px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">India</div><div style="font-family:var(--mono);font-size:13px;font-weight:700;color:#3B82F6">5%</div><div style="font-family:var(--mono);font-size:9px;color:var(--t3)">Tariff: 26%</div></div>
+        <div style="padding:.65rem 1rem"><div style="font-family:var(--mono);font-size:8px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Active Lanes</div><div style="font-family:var(--mono);font-size:13px;font-weight:700;color:#fff">9</div><div style="font-family:var(--mono);font-size:9px;color:var(--t3)">7 routes shown</div></div>
       </div>
     </div>
 
@@ -938,7 +1023,7 @@ const phaseTimings=[2200,3200,3000,3000,3000];
       codes.forEach((c,i)=>{
         const d=document.createElement('div');d.className='ifactory-dot';
         d.style.animationDelay=(i*80)+'ms';
-        d.innerHTML=`<div class="ifactory-icon">🏭</div><div class="ifactory-code">${c}</div>`;
+        d.innerHTML=`<div class="ifactory-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="8" y1="12" x2="8" y2="16"/><line x1="16" y1="12" x2="16" y2="16"/></svg></div><div class="ifactory-code">${c}</div>`;
         grid.appendChild(d);
       });
     }
