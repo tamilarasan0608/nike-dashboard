@@ -27,54 +27,62 @@ button,[onclick],a{cursor:pointer}
 :focus-visible{outline:2px solid var(--red);outline-offset:3px;border-radius:4px}
 ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:rgba(226,75,74,0.35);border-radius:2px}
 
-/* ── INTRO ── */
-#intro{position:fixed;inset:0;background:#000;z-index:10000;overflow:hidden;transition:opacity .9s ease;cursor:pointer}
+/* ══════════════════════════════════════════
+   INTRO — v4 clean (no video, no dead code)
+══════════════════════════════════════════ */
+#intro{
+  position:fixed;inset:0;z-index:10000;overflow:hidden;
+  background:
+    radial-gradient(ellipse 70% 60% at 65% 35%,rgba(226,75,74,.13) 0%,transparent 65%),
+    radial-gradient(ellipse 50% 55% at 20% 75%,rgba(59,130,246,.06) 0%,transparent 65%),
+    #080808;
+  transition:opacity .85s ease;
+}
 #intro.hide{opacity:0;pointer-events:none}
-#intro-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.5;pointer-events:none}
-#intro-veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,.3) 50%,rgba(0,0,0,.6) 100%);pointer-events:none}
-.intro-bar{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--red),transparent);transform:scaleX(0);transform-origin:center;animation:ibar .9s .2s ease both}
+/* top accent line */
+.intro-bar{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--red),transparent);transform:scaleX(0);transform-origin:center;animation:ibar 1s .1s ease both}
 @keyframes ibar{to{transform:scaleX(1)}}
-.intro-corner{position:absolute;width:24px;height:24px;border-color:rgba(255,255,255,.2)}
+/* corner brackets */
+.intro-corner{position:absolute;width:22px;height:22px;border-color:rgba(255,255,255,.18)}
 .intro-corner.tl{top:1.5rem;left:1.5rem;border-top:1px solid;border-left:1px solid}
 .intro-corner.tr{top:1.5rem;right:1.5rem;border-top:1px solid;border-right:1px solid}
 .intro-corner.bl{bottom:1.5rem;left:1.5rem;border-bottom:1px solid;border-left:1px solid}
 .intro-corner.br{bottom:1.5rem;right:1.5rem;border-bottom:1px solid;border-right:1px solid}
-/* intro text styles */
-.intro-eye{font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:1.5rem}
-.intro-brand{font-size:clamp(64px,9vw,112px);font-weight:900;letter-spacing:-3px;line-height:.9;text-align:center;text-shadow:0 4px 40px rgba(0,0,0,.6)}
-.intro-brand .acc{color:var(--red);text-shadow:0 0 60px rgba(226,75,74,.7)}
-.intro-rule{height:2px;width:min(280px,55vw);background:linear-gradient(90deg,transparent,var(--red),transparent);margin:1.4rem auto}
-.intro-num{font-family:var(--mono);font-size:clamp(52px,9vw,108px);font-weight:700;color:var(--red);text-shadow:0 0 50px rgba(226,75,74,.6)}
-.intro-num-lbl{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:rgba(255,255,255,.5);text-transform:uppercase;margin-top:.6rem}
-.intro-skip{position:absolute;bottom:2rem;right:2rem;font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:rgba(255,255,255,.3);background:none;border:1px solid rgba(255,255,255,.12);padding:7px 16px;border-radius:4px;text-transform:uppercase;cursor:pointer;transition:all .2s}
+/* phase progress dots */
+.intro-dots{position:absolute;bottom:4.5rem;left:50%;transform:translateX(-50%);display:flex;gap:8px}
+.idot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.18);transition:all .35s ease}
+.idot.active{background:var(--red);width:22px;border-radius:4px;box-shadow:0 0 10px rgba(226,75,74,.7)}
+.idot.done{background:rgba(226,75,74,.45)}
+/* skip button */
+.intro-skip{position:absolute;bottom:1.75rem;right:2rem;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.28);background:none;border:1px solid rgba(255,255,255,.1);padding:6px 14px;border-radius:4px;cursor:pointer;transition:all .2s}
 .intro-skip:hover{color:rgba(255,255,255,.7);border-color:rgba(255,255,255,.3)}
-.is-bars{width:min(440px,85vw);margin-top:1.5rem}
-.is-bar-row{display:flex;align-items:center;gap:12px;margin-bottom:11px;font-family:var(--mono);font-size:12px;color:rgba(255,255,255,.5)}
-.is-bar-row>span:first-child{width:80px;text-align:right;font-size:11px;flex-shrink:0}
-.is-bar-track{flex:1;height:8px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden}
-.is-bar-fill{height:100%;border-radius:4px;width:0;transition:width 1s cubic-bezier(.16,1,.3,1)}
-.is-bar-pct{width:38px;flex-shrink:0;font-weight:700}
-/* progress dots */
-#intro-prog{position:absolute;bottom:5rem;left:50%;transform:translateX(-50%);display:flex;gap:8px}
-.ipd{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.2);transition:all .3s ease;cursor:pointer}
-.ipd.done{background:rgba(226,75,74,.6)}
-.ipd.active{background:var(--red);width:22px;border-radius:3px;box-shadow:0 0 10px var(--red)}
-/* nav buttons */
-#intro-nav{position:absolute;bottom:2rem;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:0 2rem}
-.inb{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;background:none;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.4);padding:7px 16px;border-radius:4px;cursor:pointer;transition:all .2s}
-.inb:hover{border-color:rgba(255,255,255,.4);color:rgba(255,255,255,.85)}
-#intro-next{border-color:rgba(226,75,74,.5);color:var(--red);padding:8px 22px;font-size:11px}
-#intro-next:hover{background:var(--red);color:#fff;border-color:var(--red);box-shadow:0 0 20px rgba(226,75,74,.4)}
-/* enter button on last slide */
-.is-enter{display:inline-flex;align-items:center;gap:10px;margin-top:2rem;padding:14px 32px;background:var(--red);color:#fff;font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;border:none;border-radius:6px;cursor:pointer;transition:all .2s;box-shadow:0 0 30px rgba(226,75,74,.4)}
-.is-enter:hover{transform:translateY(-2px);box-shadow:0 8px 40px rgba(226,75,74,.55)}
-/* item stagger inside a slide */
-.is .si0{opacity:0;transform:translateY(14px);transition:opacity .5s .05s ease,transform .5s .05s ease}
-.is .si1{opacity:0;transform:translateY(14px);transition:opacity .5s .15s ease,transform .5s .15s ease}
-.is .si2{opacity:0;transform:translateY(14px);transition:opacity .5s .28s ease,transform .5s .28s ease}
-.is .si3{opacity:0;transform:translateY(14px);transition:opacity .5s .42s ease,transform .5s .42s ease}
-.is .si4{opacity:0;transform:translateY(14px);transition:opacity .5s .58s ease,transform .5s .58s ease}
-.is.active .si0,.is.active .si1,.is.active .si2,.is.active .si3,.is.active .si4{opacity:1;transform:none}
+/* eyebrow label */
+.intro-eye{font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:1.6rem}
+/* BIG BRAND TITLE */
+.intro-brand{font-size:96px;font-size:clamp(58px,9vw,96px);font-weight:900;letter-spacing:-4px;line-height:.88;text-align:center}
+.intro-brand .acc{color:var(--red);text-shadow:0 0 50px rgba(226,75,74,.7)}
+/* horizontal rule */
+.intro-rule{height:2px;width:min(280px,55vw);background:linear-gradient(90deg,transparent,var(--red),transparent);margin:1.5rem auto}
+/* ZERO phase */
+.intro-zero-label{font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:.6rem}
+.intro-zero{font-size:120px;font-size:clamp(80px,14vw,120px);font-weight:900;letter-spacing:-6px;line-height:.88;color:var(--red);text-shadow:0 0 80px rgba(226,75,74,.6)}
+.intro-zero-sub{font-size:14px;color:rgba(255,255,255,.45);margin-top:1rem;max-width:480px;line-height:1.65;text-align:center}
+.intro-zero-rule{height:1px;width:0;background:linear-gradient(90deg,transparent,var(--red),transparent);margin:1.25rem auto;transition:width 1s ease}
+.intro-zero-rule.expand{width:min(280px,55vw)}
+.intro-outsource{font-family:var(--mono);font-size:clamp(14px,2.5vw,22px);font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.75);opacity:0;transform:translateY(8px);transition:opacity .5s ease .2s,transform .5s ease .2s}
+.intro-outsource.show{opacity:1;transform:none}
+/* VIETNAM phase */
+.intro-conc-label{font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:.5rem}
+.intro-conc-country{font-size:88px;font-size:clamp(60px,9vw,88px);font-weight:900;letter-spacing:-2px;color:var(--red);margin-bottom:1.5rem;text-shadow:0 0 60px rgba(226,75,74,.55)}
+.intro-conc-bars{width:min(440px,85vw)}
+.intro-bar-item{display:flex;align-items:center;gap:12px;margin-bottom:11px;font-family:var(--mono);font-size:12px;color:rgba(255,255,255,.5)}
+.intro-bar-item>span:first-child{width:80px;text-align:right;font-size:11px;flex-shrink:0}
+.intro-bar-track{flex:1;height:8px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden}
+.intro-bar-fill{height:100%;border-radius:4px;width:0}
+.intro-bar-pct{width:38px;flex-shrink:0;font-weight:700}
+/* TARIFF counter phase */
+.intro-num{font-family:var(--mono);font-size:100px;font-size:clamp(64px,12vw,100px);font-weight:900;letter-spacing:-4px;color:var(--red);text-shadow:0 0 60px rgba(226,75,74,.65)}
+.intro-num-lbl{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-top:.75rem;max-width:480px;line-height:1.6;text-align:center}
 @keyframes iFade{from{opacity:0}to{opacity:1}}
 
 /* CANVAS + ORBS — defined in motion graphics block below */
@@ -362,35 +370,30 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:4rem;text-alig
 </head>
 <body>
 
-<!-- CINEMATIC INTRO — auto-advances, click anywhere to skip -->
-<div id="intro" title="Click anywhere to skip">
-  <!-- VIDEO BACKGROUND -->
-  <video id="intro-vid" autoplay muted playsinline preload="auto" loop>
-    <source src="finalcut.mp4" type="video/mp4">
-  </video>
-  <div id="intro-veil"></div>
-
-  <!-- FRAME CORNERS + TOP BAR -->
+<!-- INTRO: auto-advances through 4 phases · click anywhere to skip -->
+<div id="intro">
   <div class="intro-bar"></div>
   <div class="intro-corner tl"></div><div class="intro-corner tr"></div>
   <div class="intro-corner bl"></div><div class="intro-corner br"></div>
 
-  <!-- AUTO-ADVANCING PHASES -->
-  <div class="intro-phase" id="ip1">
+  <!-- Phase 1: Brand reveal — pre-shown so visible before JS fires -->
+  <div class="intro-phase ip-show" id="ip1">
     <div class="intro-eye">University of Bath · MN52245 · Supply Chain Management · 2025</div>
     <div class="intro-brand">Air Force 1<br><span class="acc">Crisis</span></div>
     <div class="intro-rule"></div>
-    <div style="font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.3)">The world's most iconic sneaker · now at geopolitical risk</div>
+    <div style="font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.35)">The world's most iconic sneaker · now at geopolitical risk</div>
   </div>
 
+  <!-- Phase 2: ZERO factories -->
   <div class="intro-phase" id="ip2">
     <div class="intro-zero-label">Nike operates</div>
     <div class="intro-zero">ZERO</div>
-    <div class="intro-zero-sub">factories, production facilities, or outlets anywhere on the planet.<br>~500 contract manufacturers across 42 countries. 100% outsourced.</div>
+    <div class="intro-zero-sub">factories, production facilities, or outlets anywhere on the planet. ~500 contract manufacturers across 42 countries.</div>
     <div class="intro-zero-rule" id="introZeroRule"></div>
     <div class="intro-outsource" id="introOutsource">100% OUTSOURCED</div>
   </div>
 
+  <!-- Phase 3: Vietnam concentration -->
   <div class="intro-phase" id="ip3">
     <div class="intro-conc-label">60% of AF1 production concentrated in</div>
     <div class="intro-conc-country">VIETNAM</div>
@@ -402,15 +405,23 @@ footer{border-top:1px solid var(--border);padding:2rem;margin-top:4rem;text-alig
     </div>
   </div>
 
+  <!-- Phase 4: Tariff counter -->
   <div class="intro-phase" id="ip4">
-    <div class="intro-zero-label">Trump's Vietnam Tariff — April 2, 2025</div>
+    <div class="intro-zero-label">Trump's Vietnam Tariff · April 2, 2025</div>
     <div class="intro-num" id="iNum">0%</div>
-    <div class="intro-rule" style="animation:none;width:min(280px,55vw);margin:1.4rem auto"></div>
-    <div class="intro-num-lbl">$117.5M annual exposure on AF1 alone · NKE −14% in one session</div>
+    <div class="intro-rule"></div>
+    <div class="intro-num-lbl">$117.5M annual exposure on AF1 alone · NKE stock −14% in one session</div>
   </div>
 
-  <!-- Skip hint -->
-  <button class="intro-skip" id="intro-skip">Click anywhere to skip ↵</button>
+  <!-- Progress dots -->
+  <div class="intro-dots">
+    <div class="idot active" id="idot0"></div>
+    <div class="idot" id="idot1"></div>
+    <div class="idot" id="idot2"></div>
+    <div class="idot" id="idot3"></div>
+  </div>
+
+  <button class="intro-skip" id="intro-skip">Skip ↵</button>
 </div>
 
 <!-- BACKGROUND LAYERS -->
@@ -1007,8 +1018,8 @@ function skipIntro(){
   intro.classList.add('hide');
   setTimeout(()=>{intro.style.display='none';document.getElementById('sidenav').classList.add('ready');},900);
 }
-// Click anywhere on intro skips it
-intro.addEventListener('click',skipIntro);
+// Click anywhere on intro (but not the skip button which already handles it)
+intro.addEventListener('click',e=>{if(e.target!==document.getElementById('intro-skip'))skipIntro();});
 // Keyboard shortcuts
 document.addEventListener('keydown',e=>{
   if(iDone)return;
@@ -1020,6 +1031,7 @@ const phases=['ip1','ip2','ip3','ip4'];
 let curPhase=0;
 function showPhase(n){
   phases.forEach((id,i)=>{const el=document.getElementById(id);if(el)el.classList.toggle('ip-show',i===n);});
+  document.querySelectorAll('.idot').forEach((d,i)=>{d.classList.toggle('active',i===n);d.classList.toggle('done',i<n);});
 }
 showPhase(0);
 const phaseTimings=[2400,3200,3200,3000];
